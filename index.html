@@ -1,0 +1,2753 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ôn tập Kiến trúc máy tính — giữa kì &amp; cuối kì</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E6EEE1; --card:#F4F8F1; --ink:#15301F; --ink2:#4B6455; --rule:#B9CDBB; --rule2:#D3E0D3;
+  --green:#2C6A4B; --green2:#1F4F37; --amber:#A86A12; --amber-bg:#F6E9CF; --red:#A3392A; --red-bg:#F6DCD5;
+  --f-op:#24533E; --f-rs:#D5E7C3; --f-rt:#EFE0AE; --f-rd:#F1CBBE; --f-sh:#D9D0EA; --f-fn:#C3E0DC; --f-im:#EADDB6; --f-ad:#CFE3BF;
+  --sans:"Be Vietnam Pro","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"Cascadia Mono",Menlo,monospace;
+  --side:264px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{accent-color:var(--green);margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--green)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:3px}
+code,.m,pre{font-family:var(--mono)}
+code{background:#fff8;border:1px solid var(--rule2);padding:0 .3em;border-radius:3px;font-size:.88em}
+
+/* ---------- khung ---------- */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;padding:10px 24px;background:var(--ink);color:#E9F2E6}
+.top .brand{font-weight:700;font-size:17px;letter-spacing:-.01em;color:inherit;text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:10px}
+.brand-bits{display:inline-flex;height:14px;border-radius:2px;overflow:hidden}
+.brand-bits i{display:block;height:100%}
+.mode{display:flex;background:#ffffff14;border-radius:8px;padding:3px}
+.mode button{font:600 14px var(--sans);border:0;background:transparent;color:#CFE0CF;padding:6px 14px;border-radius:6px;cursor:pointer}
+.mode button.on{background:#E9F2E6;color:var(--ink)}
+.menu-btn{display:none;font:600 14px var(--sans);background:#ffffff14;color:#E9F2E6;border:0;border-radius:6px;padding:7px 12px;cursor:pointer}
+.wrap{display:flex;min-height:calc(100vh - 56px)}
+nav.side{width:var(--side);flex:none;border-right:1px solid var(--rule);padding:20px 14px 40px;position:sticky;top:56px;height:calc(100vh - 56px);overflow:auto;background:var(--paper)}
+.side h4{font-size:13px;font-weight:600;color:var(--ink2);margin:18px 10px 6px}
+.side h4:first-child{margin-top:0}
+.side a{display:flex;align-items:baseline;gap:8px;padding:7px 10px;border-radius:6px;text-decoration:none;color:var(--ink);font-size:15px;line-height:1.35}
+.side a small{color:var(--ink2);font-size:12px;flex:none;width:58px}
+.side a:hover{background:#ffffff80}
+.side a.on{background:var(--card);box-shadow:inset 3px 0 0 var(--green);font-weight:600}
+.side a.out{opacity:.38}
+.side a.out:hover{opacity:.7}
+main{flex:1;min-width:0;padding:32px 40px 80px}
+.view{display:none;max-width:880px}
+.view.on{display:block}
+
+/* ---------- trang chủ ---------- */
+.hero{padding:8px 0 28px;border-bottom:1px solid var(--rule)}
+.hero h1{font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.03em;margin:0 0 14px;font-weight:800;max-width:14ch}
+.hero p{max-width:60ch;color:var(--ink2);margin:0 0 22px;font-size:17px}
+.word{display:flex;max-width:720px;height:64px;border:2px solid var(--ink);border-radius:6px;overflow:hidden;font-family:var(--mono)}
+.word span{display:flex;flex-direction:column;justify-content:center;align-items:center;border-right:2px solid var(--ink);font-weight:600;font-size:15px}
+.word span:last-child{border-right:0}
+.word span small{font-weight:400;font-size:11px;opacity:.75}
+.hero .word-cap{font:13px var(--mono);color:var(--ink2);margin:8px 0 0}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0}
+.scope > div{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:18px 20px}
+.scope h3{margin:0 0 4px;font-size:18px}
+.scope p{margin:0 0 10px;color:var(--ink2);font-size:14px}
+.scope ol{margin:0;padding-left:20px;font-size:15px}
+.scope li{margin:3px 0}
+.scope li a{text-decoration:none;color:var(--ink)}
+.scope li a:hover{text-decoration:underline}
+.howto{font-size:15px;color:var(--ink2);max-width:70ch}
+
+/* ---------- chương ---------- */
+.chap-head{margin-bottom:18px}
+.chap-no{margin:0;color:var(--green);font-weight:600;font-size:15px}
+.chap-head h2{font-size:clamp(28px,4vw,38px);line-height:1.12;letter-spacing:-.02em;margin:2px 0 6px;font-weight:800}
+.chap-src{margin:0;font-size:13px;color:var(--ink2)}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:8px;vertical-align:middle}
+.badge.gk{background:var(--f-rs);color:var(--green2)}
+.badge.ck{background:var(--f-rd);color:var(--red)}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--rule);margin-bottom:22px;position:sticky;top:56px;background:var(--paper);z-index:5;padding-top:6px}
+.tab{font:600 15px var(--sans);background:none;border:0;padding:10px 16px;color:var(--ink2);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.on{color:var(--ink);border-color:var(--green)}
+.pane{display:none}
+.pane.on{display:block}
+h3{font-size:21px;letter-spacing:-.01em;margin:34px 0 10px;line-height:1.25}
+.pane > h3:first-child{margin-top:4px}
+p,li,dd{max-width:72ch}
+ul,ol{padding-left:22px}
+li{margin:4px 0}
+.defs{margin:0}
+.defs dt{font-weight:700;margin-top:12px}
+.defs dd{margin:2px 0 0 0;padding-left:14px;border-left:2px solid var(--rule)}
+table{border-collapse:collapse;margin:12px 0 16px;font-size:14.5px;background:var(--card);border:1px solid var(--rule)}
+main table{display:block;max-width:100%;overflow-x:auto;width:max-content}
+main{overflow-x:clip}
+th,td{border:1px solid var(--rule2);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:#DCE8D8;font-weight:600}
+td.m{white-space:nowrap}
+table.ctrl td,table.ctrl th{text-align:center}
+table.ctrl td:first-child{text-align:left;font-weight:600}
+table.hex td,table.hex th{text-align:center;padding:4px 6px;font-family:var(--mono);font-size:13px}
+.tblwrap{overflow-x:auto;max-width:100%}
+.formula{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--green);padding:12px 16px;margin:12px 0;font-size:15px;line-height:1.75;border-radius:0 8px 8px 0}
+.formula.big{font-size:16px}
+.units{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--ink2);margin:4px 0 8px}
+.tip,.warn{padding:12px 16px;border-radius:8px;margin:18px 0;font-size:15px;max-width:76ch}
+.tip{background:var(--amber-bg);border:1px solid #E6CE9C}
+.tip b:first-child{color:var(--amber)}
+.warn{background:var(--red-bg);border:1px solid #E9B9AD}
+.warn b:first-child{color:var(--red)}
+.note{font-size:13.5px;color:var(--ink2)}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;font-size:14px}
+.flow span{background:var(--card);border:1px solid var(--rule);padding:6px 12px;border-radius:6px;font-weight:600}
+.flow i{font-style:normal;color:var(--ink2);font-size:13px}
+.flow i::before{content:"→ "}
+.flow i::after{content:" →"}
+.stages{display:flex;margin:12px 0 16px;max-width:760px}
+.stages span{flex:1;background:var(--green);color:#fff;padding:9px 6px 9px 18px;font-weight:600;font-size:14px;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%,12px 50%);margin-right:-6px;display:flex;flex-direction:column;line-height:1.2}
+.stages span:first-child{clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%);padding-left:12px}
+.stages span:nth-child(even){background:var(--green2)}
+.stages small{font-weight:400;font-size:11.5px;opacity:.85}
+pre{background:#13281C;color:#DCEBD6;padding:12px 16px;border-radius:8px;overflow-x:auto;font-size:13.5px;line-height:1.55;margin:10px 0}
+
+/* bit fields */
+.fmt{margin:14px 0 6px}
+.fmt-name{font-weight:700;margin:0 0 4px;font-size:15px}
+.fmt-ex{margin:4px 0 0;font-size:14px;color:var(--ink2)}
+.bits{display:flex;border:2px solid var(--ink);border-radius:5px;overflow:hidden;max-width:760px;font-family:var(--mono);font-size:13px}
+.bits .f{flex:var(--w) 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 2px;border-right:1.5px solid var(--ink);text-align:center;line-height:1.2;font-weight:600;overflow:hidden}
+.bits .f:last-child{border-right:0}
+.bits .f small{font-weight:400;font-size:11px;opacity:.8;word-break:break-all}
+.f.op{background:var(--f-op);color:#fff}.f.rs{background:var(--f-rs)}.f.rt{background:var(--f-rt)}.f.rd{background:var(--f-rd)}.f.sh{background:var(--f-sh)}.f.fn{background:var(--f-fn)}.f.im{background:var(--f-im)}.f.ad{background:var(--f-ad)}
+
+/* bài tập */
+.ex{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin:0 0 14px}
+.ex-q{margin:0}
+.ex details{margin-top:10px}
+.ex summary{cursor:pointer;font-weight:600;color:var(--green);font-size:14.5px;list-style:none;display:inline-flex;align-items:center;gap:6px;padding:4px 0}
+.ex summary::-webkit-details-marker{display:none}
+.ex summary::before{content:"";width:0;height:0;border-left:6px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent;transition:transform .15s}
+.ex details[open] summary::before{transform:rotate(90deg)}
+.ex details > *:not(summary){animation:none}
+.ex details[open]{border-top:1px dashed var(--rule);padding-top:4px}
+.sim{font-size:13px}
+.sim td,.sim th{padding:4px 8px}
+.sim tr.it td{border-top:2px solid var(--rule)}
+.sim td:nth-child(2){font-family:var(--sans)}
+.simres{font-weight:600;margin:6px 0 14px}
+.simcap{margin:10px 0 0;font-weight:600;font-size:14px}
+.cache td.hit{background:#D5E7C3;font-weight:600}
+.cache td.miss{background:#F1CBBE;font-weight:600}
+.cache td.cur{outline:2px solid var(--green);outline-offset:-2px}
+.cache small{font-weight:400}
+table.pipe td,table.pipe th{text-align:center;min-width:46px;font-size:13px}
+table.pipe td.hl{background:var(--f-rt);font-weight:700}
+table.pipe td.st{background:var(--f-rd);color:var(--red);font-style:italic}
+
+/* ---------- quiz ---------- */
+.qbar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin:16px 0 20px}
+.qbar label{font-size:14px;display:flex;align-items:center;gap:6px}
+select,input[type=text],input[type=number]{font:15px var(--sans);padding:6px 10px;border:1.5px solid var(--rule);border-radius:6px;background:#fff;color:var(--ink)}
+input.m{font-family:var(--mono)}
+.btn{font:600 15px var(--sans);background:var(--green);color:#fff;border:0;border-radius:7px;padding:8px 16px;cursor:pointer}
+.btn:hover{background:var(--green2)}
+.btn.ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;width:100%}
+.chips label{background:#fff;border:1px solid var(--rule);border-radius:20px;padding:3px 10px 3px 6px;font-size:13px;cursor:pointer}
+.score{position:sticky;top:62px;z-index:4;display:flex;align-items:center;gap:14px;background:var(--ink);color:#E9F2E6;border-radius:10px;padding:10px 16px;margin-bottom:16px;font-weight:600}
+.score .bar{flex:1;height:8px;background:#ffffff22;border-radius:4px;overflow:hidden}
+.score .bar i{display:block;height:100%;background:#9CCB7E;width:0;transition:width .3s}
+.q{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:14px}
+.q-meta{font-size:12.5px;color:var(--ink2);margin:0 0 4px}
+.q-text{font-weight:600;margin:0 0 10px}
+.opts{display:grid;gap:6px}
+.opt{font:15px/1.45 var(--sans);text-align:left;background:#fff;border:1.5px solid var(--rule);border-radius:7px;padding:8px 12px;cursor:pointer;color:var(--ink);display:flex;gap:10px}
+.opt b{color:var(--ink2);flex:none}
+.opt:hover:not([disabled]){border-color:var(--green)}
+.opt[disabled]{cursor:default}
+.opt.right{background:#D5E7C3;border-color:var(--green)}
+.opt.wrong{background:var(--red-bg);border-color:var(--red)}
+.q-exp{display:none;margin:10px 0 0;font-size:14.5px;padding:8px 12px;border-left:3px solid var(--green);background:#fff8}
+.q.done .q-exp{display:block}
+.empty{padding:20px;background:var(--card);border:1px dashed var(--rule);border-radius:10px}
+
+/* ---------- công cụ ---------- */
+.tool{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 20px;margin-bottom:20px}
+.tool h3{margin:0 0 4px}
+.tool > p{margin:0 0 12px;color:var(--ink2);font-size:14.5px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:10px}
+.row label{display:flex;flex-direction:column;font-size:13px;color:var(--ink2);gap:3px}
+.out{margin-top:8px}
+.err{color:var(--red);font-weight:600}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:14.5px;margin:8px 0}
+.kv dt{color:var(--ink2)}
+.kv dd{margin:0;font-family:var(--mono);word-break:break-all}
+
+
+/* ---------- đề thi ---------- */
+.gen{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin:0 0 16px}
+.gen-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:6px}
+.gen-head h3{margin:0 auto 0 0;font-size:18px}
+.gen details{margin-top:8px;border-top:1px dashed var(--rule);padding-top:4px}
+.gen summary{cursor:pointer;font-weight:600;color:var(--green);font-size:14.5px;padding:4px 0}
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  main{padding:24px 18px 60px}
+  .menu-btn{display:block}
+  nav.side{position:fixed;left:0;top:56px;z-index:30;transform:translateX(-100%);transition:transform .2s;visibility:hidden}
+  nav.side.open{transform:none;visibility:visible;box-shadow:4px 0 20px #0003}
+  .scope{grid-template-columns:1fr}
+  .top{padding:10px 14px;gap:10px}
+  .top .brand span.t{display:none}
+}
+@media (max-width:520px){
+  .mode button{padding:6px 9px;font-size:13px}
+  .stages span{font-size:12px;padding-left:14px}
+  .stages small{display:none}
+}
+@media print{
+  .top,nav.side,.tabs,.qbar{display:none}
+  .view,.pane{display:block!important}
+  details{display:block}
+  details > *{display:block}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="menu-btn" id="menuBtn" aria-controls="side" aria-expanded="false">Mục lục</button>
+  <a class="brand" href="#home"><span class="brand-bits" aria-hidden="true"><i style="width:12px;background:#7FB58F"></i><i style="width:10px;background:var(--f-rs)"></i><i style="width:10px;background:var(--f-rt)"></i><i style="width:10px;background:var(--f-rd)"></i><i style="width:10px;background:var(--f-sh)"></i><i style="width:12px;background:var(--f-fn)"></i></span><span class="t">Ôn tập Kiến trúc máy tính</span></a>
+  <div class="mode" role="group" aria-label="Phạm vi ôn">
+    <button data-mode="gk">Giữa kì</button>
+    <button data-mode="ck" class="on">Cuối kì</button>
+  </div>
+</header>
+<div class="wrap">
+<nav class="side" id="side" aria-label="Mục lục">
+  <h4>Bắt đầu</h4>
+  <a href="#home" data-v="home"><small>Tổng quan</small>Phạm vi thi</a>
+  <h4>Lý thuyết và bài tập</h4>
+  <a href="#c1" data-v="c1" data-exam="gk"><small>Ch.1</small>Khái niệm và công nghệ</a>
+  <a href="#c1b" data-v="c1b" data-exam="gk"><small>Ch.1</small>Hiệu suất máy tính</a>
+  <a href="#cnum" data-v="cnum" data-exam="gk"><small>Tham khảo</small>Biểu diễn số</a>
+  <a href="#c2" data-v="c2" data-exam="gk"><small>Ch.2</small>Kiến trúc bộ lệnh MIPS</a>
+  <a href="#c3" data-v="c3" data-exam="gk"><small>Ch.3</small>Số học và chấm động</a>
+  <a href="#c3b" data-v="c3b" data-exam="gk"><small>Ch.3</small>Nhân – chia phần cứng</a>
+  <a href="#c4" data-v="c4" data-exam="gk"><small>Ch.4</small>Bộ xử lý (datapath)</a>
+  <a href="#c5" data-v="c5" data-exam="ck"><small>Ch.5</small>Pipeline</a>
+  <a href="#c6" data-v="c6" data-exam="ck"><small>Ch.6</small>Bộ nhớ và cache</a>
+  <h4>Luyện tập</h4>
+  <a href="#exam" data-v="exam"><small>Đề thi</small>Đề cuối kì và luyện dạng</a>
+  <a href="#quiz" data-v="quiz"><small>Quiz</small>Trắc nghiệm</a>
+  <a href="#tools" data-v="tools"><small>Công cụ</small>Tự kiểm tra đáp án</a>
+</nav>
+<main id="main">
+
+<section class="view on" id="v-home">
+  <div class="hero">
+    <h1>Ôn thi Kiến trúc máy tính</h1>
+    <p>Tóm tắt từ 9 file slide của môn, kèm bài tập mẫu giải từng bước và trắc nghiệm có chấm điểm. Chọn <b>Giữa kì</b> hoặc <b>Cuối kì</b> ở góc trên để lọc nội dung và quiz.</p>
+    <div class="word" aria-label="Định dạng lệnh R của MIPS: add $t0, $s1, $s2">
+      <span class="f op" style="flex:6;background:var(--f-op);color:#fff">000000<small>op</small></span>
+      <span style="flex:5;background:var(--f-rs)">10001<small>rs = $s1</small></span>
+      <span style="flex:5;background:var(--f-rt)">10010<small>rt = $s2</small></span>
+      <span style="flex:5;background:var(--f-rd)">01000<small>rd = $t0</small></span>
+      <span style="flex:5;background:var(--f-sh)">00000<small>shamt</small></span>
+      <span style="flex:6;background:var(--f-fn)">100000<small>funct = add</small></span>
+    </div>
+    <p class="word-cap">add $t0, $s1, $s2 = 0x02324020</p>
+  </div>
+  <div class="scope">
+    <div>
+      <h3>Giữa kì</h3>
+      <p>Từ chương đầu đến hết chương Bộ xử lý</p>
+      <ol>
+        <li><a href="#c1">Khái niệm và công nghệ</a></li>
+        <li><a href="#c1b">Hiệu suất: CPI, CPU time</a></li>
+        <li><a href="#cnum">Biểu diễn số, bù 2, tràn số</a></li>
+        <li><a href="#c2">Kiến trúc bộ lệnh MIPS</a></li>
+        <li><a href="#c3">Số học, IEEE 754</a></li>
+        <li><a href="#c3b">Bảng nhân – chia phần cứng</a></li>
+        <li><a href="#c4">Datapath đơn chu kỳ</a></li>
+      </ol>
+    </div>
+    <div>
+      <h3>Cuối kì</h3>
+      <p>Toàn bộ nội dung giữa kì, thêm</p>
+      <ol start="8">
+        <li><a href="#c5">Pipeline và xung đột</a></li>
+        <li><a href="#c6">Bộ nhớ phân cấp, cache</a></li>
+      </ol>
+      <p style="margin-top:14px">Cuối kì vẫn thi lại phần giữa kì, nên ôn đều. Xem <a href="#exam">đề cuối kì 15/8/2025 có giải và bộ luyện 9 dạng câu</a>.</p>
+    </div>
+  </div>
+  <p class="howto">Mỗi chương có hai thẻ: <b>Lý thuyết</b> (khung vàng là dạng hay ra thi, khung đỏ là bẫy hay sai) và <b>Bài tập mẫu</b> (bấm để xem lời giải). Bảng nhân/chia và bảng cache được tính tự động nên luôn khớp thuật toán; muốn thử số khác thì vào <a href="#tools">Công cụ</a>.</p>
+</section>
+<!-- ============ CHƯƠNG 1 ============ -->
+<section class="view chap" id="c1" data-exam="gk">
+<header class="chap-head">
+  <p class="chap-no">Chương 1</p>
+  <h2>Máy tính: khái niệm và công nghệ</h2>
+  <p class="chap-src">Nguồn: ch1_v1.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<h3>Lịch sử phát triển: 4 thế hệ</h3>
+<table>
+<tr><th>Thế hệ</th><th>Linh kiện</th><th>Ví dụ / dấu mốc</th></tr>
+<tr><td>1 (1940s)</td><td>Bóng đèn chân không</td><td>COLOSSUS, ENIAC, UNIVAC, IBM 701. Máy IAS của <b>John von Neumann</b> đề xuất mô hình máy tính dùng tới ngày nay.</td></tr>
+<tr><td>2 (1950s)</td><td>Transistor (bán dẫn)</td><td>PDP‑1, IBM 7094. Xuất hiện HĐH tuần tự, ngôn ngữ lập trình (Fortran, Cobol…).</td></tr>
+<tr><td>3 (1960s)</td><td>Transistor + mạch tích hợp (IC)</td><td>IBM System/360. Xuất hiện ISA dùng chung, bộ nhớ từ tính, mạng ARPANET.</td></tr>
+<tr><td>4 (1970s–nay)</td><td>Mạch tích hợp mật độ rất cao (VLSI, công nghệ nm)</td><td>PC, máy chủ, GUI, Internet, AI, IoT.</td></tr>
+</table>
+<p>Xu hướng tương lai: càng lớn, càng thông minh, càng nhỏ (invisible), máy tính lượng tử, máy tính hệ thần kinh (neuromorphic).</p>
+
+<h3>Phân loại máy tính: 3 lớp ứng dụng</h3>
+<dl class="defs">
+<dt>Máy tính để bàn (Desktop / PC)</dt><dd>Dùng cho cá nhân, có màn hình, chuột, bàn phím. Hiệu năng tốt cho một người dùng, chi phí thấp, chạy phần mềm bên thứ ba (shrink‑wrap software). Còn gọi là máy tính đa dụng (general‑purpose).</dd>
+<dt>Máy chủ (Server)</dt><dd>Chạy chương trình lớn hoặc nhiều người dùng đồng thời, truy cập qua mạng. Khả năng mở rộng tính toán và I/O lớn. Từ low‑end server (~1000$) đến <b>supercomputer</b> (hàng trăm–ngàn bộ xử lý, bộ nhớ GB–TB, lưu trữ TB–PB) và <b>datacenter</b> (Google, eBay).</dd>
+<dt>Máy tính nhúng (Embedded)</dt><dd>Nằm bên trong thiết bị (máy giặt, ô tô, điện thoại, TV…), chạy một ứng dụng định trước. Là lớp <b>phổ biến nhất</b>, trải rộng nhất. Yêu cầu quan trọng nhất: đạt hiệu năng tối thiểu cần thiết với <b>chi phí và năng lượng thấp nhất</b>.</dd>
+</dl>
+
+<h3>Bên dưới chương trình ứng dụng</h3>
+<p>Phân tầng: <b>Phần mềm ứng dụng → Phần mềm hệ thống → Phần cứng</b>. Hai phần mềm hệ thống điển hình:</p>
+<ul>
+<li><b>Hệ điều hành</b>: quản lý tài nguyên, điều khiển nhập/xuất cơ bản, cấp phát bộ nhớ và vùng lưu trữ, chia sẻ tài nguyên giữa các ứng dụng chạy đồng thời.</li>
+<li><b>Trình biên dịch (Compiler)</b>: dịch ngôn ngữ cấp cao (C, Java) sang hợp ngữ (assembly).</li>
+<li><b>Assembler</b>: dịch hợp ngữ sang mã máy nhị phân.</li>
+</ul>
+<div class="flow"><span>Chương trình C</span><i>compiler</i><span>Assembly</span><i>assembler</i><span>Mã máy nhị phân</span></div>
+<p><b>Lệnh (instruction)</b>: yêu cầu mà phần cứng hiểu và thực hiện được. Bảng chữ cái của máy tính chỉ có 0 và 1 (bit = binary digit).</p>
+
+<h3>Bên trong máy tính</h3>
+<p>Mô hình von Neumann (1945). Năm thành phần cổ điển: <b>Input, Output, Memory, Datapath, Control</b> (Datapath + Control = Processor/CPU).</p>
+<dl class="defs">
+<dt>CPU</dt><dd>Gồm <b>Datapath</b> (thực hiện phép tính, "cơ bắp") và <b>Control</b> (điều khiển datapath, bộ nhớ, I/O theo lệnh, "bộ não").</dd>
+<dt>Mainboard</dt><dd>Bảng mạch chứa các IC (chip): bộ xử lý, cache, bộ nhớ, kết nối I/O.</dd>
+<dt>Bộ nhớ (Memory)</dt><dd>Chứa chương trình đang chạy và dữ liệu. RAM: thời gian truy cập mọi vị trí như nhau (khác băng từ truy cập tuần tự). DIMM: chip DRAM trên cả hai mặt; SIMM: một mặt.</dd>
+<dt>Cache</dt><dd>Bộ nhớ nhỏ, nhanh trong CPU, làm đệm cho DRAM. Dùng <b>SRAM</b>: nhanh hơn, kém dày đặc hơn, đắt hơn DRAM.</dd>
+<dt>Khả biến / bất biến</dt><dd><b>Volatile</b> (DRAM): mất dữ liệu khi mất điện → bộ nhớ chính. <b>Nonvolatile</b> (đĩa từ, flash, đĩa quang): giữ dữ liệu khi mất điện → bộ nhớ thứ cấp.</dd>
+<dt>Flash</dt><dd>Bán dẫn nonvolatile; rẻ hơn &amp; chậm hơn DRAM, nhưng đắt hơn &amp; nhanh hơn đĩa từ.</dd>
+<dt>Gigabyte</dt><dd>2<sup>30</sup> = 1.073.741.824 byte (truyền thống) hoặc 10<sup>9</sup> byte (ổ đĩa, truyền thông).</dd>
+</dl>
+
+<h3>Mạng và công nghệ chế tạo</h3>
+<ul>
+<li><b>LAN / Ethernet</b>: dài ~1 km, tới 10 Gbit/s. <b>WAN</b>: hàng trăm km, cáp quang, xương sống Internet. <b>Wireless</b> IEEE 802.11: 1–100 Mbit/s.</li>
+<li>Lợi ích mạng: giao tiếp, chia sẻ tài nguyên, truy cập từ xa.</li>
+<li><b>Transistor</b>: công tắc đóng/mở điều khiển bằng điện. <b>VLSI</b>: mạch chứa hàng trăm ngàn đến hàng triệu transistor.</li>
+<li><b>Định luật Moore</b>: số transistor trên IC tăng gấp đôi mỗi 18–24 tháng (Gordon Moore, đồng sáng lập Intel).</li>
+</ul>
+
+<h3>Ảnh màu và frame buffer</h3>
+<div class="formula">Số pixel = rộng × cao &nbsp;&nbsp;|&nbsp;&nbsp; Bit/pixel = 3 × (bit mỗi màu R, G, B) &nbsp;&nbsp;|&nbsp;&nbsp; Frame buffer ≥ rộng × cao × bit/pixel</div>
+<div class="tip"><b>Hay ra thi:</b> tính dung lượng frame buffer. 640×480, 8 bit/màu → 24 bit/pixel → 640×480×24 = 7.372.800 bit = 921.600 byte.</div>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Bài 1.</b> Màn hình Full HD 1920×1080 có bao nhiêu pixel? Nếu mỗi màu dùng 8 bit thì frame buffer tối thiểu bao nhiêu byte?</p>
+<details><summary>Xem lời giải</summary>
+<p>Số pixel = 1920 × 1080 = <b>2.073.600</b> pixel (≈ 2,07 Megapixel).</p>
+<p>Mỗi pixel = 3 × 8 = 24 bit = 3 byte. Frame buffer = 2.073.600 × 3 = <b>6.220.800 byte</b> (≈ 5,93 MiB).</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 2.</b> Màn hình 1280×1024, mỗi màu R, G, B dùng 8 bit. Mạng 100 Mbit/s. Mất bao lâu để truyền một khung hình?</p>
+<details><summary>Xem lời giải</summary>
+<p>Frame = 1280 × 1024 × 24 = 31.457.280 bit.</p>
+<p>Thời gian = 31.457.280 / (100 × 10<sup>6</sup>) ≈ <b>0,315 s</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 3.</b> Phân biệt Datapath và Control. Cho biết 5 thành phần cổ điển của máy tính.</p>
+<details><summary>Xem lời giải</summary>
+<p>Datapath thực hiện các phép tính số học/logic; Control ra lệnh cho datapath, bộ nhớ, I/O phải làm gì theo từng lệnh của chương trình. Năm thành phần: Input, Output, Memory, Datapath, Control.</p>
+</details></div>
+</div>
+</section>
+
+<!-- ============ HIỆU SUẤT ============ -->
+<section class="view chap" id="c1b" data-exam="gk">
+<header class="chap-head">
+  <p class="chap-no">Chương 1 (tiếp)</p>
+  <h2>Hiệu suất máy tính</h2>
+  <p class="chap-src">Nguồn: 02_chuong1_HSMT.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<h3>Khái niệm</h3>
+<dl class="defs">
+<dt>Response time / Execution time</dt><dd>Tổng thời gian hoàn thành một tác vụ (gồm truy cập đĩa, bộ nhớ, I/O, overhead của HĐH…).</dd>
+<dt>Throughput / Bandwidth</dt><dd>Số tác vụ hoàn thành trong một đơn vị thời gian.</dd>
+<dt>Clock cycle (chu kỳ xung)</dt><dd>Thời gian một chu kỳ đồng hồ (s, ms, µs, ns, ps).</dd>
+<dt>Clock rate (tần số xung)</dt><dd>Số chu kỳ trong 1 giây (Hz, MHz, GHz). <b>Clock cycle = 1 / Clock rate</b>.</dd>
+<dt>CPI</dt><dd>Clock cycles Per Instruction: số chu kỳ trung bình để thực thi một lệnh.</dd>
+</dl>
+
+<h3>Công thức phải thuộc</h3>
+<div class="formula big">
+Performance P = 1 / CPU time<br>
+CPU time = Clock cycles × Clock cycle = Clock cycles / Clock rate<br>
+Clock cycles = Instructions × CPI<br>
+<b>CPU time = IC × CPI / Clock rate</b> = IC × CPI × Clock cycle<br>
+CPI<sub>tb</sub> = Σ (CPI<sub>i</sub> × IC<sub>i</sub>) / IC<sub>tổng</sub> = Σ (CPI<sub>i</sub> × tỉ lệ<sub>i</sub>)<br>
+MIPS = IC / (CPU time × 10<sup>6</sup>) = Clock rate / (CPI × 10<sup>6</sup>)
+</div>
+<p>So sánh: "X nhanh hơn Y <b>n</b> lần" ⇔ n = P<sub>X</sub> / P<sub>Y</sub> = Time<sub>Y</sub> / Time<sub>X</sub>.</p>
+<div class="units"><span>1 ms = 10<sup>−3</sup> s</span><span>1 µs = 10<sup>−6</sup> s</span><span>1 ns = 10<sup>−9</sup> s</span><span>1 ps = 10<sup>−12</sup> s</span><span>1 GHz = 10<sup>9</sup> Hz ⇒ cycle = 1 ns</span></div>
+
+<h3>Yếu tố ảnh hưởng</h3>
+<table>
+<tr><th>Thành phần</th><th>Ảnh hưởng tới</th></tr>
+<tr><td>Thuật toán</td><td>IC, có thể CPI</td></tr>
+<tr><td>Ngôn ngữ lập trình</td><td>IC, CPI</td></tr>
+<tr><td>Trình biên dịch</td><td>IC, CPI</td></tr>
+<tr><td>Kiến trúc tập lệnh (ISA)</td><td>IC, CPI, Clock rate</td></tr>
+<tr><td>Hiện thực phần cứng (tổ chức)</td><td>CPI, Clock rate</td></tr>
+</table>
+<p>Quy ước bài giảng: tập lệnh MIPS‑32, mọi lệnh cùng kích thước; chia lệnh thành nhóm ALU, MEM, JUMP với CPI riêng.</p>
+<div class="tip"><b>Hay ra thi:</b> cho tỉ lệ các nhóm lệnh + CPI từng nhóm + tần số → tính CPI trung bình, CPU time, hiệu suất; rồi "cải tiến" thay đổi số lệnh → so sánh tăng/giảm. Nhớ: <b>CPI thấp hơn chưa chắc nhanh hơn</b>, phải so CPU time.</div>
+<div class="warn"><b>Bẫy:</b> khi tỉ lệ lệnh thay đổi, tổng số lệnh cũng thay đổi. Tính lại IC mới, đừng giữ 100.000.</div>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Ví dụ 1.</b> Chương trình chạy 10 s trên máy A (2 GHz). Muốn máy B chạy 6 s, nhưng B cần số chu kỳ gấp 1,2 lần A. Tần số của B?</p>
+<details><summary>Xem lời giải</summary>
+<p>Cycles<sub>A</sub> = 10 × 2×10<sup>9</sup> = 20×10<sup>9</sup>.</p>
+<p>Cycles<sub>B</sub> = 1,2 × 20×10<sup>9</sup> = 24×10<sup>9</sup>.</p>
+<p>Clock rate<sub>B</sub> = 24×10<sup>9</sup> / 6 = <b>4 GHz</b> (gấp đôi A).</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Ví dụ 2.</b> Cùng ISA. Máy A: cycle 250 ps, CPI 2,0. Máy B: cycle 500 ps, CPI 1,2. Máy nào nhanh hơn, bao nhiêu lần?</p>
+<details><summary>Xem lời giải</summary>
+<p>Cùng ISA ⇒ cùng IC = I.</p>
+<p>Time<sub>A</sub> = I × 2,0 × 250 = 500·I ps. Time<sub>B</sub> = I × 1,2 × 500 = 600·I ps.</p>
+<p>P<sub>A</sub>/P<sub>B</sub> = 600/500 = <b>1,2</b> ⇒ A nhanh hơn B 1,2 lần (dù CPI của A lớn hơn).</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Ví dụ 3.</b> CPI các nhóm A, B, C lần lượt 1, 2, 3. Đoạn code 1 có số lệnh (2, 1, 2); đoạn code 2 có (4, 1, 1). Đoạn nào nhiều lệnh hơn? Đoạn nào nhanh hơn? CPI mỗi đoạn?</p>
+<details><summary>Xem lời giải</summary>
+<p>IC<sub>1</sub> = 5, IC<sub>2</sub> = 6 ⇒ đoạn 2 nhiều lệnh hơn.</p>
+<p>Cycles<sub>1</sub> = 2·1 + 1·2 + 2·3 = 10. Cycles<sub>2</sub> = 4·1 + 1·2 + 1·3 = 9 ⇒ <b>đoạn 2 nhanh hơn</b>.</p>
+<p>CPI<sub>1</sub> = 10/5 = 2,0. CPI<sub>2</sub> = 9/6 = 1,5.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài tập 1.</b> CPI trung bình 3,5; 1000 lệnh; CPU 4 GHz. Tính thời gian thực thi và hiệu suất.</p>
+<details><summary>Xem lời giải</summary>
+<p>Cycles = 1000 × 3,5 = 3500. Cycle = 1/(4×10<sup>9</sup>) = 0,25 ns.</p>
+<p>CPU time = 3500 × 0,25 ns = <b>875 ns</b>.</p>
+<p>P = 1/875×10<sup>−9</sup> ≈ <b>1,143×10<sup>6</sup></b> (1/giây).</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài tập 2.</b> CPU 4 GHz, 100.000 lệnh: ALU 40% (CPI 1), MEM 40% (CPI 3), JUMP 20% (CPI 2). (a) CPI trung bình? (b) Hiệu suất? (c) Cải tiến: ALU tăng 30%, MEM giảm 20%, JUMP tăng 10%. Hiệu suất tăng hay giảm?</p>
+<details><summary>Xem lời giải</summary>
+<p>(a) CPI = 0,4·1 + 0,4·3 + 0,2·2 = <b>2,0</b>. Cycles = 200.000.</p>
+<p>(b) CPU time = 200.000 / 4×10<sup>9</sup> = 5×10<sup>−5</sup> s ⇒ P = 1/CPU time = <b>2×10<sup>4</sup></b>.</p>
+<p>(c) N<sub>ALU</sub> = 40.000 × 1,3 = 52.000; N<sub>MEM</sub> = 40.000 × 0,8 = 32.000; N<sub>JUMP</sub> = 20.000 × 1,1 = 22.000 ⇒ IC = 106.000.</p>
+<p>Cycles = 52.000 + 96.000 + 44.000 = 192.000 ⇒ CPI = 192.000/106.000 ≈ 1,811.</p>
+<p>CPU time = 192.000 / 4×10<sup>9</sup> = 4,8×10<sup>−5</sup> s &lt; 5×10<sup>−5</sup> s ⇒ <b>hiệu suất tăng</b>, nhanh hơn 5/4,8 ≈ 1,042 lần.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài tự luyện.</b> Máy 2 GHz chạy chương trình 2×10<sup>9</sup> lệnh, CPI = 1,5. Tính CPU time và MIPS.</p>
+<details><summary>Xem lời giải</summary>
+<p>CPU time = 2×10<sup>9</sup> × 1,5 / 2×10<sup>9</sup> = <b>1,5 s</b>.</p>
+<p>MIPS = 2×10<sup>9</sup> / (1,5 × 10<sup>6</sup>) ≈ <b>1333</b>.</p>
+</details></div>
+</div>
+</section>
+
+<!-- ============ BIỂU DIỄN SỐ ============ -->
+<section class="view chap" id="cnum" data-exam="gk">
+<header class="chap-head">
+  <p class="chap-no">Tham khảo</p>
+  <h2>Biểu diễn số và phép toán nhị phân</h2>
+  <p class="chap-src">Nguồn: ThamKhao_BieuDienSo.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<h3>Đổi cơ số</h3>
+<ul>
+<li><b>10 → 2, 8, 16</b>: chia liên tiếp cho cơ số, lấy số dư <b>từ dưới lên</b>. 172 = 10101100₂ = 254₈ = AC₁₆.</li>
+<li><b>2, 8, 16 → 10</b>: tổng chữ số × cơ số<sup>vị trí</sup>. AC₁₆ = 10·16 + 12 = 172.</li>
+<li><b>2 → 8</b>: nhóm 3 bit từ phải sang trái (thêm 0 bên trái). 010 101 100 = 254₈.</li>
+<li><b>2 → 16</b>: nhóm 4 bit. 1010 1100 = AC₁₆.</li>
+<li><b>Phần lẻ → nhị phân</b>: nhân phần lẻ cho 2, lấy phần nguyên làm bit kế tiếp, lặp đến khi phần lẻ = 0. 0,625 = 0,101₂; 0,4375 = 0,0111₂; 0,1 không biểu diễn chính xác được.</li>
+</ul>
+<table class="hex">
+<tr><th>Dec</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+<tr><th>Hex</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td></tr>
+<tr><th>Bin</th><td>0000</td><td>0001</td><td>0010</td><td>0011</td><td>0100</td><td>0101</td><td>0110</td><td>0111</td><td>1000</td><td>1001</td><td>1010</td><td>1011</td><td>1100</td><td>1101</td><td>1110</td><td>1111</td></tr>
+</table>
+
+<h3>Số âm: 3 cách biểu diễn (ví dụ −6, 4 bit)</h3>
+<table>
+<tr><th>Cách</th><th>Quy tắc</th><th>−6</th><th>Ghi chú</th></tr>
+<tr><td>Dấu – độ lớn</td><td>MSB = dấu</td><td class="m">1110</td><td>Có +0 và −0, ít dùng</td></tr>
+<tr><td>Bù 1</td><td>Đảo tất cả bit</td><td class="m">1001</td><td>Có +0 và −0, ít dùng</td></tr>
+<tr><td><b>Bù 2</b></td><td>Đảo bit rồi +1</td><td class="m">1010</td><td>Chuẩn, máy tính hiện đại dùng</td></tr>
+</table>
+<div class="formula">Giá trị bù 2 (n bit) = −b<sub>n−1</sub>·2<sup>n−1</sup> + Σ b<sub>i</sub>·2<sup>i</sup> &nbsp;&nbsp;|&nbsp;&nbsp; Miền giá trị: −2<sup>n−1</sup> … 2<sup>n−1</sup>−1 (8 bit: −128…127; 32 bit: −2.147.483.648…2.147.483.647)</div>
+<p>Ví dụ: 10110011 = −128 + 32 + 16 + 2 + 1 = <b>−77</b>. 73 = 01001001 ⇒ −73 = 10110111.</p>
+<p>Ưu điểm bù 2: chỉ một số 0; cộng/trừ số âm giống số dương (đơn giản ALU); dễ mở rộng bit. Có một số âm −2<sup>n−1</sup> không có số dương tương ứng.</p>
+
+<h3>Mở rộng dấu (sign‑extend) và mở rộng zero</h3>
+<p>Từ 16 bit lên 32 bit: <b>sign‑extend</b> chép bit dấu sang 16 bit cao (2 → 0x00000002, −2 = 0xFFFE → 0xFFFFFFFE). <b>Zero‑extend</b> điền 0 (dùng cho andi, ori, số không dấu).</p>
+
+<h3>Cộng, trừ, tràn số</h3>
+<ul>
+<li>Cộng: 0+0=0, 0+1=1, 1+1=0 nhớ 1. Trừ: 0−1=1 mượn 1. Trong bù 2, A − B = A + (bù 2 của B).</li>
+<li>Bit nhớ ra ngoài (bit thứ n+1) bị bỏ, <b>không phải</b> dấu hiệu tràn với số có dấu.</li>
+</ul>
+<table>
+<tr><th>Phép toán</th><th>A</th><th>B</th><th>Kết quả báo tràn</th></tr>
+<tr><td>A + B</td><td>≥ 0</td><td>≥ 0</td><td>&lt; 0</td></tr>
+<tr><td>A + B</td><td>&lt; 0</td><td>&lt; 0</td><td>≥ 0</td></tr>
+<tr><td>A − B</td><td>≥ 0</td><td>&lt; 0</td><td>&lt; 0</td></tr>
+<tr><td>A − B</td><td>&lt; 0</td><td>≥ 0</td><td>≥ 0</td></tr>
+</table>
+<div class="tip"><b>Mẹo nhớ:</b> cộng hai số <b>trái dấu</b> hoặc trừ hai số <b>cùng dấu</b> thì không bao giờ tràn. Tràn khi hai số cùng dấu cộng ra kết quả khác dấu.</div>
+<p>MIPS: khi tràn, địa chỉ lệnh gây tràn lưu vào <b>EPC</b> (Exception PC) rồi nhảy tới trình xử lý ngoại lệ. <b>add, addi, sub</b> có xét tràn (gây exception); <b>addu, addiu, subu</b> không xét tràn.</p>
+
+<h3>Dịch bit</h3>
+<ul>
+<li>Dịch trái n bit (sll) = nhân 2<sup>n</sup>, điền 0 bên phải.</li>
+<li>Dịch phải logic (srl): điền 0 bên trái, dùng cho số không dấu.</li>
+<li>Dịch phải số học (sra): điền bit dấu, dùng cho số có dấu. −4 = 11111100 &gt;&gt; 1 = 11111110 = −2.</li>
+</ul>
+
+<h3>Nhân, chia tay (nhị phân)</h3>
+<p>Nhân: mỗi bit 1 của số nhân thì chép số bị nhân dịch vị trí tương ứng, rồi cộng. 11010 × 1110 = 101101100 (26 × 14 = 364). Chia: Dividend = Quotient × Divisor + Remainder. Chia có dấu: chia trị tuyệt đối, thương âm nếu hai số trái dấu, <b>dư cùng dấu với số bị chia</b> (−7 : 3 ⇒ thương −2, dư −1).</p>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Bài 1.</b> Đổi 186, 202, 142, 72 sang hệ 2, 8, 16.</p>
+<details><summary>Xem lời giải</summary>
+<table>
+<tr><th>Dec</th><th>Bin</th><th>Oct</th><th>Hex</th></tr>
+<tr><td>186</td><td class="m">1011 1010</td><td>272</td><td>BA</td></tr>
+<tr><td>202</td><td class="m">1100 1010</td><td>312</td><td>CA</td></tr>
+<tr><td>142</td><td class="m">1000 1110</td><td>216</td><td>8E</td></tr>
+<tr><td>72</td><td class="m">0100 1000</td><td>110</td><td>48</td></tr>
+</table>
+<p>Kiểm tra: BA = 11·16 + 10 = 186 ✓. 272₈ = 2·64 + 7·8 + 2 = 186 ✓.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 2.</b> Tính 11010 − 1110 (nhị phân).</p>
+<details><summary>Xem lời giải</summary>
+<p>26 − 14 = 12 = <b>01100₂</b>. Cách bù 2 (5 bit): 01110 → đảo 10001 → +1 = 10010. 11010 + 10010 = 1 01100 → bỏ bit nhớ ⇒ 01100.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 3.</b> Biểu diễn x, y bằng 8 bit bù 2 và tính x + y: (4, −6), (12, −9), (19, −12), (60, 88).</p>
+<details><summary>Xem lời giải</summary>
+<pre>  4 = 0000 0100        12 = 0000 1100
+ -6 = 1111 1010        -9 = 1111 0111
+  Σ = 1111 1110 = -2    Σ = 1 0000 0011 → 0000 0011 = 3 (bỏ bit 9)
+
+ 19 = 0001 0011        60 = 0011 1100
+-12 = 1111 0100        88 = 0101 1000
+  Σ = 1 0000 0111 → 7   Σ = 1001 0100 = -108  ✗ TRÀN</pre>
+<p>60 + 88 = 148 &gt; 127: hai số dương cộng ra số âm ⇒ <b>tràn số</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 4.</b> Đổi số có dấu 8 bit 00110011 và 10110011 sang thập phân.</p>
+<details><summary>Xem lời giải</summary>
+<p>00110011 = 32 + 16 + 2 + 1 = <b>51</b>.</p>
+<p>10110011 = −128 + 32 + 16 + 2 + 1 = <b>−77</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 5.</b> Đổi 0,7375 sang nhị phân.</p>
+<details><summary>Xem lời giải</summary>
+<p>0,7375·2 = 1,475 (1) → 0,95 (0) → 1,9 (1) → 1,8 (1) → 1,6 (1) → 1,2 (1) → 0,4 (0) → 0,8 (0) → 1,6 (1) → 1,2 (1) → lặp…</p>
+<p>0,7375 ≈ 0,1011110011…₂ — <b>không biểu diễn chính xác</b>, chỉ xấp xỉ.</p>
+</details></div>
+</div>
+</section>
+<!-- ============ CHƯƠNG 2: ISA ============ -->
+<section class="view chap" id="c2" data-exam="gk">
+<header class="chap-head">
+  <p class="chap-no">Chương 2</p>
+  <h2>Kiến trúc bộ lệnh MIPS</h2>
+  <p class="chap-src">Nguồn: ch3.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<h3>Tổng quan</h3>
+<p>Lệnh (instruction) là "từ" của ngôn ngữ máy; tập hợp tất cả lệnh là <b>bộ lệnh (instruction set)</b>. Môn học dùng <b>MIPS‑32</b> (thiết kế từ 1980, RISC); hai bộ lệnh phổ biến khác: ARM (rất giống MIPS) và Intel x86. Một <b>word</b> trong MIPS = 32 bit = 4 byte. MIPS có 32 thanh ghi 32 bit.</p>
+
+<h3>Ba loại toán hạng</h3>
+<dl class="defs">
+<dt>Thanh ghi (register)</dt><dd>Phép tính số học chỉ làm trên thanh ghi. Nhanh nhất, số lượng giới hạn (32).</dd>
+<dt>Bộ nhớ (memory)</dt><dd>Phải dùng lệnh chuyển dữ liệu <code>lw</code> / <code>sw</code>. Địa chỉ = <b>offset + thanh ghi nền</b>. MIPS đánh địa chỉ theo <b>byte</b> ⇒ phần tử A[i] (word) có offset <b>4·i</b>.</dd>
+<dt>Hằng / tức thời (immediate)</dt><dd><code>addi $s3, $s3, 4</code>. Hằng có thể âm nên không cần lệnh "subi".</dd>
+</dl>
+<p><b>Alignment restriction</b>: word phải bắt đầu ở địa chỉ chia hết cho 4. <b>MIPS là Big Endian</b> (byte có trọng số lớn nằm ở địa chỉ thấp).</p>
+
+<h3>Bảng thanh ghi</h3>
+<table class="regs">
+<tr><th>Tên</th><th>Số</th><th>Công dụng</th><th>Bảo toàn khi gọi hàm?</th></tr>
+<tr><td>$zero</td><td>0</td><td>Hằng 0</td><td>—</td></tr>
+<tr><td>$at</td><td>1</td><td>Dành cho assembler</td><td>—</td></tr>
+<tr><td>$v0–$v1</td><td>2–3</td><td>Giá trị trả về</td><td>Không</td></tr>
+<tr><td>$a0–$a3</td><td>4–7</td><td>Tham số (4 tham số đầu)</td><td>Không</td></tr>
+<tr><td>$t0–$t7</td><td>8–15</td><td>Tạm</td><td>Không</td></tr>
+<tr><td>$s0–$s7</td><td>16–23</td><td>Lưu giá trị bền vững</td><td><b>Có</b> (callee phải lưu)</td></tr>
+<tr><td>$t8–$t9</td><td>24–25</td><td>Tạm</td><td>Không</td></tr>
+<tr><td>$k0–$k1</td><td>26–27</td><td>Dành cho HĐH</td><td>—</td></tr>
+<tr><td>$gp</td><td>28</td><td>Global pointer</td><td>Có</td></tr>
+<tr><td>$sp</td><td>29</td><td>Stack pointer</td><td>Có</td></tr>
+<tr><td>$fp</td><td>30</td><td>Frame pointer</td><td>Có</td></tr>
+<tr><td>$ra</td><td>31</td><td>Địa chỉ trả về</td><td>Có</td></tr>
+</table>
+<div class="tip"><b>Mẹo nhớ số:</b> $t0 = 8, $s0 = 16. Vậy $t<i>n</i> = 8+n (n ≤ 7), $s<i>n</i> = 16+n.</div>
+
+<h3>Ba định dạng lệnh (32 bit)</h3>
+<div class="fmt"><p class="fmt-name">R‑format</p>
+<div class="bits"><span class="f op" style="--w:6">op<small>6</small></span><span class="f rs" style="--w:5">rs<small>5</small></span><span class="f rt" style="--w:5">rt<small>5</small></span><span class="f rd" style="--w:5">rd<small>5</small></span><span class="f sh" style="--w:5">shamt<small>5</small></span><span class="f fn" style="--w:6">funct<small>6</small></span></div>
+<p class="fmt-ex">add, sub, and, or, slt, sll, srl, jr… op = 0, phân biệt bằng funct.</p></div>
+<div class="fmt"><p class="fmt-name">I‑format</p>
+<div class="bits"><span class="f op" style="--w:6">op<small>6</small></span><span class="f rs" style="--w:5">rs<small>5</small></span><span class="f rt" style="--w:5">rt<small>5</small></span><span class="f im" style="--w:16">constant / address<small>16</small></span></div>
+<p class="fmt-ex">addi, andi, ori, slti, lw, sw, beq, bne, lui. rt là đích (addi, lw) hoặc nguồn (sw, beq).</p></div>
+<div class="fmt"><p class="fmt-name">J‑format</p>
+<div class="bits"><span class="f op" style="--w:6">op<small>6</small></span><span class="f ad" style="--w:26">address<small>26</small></span></div>
+<p class="fmt-ex">j, jal.</p></div>
+<ul>
+<li><b>rs</b>: toán hạng nguồn 1; <b>rt</b>: nguồn 2 (R) / đích (I); <b>rd</b>: đích (R); <b>shamt</b>: số bit dịch (chỉ dùng cho sll, srl, sra; còn lại = 0).</li>
+<li>Thứ tự trong assembly: <code>add rd, rs, rt</code> nhưng trong mã máy là <code>op rs rt rd shamt funct</code>. <code>sll rd, rt, shamt</code> có rs = 0.</li>
+</ul>
+
+<h3>Mã op / funct hay dùng</h3>
+<table class="ops">
+<tr><th>Lệnh</th><th>Fmt</th><th>op (hex)</th><th>funct (hex)</th><th>Ý nghĩa</th></tr>
+<tr><td>add</td><td>R</td><td>0</td><td>20 (32)</td><td>rd = rs + rt (xét tràn)</td></tr>
+<tr><td>addu</td><td>R</td><td>0</td><td>21</td><td>không xét tràn</td></tr>
+<tr><td>sub</td><td>R</td><td>0</td><td>22 (34)</td><td>rd = rs − rt</td></tr>
+<tr><td>and / or</td><td>R</td><td>0</td><td>24 / 25</td><td>AND / OR từng bit</td></tr>
+<tr><td>nor</td><td>R</td><td>0</td><td>27</td><td>NOT(rs | rt); NOT = nor với $zero</td></tr>
+<tr><td>slt</td><td>R</td><td>0</td><td>2A (42)</td><td>rd = (rs &lt; rt) ? 1 : 0</td></tr>
+<tr><td>sll / srl</td><td>R</td><td>0</td><td>00 / 02</td><td>rd = rt &lt;&lt; / &gt;&gt; shamt</td></tr>
+<tr><td>jr</td><td>R</td><td>0</td><td>08</td><td>PC = rs</td></tr>
+<tr><td>mult / multu</td><td>R</td><td>0</td><td>18 / 19</td><td>Hi:Lo = rs × rt</td></tr>
+<tr><td>div / divu</td><td>R</td><td>0</td><td>1A / 1B</td><td>Lo = thương, Hi = dư</td></tr>
+<tr><td>mfhi / mflo</td><td>R</td><td>0</td><td>10 / 12</td><td>rd = Hi / Lo</td></tr>
+<tr><td>addi / addiu</td><td>I</td><td>8 / 9</td><td>—</td><td>rt = rs + SignExt(imm)</td></tr>
+<tr><td>slti</td><td>I</td><td>A</td><td>—</td><td>rt = (rs &lt; imm) ? 1 : 0</td></tr>
+<tr><td>andi / ori</td><td>I</td><td>C / D</td><td>—</td><td>rt = rs &amp;/| ZeroExt(imm)</td></tr>
+<tr><td>lui</td><td>I</td><td>F</td><td>—</td><td>rt = imm &lt;&lt; 16</td></tr>
+<tr><td>lw</td><td>I</td><td>23 (35)</td><td>—</td><td>rt = M[rs + imm]</td></tr>
+<tr><td>sw</td><td>I</td><td>2B (43)</td><td>—</td><td>M[rs + imm] = rt</td></tr>
+<tr><td>beq / bne</td><td>I</td><td>4 / 5</td><td>—</td><td>if (rs ==/!= rt) PC = PC+4+imm×4</td></tr>
+<tr><td>j</td><td>J</td><td>2</td><td>—</td><td>PC = {PC+4[31:28], addr, 00}</td></tr>
+<tr><td>jal</td><td>J</td><td>3</td><td>—</td><td>$ra = PC+4; PC = addr</td></tr>
+</table>
+
+<h3>Rẽ nhánh và nhảy</h3>
+<ul>
+<li><b>beq / bne</b> dùng định địa chỉ tương đối PC: <b>Target = PC + 4 + offset × 4</b>. Offset là số lệnh tính từ lệnh <b>ngay sau</b> lệnh nhánh.</li>
+<li><b>j / jal</b> dùng định địa chỉ giả trực tiếp: lấy 4 bit cao của PC+4, ghép 26 bit address, thêm 00.</li>
+<li><code>blt, bgt, ble, bge</code> là <b>lệnh giả</b> (pseudo), assembler dịch thành <code>slt</code> + <code>beq/bne</code> (dùng $at).</li>
+<li><code>slt</code> + <code>beq $t0,$zero</code> ⇒ nhảy khi ≥. <code>slt</code> + <code>bne $t0,$zero</code> ⇒ nhảy khi &lt;.</li>
+</ul>
+
+<h3>Thủ tục (procedure)</h3>
+<p>Sáu bước: (1) đặt tham số nơi thủ tục truy xuất được; (2) chuyển điều khiển; (3) cấp tài nguyên lưu trữ; (4) thực hiện; (5) đặt kết quả nơi caller lấy được; (6) trả điều khiển về.</p>
+<ul>
+<li><code>jal ten</code>: $ra = PC + 4, PC = ten. <code>jr $ra</code>: PC = $ra.</li>
+<li>Tham số: $a0–$a3; trả về: $v0–$v1; nhiều hơn thì dùng stack.</li>
+<li><b>Stack</b> lớn dần từ địa chỉ cao xuống thấp. PUSH: <code>addi $sp,$sp,-4</code> rồi <code>sw</code>. POP: <code>lw</code> rồi <code>addi $sp,$sp,4</code>. Lưu n thanh ghi cần 4n byte.</li>
+<li>Callee dùng thanh ghi <b>$s</b> nào thì phải lưu lên stack và khôi phục; <b>$t</b> không cần lưu.</li>
+<li><b>Leaf procedure</b>: không gọi thủ tục khác. <b>Nested</b>: gọi lồng ⇒ phải lưu cả $ra.</li>
+<li>Bố trí bộ nhớ: Stack (trên cùng) ↓, Heap ↑ (cấp phát động), Static data, Text (mã chương trình), Reserved.</li>
+</ul>
+<p>Bốn bước chạy chương trình C: <b>Compiler → Assembler → Linker → Loader</b>.</p>
+<div class="tip"><b>Hay ra thi:</b> (1) dịch C → MIPS (nhớ offset ×4); (2) MIPS → mã máy nhị phân/hex; (3) mã máy hex → MIPS (đọc op trước, op = 0 thì xem funct); (4) viết if/else, while, thủ tục có stack.</div>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Bài 1.</b> Dịch <code>f = (g + h) − (i + j);</code> với f, g, h, i, j ở $s0–$s4.</p>
+<details><summary>Xem lời giải</summary>
+<pre>add $t0, $s1, $s2   # t0 = g + h
+add $t1, $s3, $s4   # t1 = i + j
+sub $s0, $t0, $t1   # f = t0 - t1</pre>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 2.</b> <code>A[12] = h + A[8];</code> với h ở $s2, địa chỉ nền A ở $s3.</p>
+<details><summary>Xem lời giải</summary>
+<pre>lw  $t0, 32($s3)    # 8 × 4 = 32
+add $t0, $s2, $t0
+sw  $t0, 48($s3)    # 12 × 4 = 48</pre>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 3.</b> Mã máy của <code>add $t0, $s1, $s2</code>.</p>
+<details><summary>Xem lời giải</summary>
+<p>op = 0, rs = $s1 = 17, rt = $s2 = 18, rd = $t0 = 8, shamt = 0, funct = 32.</p>
+<pre>000000 10001 10010 01000 00000 100000
+= 0000 0010 0011 0010 0100 0000 0010 0000 = 0x02324020</pre>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 4.</b> <code>A[300] = h + A[300];</code> ($t1 = nền A, $s2 = h). Viết assembly và mã máy.</p>
+<details><summary>Xem lời giải</summary>
+<pre>lw  $t0, 1200($t1)   # 300 × 4 = 1200
+add $t0, $s2, $t0
+sw  $t0, 1200($t1)</pre>
+<table>
+<tr><th>Lệnh</th><th>op</th><th>rs</th><th>rt</th><th>rd / imm</th><th>shamt</th><th>funct</th><th>Hex</th></tr>
+<tr><td>lw</td><td>35</td><td>9</td><td>8</td><td colspan="3">1200</td><td class="m">8D2804B0</td></tr>
+<tr><td>add</td><td>0</td><td>18</td><td>8</td><td>8</td><td>0</td><td>32</td><td class="m">02484020</td></tr>
+<tr><td>sw</td><td>43</td><td>9</td><td>8</td><td colspan="3">1200</td><td class="m">AD2804B0</td></tr>
+</table>
+<pre>lw : 100011 01001 01000 0000 0100 1011 0000
+add: 000000 10010 01000 01000 00000 100000
+sw : 101011 01001 01000 0000 0100 1011 0000</pre>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 5.</b> Giải mã 0x8E510014.</p>
+<details><summary>Xem lời giải</summary>
+<pre>1000 1110 0101 0001 0000 0000 0001 0100
+100011 | 10010 | 10001 | 0000000000010100
+  op=35    rs=18   rt=17      imm=20</pre>
+<p>op = 35 ⇒ lw. rs = 18 = $s2, rt = 17 = $s1 ⇒ <b>lw $s1, 20($s2)</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 6.</b> <code>if (i == j) f = g + h; else f = g − h;</code> (f…j ở $s0–$s4).</p>
+<details><summary>Xem lời giải</summary>
+<pre>      bne $s3, $s4, Else   # i != j thì sang Else
+      add $s0, $s1, $s2    # f = g + h
+      j   Exit
+Else: sub $s0, $s1, $s2    # f = g - h
+Exit:</pre>
+<p>Mẹo: kiểm tra điều kiện <b>ngược</b> để nhảy qua khối then.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 7.</b> <code>while (save[i] == k) i += 1;</code> (i ở $s3, k ở $s5, nền save ở $s6).</p>
+<details><summary>Xem lời giải</summary>
+<pre>Loop: sll  $t1, $s3, 2      # t1 = 4*i
+      add  $t1, $t1, $s6    # địa chỉ save[i]
+      lw   $t0, 0($t1)      # t0 = save[i]
+      bne  $t0, $s5, Exit   # save[i] != k thì thoát
+      addi $s3, $s3, 1      # i++
+      j    Loop
+Exit:</pre>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 8.</b> <code>if (a &lt; b) c = 1; else c = 0;</code> rồi <code>if (a &gt;= b) goto L;</code> (a=$s0, b=$s1, c=$s2).</p>
+<details><summary>Xem lời giải</summary>
+<pre>slt $s2, $s0, $s1       # c = (a < b)
+
+slt $t0, $s0, $s1       # t0 = 1 nếu a < b
+beq $t0, $zero, L       # t0 = 0 ⇔ a >= b ⇒ goto L</pre>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 9.</b> Thủ tục <code>proc_example(a,b,c,d) = (a+b) − (c+d)</code>, thân dùng $t1, $t2, $s0. Chương trình chính có a–d ở $s0–$s3, kết quả đưa vào $s6.</p>
+<details><summary>Xem lời giải</summary>
+<pre># --- main ---
+add  $a0, $s0, $zero      # truyền tham số
+add  $a1, $s1, $zero
+add  $a2, $s2, $zero
+add  $a3, $s3, $zero
+jal  proc_example         # $ra = PC+4
+add  $s6, $v0, $zero      # lấy kết quả
+j    EXIT
+
+proc_example:
+addi $sp, $sp, -4         # phần đầu: PUSH $s0
+sw   $s0, 0($sp)
+add  $t1, $a0, $a1        # phần thân
+add  $t2, $a2, $a3
+sub  $s0, $t1, $t2
+add  $v0, $s0, $zero      # trả về qua $v0
+lw   $s0, 0($sp)          # phần cuối: POP $s0
+addi $sp, $sp, 4
+jr   $ra
+EXIT:</pre>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 10.</b> Lệnh <code>beq $s3, $s4, L</code> nằm ở địa chỉ 0x00400010, L ở 0x00400004. Trường imm bằng bao nhiêu?</p>
+<details><summary>Xem lời giải</summary>
+<p>imm = (Target − (PC + 4)) / 4 = (0x00400004 − 0x00400014) / 4 = −16/4 = <b>−3</b> = 0xFFFD.</p>
+<p>Mã máy: 000100 10011 10100 1111111111111101 = <b>0x1274FFFD</b>.</p>
+</details></div>
+</div>
+</section>
+<!-- ============ CHƯƠNG 3: PHÉP TOÁN SỐ HỌC ============ -->
+<section class="view chap" id="c3" data-exam="gk">
+<header class="chap-head">
+  <p class="chap-no">Chương 3</p>
+  <h2>Phép toán số học và số chấm động</h2>
+  <p class="chap-src">Nguồn: ch4.pdf, ThamKhao_BieuDienSo.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<h3>Cộng, trừ và tràn số</h3>
+<p>Cộng từ phải sang trái, số nhớ hàng i cộng vào hàng i+1. Trừ: A − B = A + (bù 2 của B). Xem bảng điều kiện tràn ở phần Biểu diễn số.</p>
+<ul>
+<li><b>add, addi, sub</b>: xét tràn ⇒ phát <b>exception</b>. <b>addu, addiu, subu</b>: bỏ qua tràn.</li>
+<li>Exception / interrupt: sự kiện đột ngột buộc dừng luồng chương trình và gọi chương trình không định thời trước. Địa chỉ lệnh lỗi lưu vào <b>EPC</b>.</li>
+</ul>
+
+<h3>Nhân và chia trong MIPS</h3>
+<ul>
+<li>Tên gọi: <b>Multiplicand</b> = số bị nhân, <b>Multiplier</b> = số nhân, <b>Product</b> = tích. Nhân n bit × n bit ⇒ tích 2n bit.</li>
+<li><b>Dividend</b> = số bị chia, <b>Divisor</b> = số chia, <b>Quotient</b> = thương, <b>Remainder</b> = dư. Ngoại lệ: chia cho 0.</li>
+<li>MIPS dùng hai thanh ghi đặc biệt <b>Hi</b> và <b>Lo</b> (32 bit). Nhân: Hi:Lo = tích 64 bit. Chia: <b>Hi = dư, Lo = thương</b>. Lấy ra bằng <code>mfhi</code>, <code>mflo</code>.</li>
+<li><code>mult</code> / <code>div</code>: có dấu; <code>multu</code> / <code>divu</code>: không dấu. Số thực: <code>mul.s</code>, <code>div.s</code> (đơn), <code>mul.d</code>, <code>div.d</code> (kép).</li>
+<li>Nhân có dấu: nhân trị tuyệt đối rồi xét dấu (XOR bit dấu). Chia có dấu: chia trị tuyệt đối; thương âm nếu hai số trái dấu; <b>dư = số bị chia − thương × số chia</b> (dư cùng dấu số bị chia). −7 : 2 ⇒ thương −3, dư −1.</li>
+</ul>
+<p>Thuật toán phần cứng chi tiết xem phần <a href="#c3b" class="jump">Nhân – chia theo phần cứng</a>.</p>
+
+<h3>Số thực dấu chấm động</h3>
+<ul>
+<li><b>Scientific notation</b>: đúng 1 chữ số bên trái dấu chấm. <b>Normalized</b>: scientific và chữ số đó ≠ 0. 1,0×10<sup>−9</sup> chuẩn; 0,1×10<sup>−8</sup> và 10,0×10<sup>−10</sup> không chuẩn.</li>
+<li>Nhị phân chuẩn: <b>1.xxxx × 2<sup>yyyy</sup></b>. xxxx = fraction (phần lẻ), 1.xxxx = significand (phần trị), yyyy = exponent.</li>
+</ul>
+<div class="fmt"><p class="fmt-name">IEEE 754 đơn (32 bit, float)</p>
+<div class="bits"><span class="f op" style="--w:2">S<small>1</small></span><span class="f rs" style="--w:8">Exponent<small>8</small></span><span class="f im" style="--w:23">Fraction<small>23</small></span></div></div>
+<div class="fmt"><p class="fmt-name">IEEE 754 kép (64 bit, double)</p>
+<div class="bits"><span class="f op" style="--w:2">S<small>1</small></span><span class="f rs" style="--w:11">Exponent<small>11</small></span><span class="f im" style="--w:52">Fraction<small>52</small></span></div></div>
+<div class="formula big">Giá trị = (−1)<sup>S</sup> × (1 + Fraction) × 2<sup>(Exponent − Bias)</sup><br>Bias = 127 (đơn), 1023 (kép)</div>
+<table>
+<tr><th>Exponent</th><th>Fraction</th><th>Biểu diễn</th></tr>
+<tr><td>0</td><td>0</td><td>±0</td></tr>
+<tr><td>0</td><td>≠ 0</td><td>Số không chuẩn (denormalized)</td></tr>
+<tr><td>1 … 254</td><td>bất kỳ</td><td>Số chuẩn</td></tr>
+<tr><td>255</td><td>0</td><td>±∞</td></tr>
+<tr><td>255</td><td>≠ 0</td><td>NaN</td></tr>
+</table>
+<ul>
+<li>Tầm trị đơn: nhỏ nhất ±1,0×2<sup>−126</sup> ≈ ±1,2×10<sup>−38</sup>; lớn nhất ±(2 − 2<sup>−23</sup>)×2<sup>127</sup> ≈ ±3,4×10<sup>38</sup>.</li>
+<li><b>Tràn trên</b>: số mũ quá lớn (&gt; 127 thật) ⇒ ±∞. <b>Tràn dưới</b>: số mũ quá nhỏ (&lt; −126 thật).</li>
+<li>Tăng bit fraction ⇒ tăng <b>độ chính xác</b>; tăng bit exponent ⇒ tăng <b>tầm trị</b>.</li>
+<li>Vì sao dùng bias thay vì bù 2 cho exponent? Để so sánh số mũ như số không dấu: số mũ âm trông nhỏ, số mũ dương trông lớn, dễ so sánh/sắp xếp.</li>
+</ul>
+
+<h3>Cộng số chấm động (4 bước)</h3>
+<ol class="steps">
+<li>Canh số mũ: dịch phải significand của số có <b>số mũ nhỏ hơn</b> cho bằng số mũ lớn.</li>
+<li>Cộng significand.</li>
+<li>Chuẩn hóa tổng, kiểm tra tràn trên/tràn dưới.</li>
+<li>Làm tròn; nếu mất chuẩn hóa thì quay lại bước 3.</li>
+</ol>
+<h3>Nhân số chấm động (5 bước)</h3>
+<ol class="steps">
+<li>Cộng số mũ. Nếu dùng số mũ đã bias: <b>E = E1 + E2 − 127</b> (không trừ sẽ cộng bias hai lần).</li>
+<li>Nhân significand.</li>
+<li>Chuẩn hóa, kiểm tra tràn.</li>
+<li>Làm tròn.</li>
+<li>Xét dấu: cùng dấu ⇒ dương, khác dấu ⇒ âm.</li>
+</ol>
+<p>Chia: a / b = a × (1/b), hoặc trừ số mũ (E1 − E2) và chia significand.</p>
+<div class="tip"><b>Hay ra thi:</b> đổi số thực ↔ IEEE 754 (viết đủ S | E | F và hex), cộng/nhân hai số chấm động với significand giới hạn 4 bit/4 chữ số.</div>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Bài 1.</b> Biểu diễn −0,75 theo IEEE 754 đơn và kép.</p>
+<details><summary>Xem lời giải</summary>
+<p>0,75 = 3/4 = 0,11₂ = 1,1₂ × 2<sup>−1</sup>. S = 1.</p>
+<p>Đơn: E = −1 + 127 = 126 = 01111110; F = 1000…0.</p>
+<pre>1 01111110 10000000000000000000000 = 0xBF400000</pre>
+<p>Kép: E = −1 + 1023 = 1022 = 01111111110; F = 1000…0 (52 bit) ⇒ 0xBFE8000000000000.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 2.</b> Biểu diễn 5,75 theo IEEE 754 đơn.</p>
+<details><summary>Xem lời giải</summary>
+<p>5 = 101, 0,75 = 0,11 ⇒ 101,11₂ = 1,0111 × 2<sup>2</sup>. S = 0, E = 2 + 127 = 129 = 10000001, F = 0111 000…</p>
+<pre>0 10000001 01110000000000000000000 = 0x40B80000</pre>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 3.</b> Biểu diễn 0,1 theo IEEE 754 đơn.</p>
+<details><summary>Xem lời giải</summary>
+<p>0,1 = 0,000110011001100…₂ = 1,10011001100…× 2<sup>−4</sup>. E = −4 + 127 = 123 = 01111011.</p>
+<pre>0 01111011 10011001100110011001101 = 0x3DCCCCCD</pre>
+<p>Bit cuối được làm tròn lên, nên đây chỉ là giá trị <b>xấp xỉ</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 4.</b> Số nào có biểu diễn 1 10000001 01000000000000000000000?</p>
+<details><summary>Xem lời giải</summary>
+<p>S = 1, E = 129 ⇒ mũ thật = 2, F = 0,01₂ = 0,25.</p>
+<p>(−1)<sup>1</sup> × 1,25 × 2<sup>2</sup> = <b>−5,0</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 5.</b> Cộng 9,999×10<sup>1</sup> + 1,610×10<sup>−1</sup> (significand 4 chữ số, mũ 2 chữ số).</p>
+<details><summary>Xem lời giải</summary>
+<p>B1: 1,610×10<sup>−1</sup> = 0,01610×10<sup>1</sup> → làm tròn 4 chữ số: 0,016×10<sup>1</sup>.</p>
+<p>B2: 9,999 + 0,016 = 10,015 ⇒ 10,015×10<sup>1</sup>.</p>
+<p>B3: chuẩn hóa 1,0015×10<sup>2</sup>; không tràn.</p>
+<p>B4: làm tròn ⇒ <b>1,002×10<sup>2</sup></b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 6.</b> Cộng nhị phân 0,5 + (−0,4375), significand 4 bit.</p>
+<details><summary>Xem lời giải</summary>
+<p>0,5 = 1,000×2<sup>−1</sup>; −0,4375 = −7/16 = −0,0111₂ = −1,110×2<sup>−2</sup>.</p>
+<p>B1: số mũ nhỏ hơn (−2) dịch phải 1 bit: −1,110×2<sup>−2</sup> = −0,111×2<sup>−1</sup>.</p>
+<p>B2: 1,000 − 0,111 = 0,001 ⇒ 0,001×2<sup>−1</sup>.</p>
+<p>B3: chuẩn hóa 1,000×2<sup>−4</sup>. E = −4 + 127 = 123, nằm trong 1…254 ⇒ không tràn.</p>
+<p>B4: đã đủ 4 bit. Kết quả <b>1,000×2<sup>−4</sup> = 0,0625</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 7.</b> Nhân (1,110×10<sup>10</sup>) × (9,200×10<sup>−5</sup>), significand 4 chữ số.</p>
+<details><summary>Xem lời giải</summary>
+<p>B1: mũ 10 + (−5) = 5. B2: 1,110 × 9,200 = 10,212000 ⇒ 10,212×10<sup>5</sup>.</p>
+<p>B3: chuẩn hóa 1,0212×10<sup>6</sup>. B4: làm tròn 1,021×10<sup>6</sup>. B5: cùng dấu ⇒ <b>+1,021×10<sup>6</sup></b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 8.</b> Nhân nhị phân 0,5 × (−0,4375), IEEE 754 đơn, significand 4 bit.</p>
+<details><summary>Xem lời giải</summary>
+<p>B1: mũ −1 + (−2) = −3. Với bias: 126 + 125 − 127 = 124.</p>
+<p>B2: 1,000 × 1,110 = 1,110000 ⇒ 1,110000×2<sup>−3</sup>.</p>
+<p>B3: đã chuẩn; 124 trong 1…254 ⇒ không tràn. B4: làm tròn 1,110×2<sup>−3</sup>.</p>
+<p>B5: khác dấu ⇒ <b>−1,110×2<sup>−3</sup> = −0,21875</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 9.</b> Hai số IEEE đơn có phần mũ lưu 137 và 122. Phần mũ lưu của tích?</p>
+<details><summary>Xem lời giải</summary>
+<p>Mũ thật 10 và −5 ⇒ tích mũ 5 ⇒ lưu 5 + 127 = <b>132</b> = 137 + 122 − 127. Lấy 137 + 122 = 259 là <b>sai</b> vì bias bị cộng hai lần.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 10.</b> Biểu diễn −12,375 theo IEEE 754 đơn (tự luyện).</p>
+<details><summary>Xem lời giải</summary>
+<p>12 = 1100, 0,375 = 0,011 ⇒ 1100,011 = 1,100011×2<sup>3</sup>. S = 1, E = 130 = 10000010.</p>
+<pre>1 10000010 10001100000000000000000 = 0xC1460000</pre>
+</details></div>
+</div>
+</section>
+
+<!-- ============ NHÂN CHIA PHẦN CỨNG ============ -->
+<section class="view chap" id="c3b" data-exam="gk">
+<header class="chap-head">
+  <p class="chap-no">Chương 3 (tiếp)</p>
+  <h2>Nhân – chia theo cấu trúc phần cứng</h2>
+  <p class="chap-src">Nguồn: ch4.pdf, PhepNhan-Chia_v1.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<p>Đây là dạng bài chắc chắn có trong đề: lập <b>bảng từng bước</b>. Giả sử nhân/chia hai số <b>n bit không dấu</b>.</p>
+
+<h3>Nhân, phiên bản 3 thanh ghi</h3>
+<table>
+<tr><th>Thanh ghi</th><th>Độ rộng</th><th>Khởi tạo</th></tr>
+<tr><td>Multiplicand (số bị nhân)</td><td>2n bit</td><td>số bị nhân ở nửa thấp, nửa cao = 0</td></tr>
+<tr><td>Multiplier (số nhân)</td><td>n bit</td><td>số nhân</td></tr>
+<tr><td>Product (tích)</td><td>2n bit</td><td>0</td></tr>
+</table>
+<p>Lặp <b>n lần</b>, mỗi lần 3 bước:</p>
+<ol class="steps">
+<li>Nếu bit 0 của Multiplier = 1 ⇒ Product = Product + Multiplicand (bước 1a); nếu = 0 thì không làm gì.</li>
+<li>Dịch <b>trái</b> Multiplicand 1 bit.</li>
+<li>Dịch <b>phải</b> Multiplier 1 bit.</li>
+</ol>
+<p>Với 32 bit: 3 bước × 32 lần ≈ 100 chu kỳ clock.</p>
+
+<h3>Nhân cải tiến, 2 thanh ghi</h3>
+<table>
+<tr><th>Thanh ghi</th><th>Độ rộng</th><th>Khởi tạo</th></tr>
+<tr><td>Multiplicand</td><td>n bit</td><td>số bị nhân</td></tr>
+<tr><td>Product / Multiplier</td><td>2n bit</td><td>nửa cao = 0, <b>nửa thấp = số nhân</b></td></tr>
+</table>
+<p>Lặp <b>n lần</b>, mỗi lần 2 bước:</p>
+<ol class="steps">
+<li>Nếu bit 0 của Product = 1 ⇒ <b>nửa cao</b> Product = nửa cao + Multiplicand.</li>
+<li>Dịch <b>phải</b> Product 1 bit (bit nhớ của phép cộng, nếu có, được đẩy vào bit cao nhất).</li>
+</ol>
+<p>ALU và Multiplicand chỉ còn n bit; mỗi vòng có thể chỉ tốn 1 chu kỳ. MIPS ghép Hi:Lo thành thanh ghi Product.</p>
+
+<h3>Chia, phiên bản 3 thanh ghi</h3>
+<table>
+<tr><th>Thanh ghi</th><th>Độ rộng</th><th>Khởi tạo</th></tr>
+<tr><td>Divisor (D)</td><td>2n bit</td><td>số chia ở <b>nửa cao</b>, nửa thấp = 0</td></tr>
+<tr><td>Quotient (Q)</td><td>n bit</td><td>0</td></tr>
+<tr><td>Remainder (R)</td><td>2n bit</td><td>nửa cao = 0, nửa thấp = số bị chia</td></tr>
+</table>
+<p>Lặp <b>n + 1 lần</b>, mỗi lần 3 bước:</p>
+<ol class="steps">
+<li>R = R − D.</li>
+<li>Nếu R ≥ 0 (MSB = 0) ⇒ dịch trái Q, Q0 = 1. Nếu R &lt; 0 ⇒ khôi phục R = R + D, dịch trái Q, Q0 = 0.</li>
+<li>Dịch <b>phải</b> D 1 bit.</li>
+</ol>
+<p>Kết thúc: Q = thương, R = dư.</p>
+
+<h3>Chia cải tiến, 2 thanh ghi (theo slide)</h3>
+<table>
+<tr><th>Thanh ghi</th><th>Độ rộng</th><th>Khởi tạo</th></tr>
+<tr><td>Divisor (D)</td><td>n bit</td><td>số chia</td></tr>
+<tr><td>Remainder / Quotient</td><td>2n bit</td><td>nửa cao = 0, nửa thấp = số bị chia</td></tr>
+</table>
+<p>Lặp <b>n lần</b>:</p>
+<ol class="steps">
+<li>Dịch trái [R/Q] 1 bit.</li>
+<li>Nửa cao = nửa cao − D.</li>
+<li>Nếu &lt; 0 ⇒ khôi phục (cộng lại D), gán bit thấp nhất = 0. Ngược lại gán bit thấp nhất = 1.</li>
+</ol>
+<p>Kết thúc: <b>nửa cao = số dư, nửa thấp = thương</b> (giống Hi = dư, Lo = thương trong MIPS).</p>
+<div class="warn"><b>Bẫy:</b> nhân lặp n lần, chia bản 3 thanh ghi lặp <b>n + 1</b> lần. Số âm trong cột R ghi dạng bù 2 2n bit (ví dụ 1110 0111).</div>
+<p>Muốn tự kiểm tra bảng của mình với số bất kỳ? Dùng <a href="#tools" class="jump">Công cụ → Mô phỏng nhân/chia</a>.</p>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Bài 1.</b> Nhân 3 thanh ghi, 4 bit không dấu: 2 × 3.</p>
+<details><summary>Xem lời giải</summary>
+<div class="simtable" data-alg="mul1" data-a="2" data-b="3" data-n="4"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 2.</b> Nhân 3 thanh ghi, 4 bit không dấu: 4 × 3.</p>
+<details><summary>Xem lời giải</summary>
+<div class="simtable" data-alg="mul1" data-a="4" data-b="3" data-n="4"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 3.</b> Nhân cải tiến 2 thanh ghi, 4 bit: 4 × 3.</p>
+<details><summary>Xem lời giải</summary>
+<div class="simtable" data-alg="mul2" data-a="4" data-b="3" data-n="4"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 4.</b> Nhân cải tiến 2 thanh ghi, 6 bit: 50₈ × 23₈ (= 40 × 19).</p>
+<details><summary>Xem lời giải</summary>
+<p>Multiplicand = 101 000, Product khởi tạo = 000 000 010 011.</p>
+<div class="simtable" data-alg="mul2" data-a="40" data-b="19" data-n="6"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 5.</b> Nhân cải tiến 2 thanh ghi, 8 bit: 50₁₆ × 23₁₆ (= 80 × 35).</p>
+<details><summary>Xem lời giải</summary>
+<div class="simtable" data-alg="mul2" data-a="80" data-b="35" data-n="8"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 6.</b> Chia 3 thanh ghi, 6 bit: 50₈ : 23₈ (= 40 : 19).</p>
+<details><summary>Xem lời giải</summary>
+<p>D = 010 011 000 000, Q = 000 000, R = 000 000 101 000. Lặp 7 lần.</p>
+<div class="simtable" data-alg="div1" data-a="40" data-b="19" data-n="6"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 7.</b> Chia 3 thanh ghi, 4 bit: 7 : 2.</p>
+<details><summary>Xem lời giải</summary>
+<div class="simtable" data-alg="div1" data-a="7" data-b="2" data-n="4"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 8.</b> Chia 3 thanh ghi, 4 bit: 7 : 3.</p>
+<details><summary>Xem lời giải</summary>
+<div class="simtable" data-alg="div1" data-a="7" data-b="3" data-n="4"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 9.</b> Chia cải tiến, 4 bit: 7 : 3 và 13 : 5.</p>
+<details><summary>Xem lời giải</summary>
+<div class="simtable" data-alg="div2" data-a="7" data-b="3" data-n="4"></div>
+<div class="simtable" data-alg="div2" data-a="13" data-b="5" data-n="4"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài tập về nhà (slide cuối).</b> Chia 14 : 5 bằng (1) giải thuật 3 thanh ghi và (2) giải thuật cải tiến, 4 bit.</p>
+<details><summary>Xem lời giải</summary>
+<div class="simtable" data-alg="div1" data-a="14" data-b="5" data-n="4"></div>
+<div class="simtable" data-alg="div2" data-a="14" data-b="5" data-n="4"></div>
+</details></div>
+</div>
+</section>
+<!-- ============ CHƯƠNG 4: BỘ XỬ LÝ ============ -->
+<section class="view chap" id="c4" data-exam="gk">
+<header class="chap-head">
+  <p class="chap-no">Chương 4</p>
+  <h2>Bộ xử lý: datapath đơn chu kỳ</h2>
+  <p class="chap-src">Nguồn: ch5.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<h3>Mục tiêu và phạm vi</h3>
+<p>Hiệu suất = IC × CPI × Clock cycle. IC do <b>trình biên dịch và ISA</b> quyết định; <b>CPI và chu kỳ clock</b> do cách hiện thực bộ xử lý quyết định. Chương này xây datapath cho <b>8 lệnh</b>:</p>
+<ul>
+<li>Tham khảo bộ nhớ: <code>lw</code>, <code>sw</code>.</li>
+<li>Số học – logic: <code>add</code>, <code>sub</code>, <code>and</code>, <code>or</code>, <code>slt</code>.</li>
+<li>Nhảy: <code>beq</code>.</li>
+</ul>
+<p>MIPS = <i>Microprocessor without Interlocked Pipeline Stages</i>, kiến trúc RISC.</p>
+
+<h3>Quy ước thiết kế logic</h3>
+<dl class="defs">
+<dt>Mạch tổ hợp (combinational)</dt><dd>Output chỉ phụ thuộc input hiện tại, không lưu trạng thái. Ví dụ: ALU, bộ cộng, MUX.</dd>
+<dt>Mạch tuần tự (sequential / state)</dt><dd>Có lưu trạng thái. Ví dụ: Instruction/Data memory, thanh ghi, PC.</dd>
+<dt>Asserted / Deasserted</dt><dd>Tín hiệu ở mức cao (true) / mức thấp (false).</dd>
+<dt>Edge‑triggered clocking</dt><dd>Phần tử trạng thái chỉ cập nhật tại cạnh xung clock (lên hoặc xuống). PC được đọc trong chu kỳ và cập nhật PC+4 tại cạnh lên kế tiếp.</dd>
+<dt>Bus</dt><dd>Tín hiệu rộng nhiều bit.</dd>
+</dl>
+
+<h3>5 công đoạn thực thi lệnh MIPS</h3>
+<div class="stages"><span>Fetch</span><span>Decode &amp; Operand fetch</span><span>ALU</span><span>Memory</span><span>Result write</span></div>
+<table>
+<tr><th>Công đoạn</th><th>add $3,$1,$2</th><th>lw $3,20($1)</th><th>beq $1,$2,L</th></tr>
+<tr><td>Fetch</td><td colspan="3">Đọc lệnh tại địa chỉ PC; PC = PC + 4</td></tr>
+<tr><td>Decode</td><td>Đọc $1, $2</td><td>Đọc $1; 20 (sign‑extend)</td><td>Đọc $1, $2</td></tr>
+<tr><td>ALU</td><td>$1 + $2</td><td>Địa chỉ = $1 + 20</td><td>So sánh ($1 − $2 = 0?); Target = PC+4 + L×4</td></tr>
+<tr><td>Memory</td><td>(rảnh)</td><td>Đọc M[địa chỉ]</td><td>(rảnh)</td></tr>
+<tr><td>Result write</td><td>Ghi $3</td><td>Ghi $3</td><td>Nếu bằng: PC = Target</td></tr>
+</table>
+<p>Vì sao PC + 4? Mỗi lệnh dài 4 byte và bộ nhớ đánh địa chỉ theo byte. <b>sw, beq không có công đoạn ghi kết quả</b>; chỉ lw/sw dùng công đoạn Memory.</p>
+
+<h3>Các khối trong datapath</h3>
+<dl class="defs">
+<dt>PC</dt><dd>Thanh ghi chứa địa chỉ lệnh đang thực thi.</dd>
+<dt>Instruction Memory</dt><dd>Input: địa chỉ; output: lệnh 32 bit.</dd>
+<dt>Adder</dt><dd>Tính PC + 4 và địa chỉ đích nhánh.</dd>
+<dt>Register File</dt><dd>32 thanh ghi 32 bit; 2 cổng đọc (Read register 1/2 → Read data 1/2), 1 cổng ghi (Write register, Write data). Ghi khi <b>RegWrite = 1</b>. Mỗi lệnh đọc tối đa 2, ghi tối đa 1 thanh ghi.</dd>
+<dt>Sign‑extend</dt><dd>Mở rộng immediate 16 bit lên 32 bit có dấu.</dd>
+<dt>Shift left 2</dt><dd>Nhân offset nhánh với 4.</dd>
+<dt>ALU</dt><dd>2 input 32 bit, điều khiển 4 bit (ALU control), output kết quả và cờ <b>Zero</b>.</dd>
+<dt>Data Memory</dt><dd>Input: Address, Write data; điều khiển MemRead, MemWrite (chỉ một trong hai bật tại một thời điểm); output: Read data.</dd>
+<dt>MUX</dt><dd>Chọn 1 trong n input cùng độ rộng; cần m bit điều khiển với n = 2<sup>m</sup>.</dd>
+</dl>
+<p>Trường lệnh cố định: opcode [31:26]; rs [25:21] và rt [20:16] luôn là hai thanh ghi đọc; thanh ghi nền của lw/sw luôn là rs; offset 16 bit của beq/lw/sw luôn ở [15:0]. Thanh ghi đích: <b>rt [20:16]</b> với lw, <b>rd [15:11]</b> với R‑type ⇒ cần MUX <b>RegDst</b>.</p>
+
+<h3>Ba MUX và tín hiệu điều khiển</h3>
+<table>
+<tr><th>Tín hiệu</th><th>= 0</th><th>= 1</th></tr>
+<tr><td><b>RegDst</b></td><td>Thanh ghi đích = rt [20:16]</td><td>Thanh ghi đích = rd [15:11]</td></tr>
+<tr><td><b>RegWrite</b></td><td>Không ghi</td><td>Ghi Write data vào Write register</td></tr>
+<tr><td><b>ALUSrc</b></td><td>Input 2 của ALU = Read data 2</td><td>Input 2 = immediate đã sign‑extend</td></tr>
+<tr><td><b>Branch</b></td><td>PC = PC + 4</td><td>Là beq; AND với Zero để chọn địa chỉ đích (PCSrc)</td></tr>
+<tr><td><b>MemRead</b></td><td>—</td><td>Đọc Data memory</td></tr>
+<tr><td><b>MemWrite</b></td><td>—</td><td>Ghi Data memory</td></tr>
+<tr><td><b>MemtoReg</b></td><td>Write data lấy từ ALU</td><td>Write data lấy từ Data memory</td></tr>
+</table>
+<p><b>PCSrc = Branch AND Zero.</b></p>
+
+<h3>Bảng giá trị khối Control (phải thuộc)</h3>
+<table class="ctrl">
+<tr><th>Lệnh</th><th>RegDst</th><th>ALUSrc</th><th>MemtoReg</th><th>RegWrite</th><th>MemRead</th><th>MemWrite</th><th>Branch</th><th>ALUOp1</th><th>ALUOp0</th></tr>
+<tr><td>R‑format</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>lw</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>sw</td><td>X</td><td>1</td><td>X</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>beq</td><td>X</td><td>0</td><td>X</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+</table>
+<p>Opcode vào khối Control: R‑format 000000, lw 100011, sw 101011, beq 000100. X (don't care) vì sw, beq không ghi thanh ghi.</p>
+
+<h3>ALU và ALU Control</h3>
+<table>
+<tr><th>ALU control (4 bit)</th><th>Chức năng</th></tr>
+<tr><td class="m">0000</td><td>AND</td></tr>
+<tr><td class="m">0001</td><td>OR</td></tr>
+<tr><td class="m">0010</td><td>add</td></tr>
+<tr><td class="m">0110</td><td>subtract</td></tr>
+<tr><td class="m">0111</td><td>set on less than</td></tr>
+<tr><td class="m">1100</td><td>NOR</td></tr>
+</table>
+<table>
+<tr><th>Lệnh</th><th>ALUOp</th><th>funct</th><th>Thao tác ALU</th><th>ALU control</th></tr>
+<tr><td>lw / sw</td><td>00</td><td>XXXXXX</td><td>add (tính địa chỉ)</td><td class="m">0010</td></tr>
+<tr><td>beq</td><td>01</td><td>XXXXXX</td><td>subtract (so sánh)</td><td class="m">0110</td></tr>
+<tr><td>add</td><td>10</td><td>100000</td><td>add</td><td class="m">0010</td></tr>
+<tr><td>sub</td><td>10</td><td>100010</td><td>subtract</td><td class="m">0110</td></tr>
+<tr><td>and</td><td>10</td><td>100100</td><td>AND</td><td class="m">0000</td></tr>
+<tr><td>or</td><td>10</td><td>100101</td><td>OR</td><td class="m">0001</td></tr>
+<tr><td>slt</td><td>10</td><td>101010</td><td>slt</td><td class="m">0111</td></tr>
+</table>
+<p>Điều khiển hai cấp: khối <b>Control</b> chính nhận opcode sinh ra ALUOp 2 bit; khối <b>ALU Control</b> nhận ALUOp + funct sinh ra 4 bit điều khiển ALU.</p>
+
+<h3>Khối nào được dùng?</h3>
+<table>
+<tr><th>Lệnh</th><th>I‑Mem</th><th>Đọc Reg</th><th>ALU</th><th>D‑Mem</th><th>Ghi Reg</th></tr>
+<tr><td>R‑type</td><td>✓</td><td>✓</td><td>✓</td><td></td><td>✓</td></tr>
+<tr><td>lw</td><td>✓</td><td>✓</td><td>✓</td><td>✓ đọc</td><td>✓</td></tr>
+<tr><td>sw</td><td>✓</td><td>✓</td><td>✓</td><td>✓ ghi</td><td></td></tr>
+<tr><td>beq</td><td>✓</td><td>✓</td><td>✓</td><td></td><td></td></tr>
+</table>
+
+<h3>Hiện thực đơn chu kỳ</h3>
+<p>Mỗi lệnh chạy trong <b>đúng 1 chu kỳ</b> (CPI = 1), nên chu kỳ clock phải bằng thời gian của <b>lệnh dài nhất là lw</b> (I‑Mem → Reg → ALU → D‑Mem → Reg). Lệnh ngắn cũng phải chờ hết chu kỳ ⇒ hiệu suất kém, nay không còn dùng (chỉ chấp nhận cho tập lệnh nhỏ).</p>
+<div class="tip"><b>Hay ra thi:</b> (1) điền giá trị tín hiệu điều khiển cho một lệnh; (2) chỉ ra khối/đường nào hoạt động; (3) tính chu kỳ clock đơn chu kỳ từ độ trễ các khối; (4) "nếu tín hiệu X bị kẹt ở 0/1 thì lệnh nào sai?".</div>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Bài 1.</b> Độ trễ: truy xuất bộ nhớ 200 ps, ALU 200 ps, đọc/ghi thanh ghi 100 ps. Tính thời gian từng nhóm lệnh và chu kỳ clock đơn chu kỳ.</p>
+<details><summary>Xem lời giải</summary>
+<table>
+<tr><th>Lệnh</th><th>I‑Mem</th><th>Đọc Reg</th><th>ALU</th><th>D‑Mem</th><th>Ghi Reg</th><th>Tổng</th></tr>
+<tr><td>lw</td><td>200</td><td>100</td><td>200</td><td>200</td><td>100</td><td><b>800</b></td></tr>
+<tr><td>sw</td><td>200</td><td>100</td><td>200</td><td>200</td><td></td><td>700</td></tr>
+<tr><td>R‑type</td><td>200</td><td>100</td><td>200</td><td></td><td>100</td><td>600</td></tr>
+<tr><td>beq</td><td>200</td><td>100</td><td>200</td><td></td><td></td><td>500</td></tr>
+</table>
+<p>Chu kỳ clock = lệnh dài nhất = <b>800 ps</b> (lw).</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 2.</b> Cho độ trễ: I‑Mem 200, Add 70, Mux 20, ALU 90, Regs 90, D‑Mem 250, Sign‑extend 15, Shift‑left‑2 10 (ps). Đường găng của lw? Của R‑type?</p>
+<details><summary>Xem lời giải</summary>
+<p>lw: I‑Mem → Regs (sign‑extend 15 chạy song song, nhỏ hơn) → Mux ALUSrc → ALU → D‑Mem → Mux MemtoReg = 200 + 90 + 20 + 90 + 250 + 20 = <b>670 ps</b>.</p>
+<p>R‑type: I‑Mem → Regs → Mux ALUSrc → ALU → Mux MemtoReg = 200 + 90 + 20 + 90 + 20 = <b>420 ps</b>.</p>
+<p>Chu kỳ clock đơn chu kỳ = 670 ps.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 3.</b> Cho lệnh <code>sw $t0, 8($s0)</code>. Ghi giá trị các tín hiệu điều khiển và cho biết ALU làm gì.</p>
+<details><summary>Xem lời giải</summary>
+<p>RegDst = X, ALUSrc = 1, MemtoReg = X, RegWrite = 0, MemRead = 0, MemWrite = 1, Branch = 0, ALUOp = 00.</p>
+<p>ALU control = 0010 (add) tính địa chỉ $s0 + 8. Read data 2 (giá trị $t0) đưa vào Write data của Data Memory.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 4.</b> Mã máy 0x02324020 đi qua datapath. Giá trị Read register 1, Read register 2, Write register, ALU control?</p>
+<details><summary>Xem lời giải</summary>
+<p>0x02324020 = add $t0, $s1, $s2 (op 0, rs 17, rt 18, rd 8, funct 0x20).</p>
+<p>Read register 1 = 17 (10001), Read register 2 = 18 (10010), RegDst = 1 ⇒ Write register = rd = 8 (01000). ALUOp = 10, funct = 100000 ⇒ ALU control = <b>0010</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 5.</b> Nếu tín hiệu RegDst bị kẹt ở 0, lệnh nào trong 8 lệnh chạy sai? Nếu MemtoReg kẹt ở 1?</p>
+<details><summary>Xem lời giải</summary>
+<p>RegDst = 0 ⇒ luôn ghi vào rt. Các lệnh R‑type (add, sub, and, or, slt) ghi sai thanh ghi. lw vẫn đúng; sw, beq không ghi nên không ảnh hưởng.</p>
+<p>MemtoReg = 1 ⇒ luôn ghi dữ liệu từ bộ nhớ. R‑type sai; lw đúng; sw, beq không ghi.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 6.</b> Lệnh <code>beq $9, $0, 3</code> ở địa chỉ 1000 (thập phân), $9 = 0. PC kế tiếp?</p>
+<details><summary>Xem lời giải</summary>
+<p>ALU tính $9 − $0 = 0 ⇒ Zero = 1; Branch = 1 ⇒ PCSrc = 1.</p>
+<p>Target = PC + 4 + (3 &lt;&lt; 2) = 1004 + 12 = <b>1016</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 7.</b> Lệnh <code>lw $21, -50($22)</code>: các trường mã máy và giá trị sau sign‑extend?</p>
+<details><summary>Xem lời giải</summary>
+<p>op = 100011, rs = 10110 (22), rt = 10101 (21), imm = −50 = 1111 1111 1100 1110.</p>
+<p>Sign‑extend ⇒ 0xFFFFFFCE. Mã máy 0x8ED5FFCE. RegDst = 0 nên ghi vào rt = $21.</p>
+</details></div>
+</div>
+</section>
+
+<!-- ============ CHƯƠNG 5: PIPELINE ============ -->
+<section class="view chap" id="c5" data-exam="ck">
+<header class="chap-head">
+  <p class="chap-no">Chương 5</p>
+  <h2>Kỹ thuật ống dẫn (Pipeline)</h2>
+  <p class="chap-src">Nguồn: ch6.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<h3>Pipeline là gì</h3>
+<p>Kỹ thuật cho các lệnh thực thi <b>chồng lấn</b> (overlap). Ví dụ giặt đồ 4 công đoạn (giặt, sấy, ủi, xếp): người sau bắt đầu giặt ngay khi người trước chuyển sang sấy.</p>
+<div class="warn"><b>Quan trọng:</b> pipeline <b>không giảm</b> thời gian thực thi một lệnh riêng lẻ (latency) mà tăng <b>throughput</b>, giảm tổng thời gian của chương trình nhiều lệnh.</div>
+<h3>5 tầng MIPS</h3>
+<div class="stages"><span>IF<small>nạp lệnh</small></span><span>ID<small>giải mã, đọc thanh ghi</small></span><span>EX<small>thực thi / tính địa chỉ</small></span><span>MEM<small>truy xuất bộ nhớ</small></span><span>WB<small>ghi kết quả</small></span></div>
+<p>Giữa các tầng có thanh ghi pipeline: IF/ID, ID/EX, EX/MEM, MEM/WB. Quy ước vẽ: nửa phải tô đậm = <b>đọc</b>, nửa trái tô đậm = <b>ghi</b>; khối trắng = lệnh không dùng tầng đó. Thanh ghi được <b>ghi ở nửa đầu, đọc ở nửa sau</b> chu kỳ.</p>
+
+<h3>Tăng tốc</h3>
+<div class="formula big">
+Lý tưởng: T<sub>giữa 2 lệnh, pipeline</sub> = T<sub>giữa 2 lệnh, không pipeline</sub> / số tầng<br>
+Thực tế: chu kỳ pipeline = <b>tầng dài nhất</b><br>
+Tổng thời gian n lệnh, k tầng: (k + n − 1) × chu kỳ (+ số chu kỳ stall)<br>
+Speed‑up ≈ T<sub>không pipeline</sub> / T<sub>pipeline</sub> &lt; số tầng
+</div>
+<p>Ví dụ (200 ps bộ nhớ, 200 ps ALU, 100 ps thanh ghi): đơn chu kỳ 800 ps/lệnh; pipeline 200 ps/tầng. Ba lệnh lw: khoảng cách lệnh 1 → lệnh 4 là 3×800 = 2400 ps so với 3×200 = 600 ps. Lý tưởng 800/5 = 160 ps; thực tế 200 ps ⇒ tăng tốc 4 lần &lt; 5.</p>
+
+<h3>Ba loại xung đột (hazard)</h3>
+<dl class="defs">
+<dt>Cấu trúc (structural)</dt><dd>Hai lệnh cùng dùng một tài nguyên phần cứng một lúc. Ví dụ: chỉ có <b>một bộ nhớ</b> chung cho lệnh và dữ liệu ⇒ lệnh 1 ở MEM đụng lệnh 4 ở IF. Giải quyết: tách I‑Mem và D‑Mem.</dd>
+<dt>Dữ liệu (data)</dt><dd>Lệnh cần dữ liệu mà lệnh trước chưa tạo xong. <code>add $s0,$t0,$t1</code> rồi <code>sub $t2,$s0,$t3</code>: sub đọc $s0 ở ID khi add mới ở EX. Giải quyết: chèn stall (bubble) hoặc <b>forwarding / bypassing</b>, hoặc sắp xếp lại lệnh.</dd>
+<dt>Điều khiển (control / branch)</dt><dd>Lệnh nạp vào không phải lệnh cần chạy, do lệnh nhảy. Giải quyết: stall chờ kết quả so sánh, hoặc <b>dự đoán</b> (predict taken / not taken).</dd>
+</dl>
+
+<h3>Forwarding</h3>
+<ul>
+<li>Thêm bộ đệm/đường dẫn để lấy kết quả ngay khi ALU tính xong thay vì chờ WB.</li>
+<li><b>EX‑EX (ALU‑ALU)</b>: kết quả EX của lệnh trước đưa thẳng vào EX lệnh sau.</li>
+<li><b>MEM‑EX</b>: kết quả sau MEM (ví dụ lw) đưa vào EX lệnh sau.</li>
+<li><b>Load‑use</b>: <code>lw</code> rồi lệnh dùng ngay kết quả ⇒ dữ liệu chỉ có sau MEM ⇒ <b>vẫn phải stall 1 chu kỳ</b> dù có forwarding.</li>
+</ul>
+<table>
+<tr><th>Tình huống (lệnh liền kề)</th><th>Không forwarding</th><th>Có forwarding</th></tr>
+<tr><td>R‑type → lệnh dùng kết quả</td><td>2 stall</td><td>0 stall</td></tr>
+<tr><td>lw → lệnh dùng kết quả</td><td>2 stall</td><td>1 stall</td></tr>
+<tr><td>Phụ thuộc cách 1 lệnh (R‑type)</td><td>1 stall</td><td>0 stall</td></tr>
+<tr><td>Phụ thuộc cách ≥ 3 lệnh</td><td>0</td><td>0</td></tr>
+</table>
+<p class="note">Giả định thanh ghi ghi nửa đầu, đọc nửa sau chu kỳ (WB và ID cùng chu kỳ được).</p>
+
+<h3>Xung đột điều khiển</h3>
+<ul>
+<li>Cách cơ bản: <b>stall</b> chờ tính xong điều kiện ⇒ luôn mất 1 chu kỳ (khi so sánh được đưa lên tầng ID).</li>
+<li><b>Dự đoán</b>: đoán đúng ⇒ không mất chu kỳ nào; đoán sai ⇒ nạp lại lệnh đúng, mất 1 chu kỳ.</li>
+<li><b>Predict not taken</b>: cứ nạp lệnh ngay sau beq; nếu nhánh được lấy thì xóa (flush) lệnh đó.</li>
+</ul>
+<div class="tip"><b>Hay ra thi:</b> vẽ giản đồ pipeline cho đoạn lệnh, chỉ ra xung đột, đếm stall có/không forwarding, tính tổng chu kỳ; sắp xếp lại lệnh để bỏ stall load‑use.</div>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Bài 1.</b> Đơn chu kỳ 800 ps/lệnh; pipeline 5 tầng, mỗi tầng 200 ps. Thời gian chạy 1000 lệnh mỗi cách? Tăng tốc?</p>
+<details><summary>Xem lời giải</summary>
+<p>Không pipeline: 1000 × 800 = 800.000 ps.</p>
+<p>Pipeline: (5 + 1000 − 1) × 200 = 1004 × 200 = 200.800 ps.</p>
+<p>Tăng tốc = 800.000 / 200.800 ≈ <b>3,98</b> (tiến dần tới 4 khi n lớn, không đạt 5 vì tầng không đều).</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 2.</b> Vẽ giản đồ và đếm stall: <code>add $s0,$t0,$t1</code>; <code>sub $t2,$s0,$t3</code>.</p>
+<details><summary>Xem lời giải</summary>
+<p><b>Không forwarding</b>: sub phải đọc $s0 ở ID cùng chu kỳ với WB của add (chu kỳ 5) ⇒ 2 stall.</p>
+<div class="tblwrap"><table class="pipe"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+<tr><td class="m">add</td><td>IF</td><td>ID</td><td>EX</td><td>MEM</td><td class="hl">WB</td><td></td><td></td><td></td></tr>
+<tr><td class="m">sub</td><td></td><td>IF</td><td class="st">stall</td><td class="st">stall</td><td class="hl">ID</td><td>EX</td><td>MEM</td><td>WB</td></tr></table></div>
+<p><b>Có forwarding EX‑EX</b>: 0 stall, tổng 6 chu kỳ.</p>
+<div class="tblwrap"><table class="pipe"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+<tr><td class="m">add</td><td>IF</td><td>ID</td><td class="hl">EX</td><td>MEM</td><td>WB</td><td></td></tr>
+<tr><td class="m">sub</td><td></td><td>IF</td><td>ID</td><td class="hl">EX</td><td>MEM</td><td>WB</td></tr></table></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 3.</b> <code>lw $s0, 20($t1)</code>; <code>sub $t2, $s0, $t3</code> có forwarding. Bao nhiêu stall?</p>
+<details><summary>Xem lời giải</summary>
+<p>Dữ liệu của lw chỉ có sau MEM (chu kỳ 4). EX của sub phải ở chu kỳ 5 ⇒ <b>1 stall</b> (forwarding MEM‑EX).</p>
+<div class="tblwrap"><table class="pipe"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr>
+<tr><td class="m">lw</td><td>IF</td><td>ID</td><td>EX</td><td class="hl">MEM</td><td>WB</td><td></td><td></td></tr>
+<tr><td class="m">sub</td><td></td><td>IF</td><td>ID</td><td class="st">stall</td><td class="hl">EX</td><td>MEM</td><td>WB</td></tr></table></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 4.</b> Sắp xếp lại để bỏ stall (có forwarding). Code cho <code>a = b + e; c = b + f;</code></p>
+<pre>lw  $t1, 0($t0)
+lw  $t2, 4($t0)
+add $t3, $t1, $t2
+sw  $t3, 12($t0)
+lw  $t4, 8($t0)
+add $t5, $t1, $t4
+sw  $t5, 16($t0)</pre>
+<details><summary>Xem lời giải</summary>
+<p>Có 2 load‑use: lw $t2 → add $t3 và lw $t4 → add $t5 ⇒ 2 stall. Tổng = 5 + 7 − 1 + 2 = <b>13 chu kỳ</b>.</p>
+<p>Đưa <code>lw $t4</code> lên trước:</p>
+<pre>lw  $t1, 0($t0)
+lw  $t2, 4($t0)
+lw  $t4, 8($t0)
+add $t3, $t1, $t2
+sw  $t3, 12($t0)
+add $t5, $t1, $t4
+sw  $t5, 16($t0)</pre>
+<p>Không còn load‑use liền kề ⇒ 0 stall, tổng <b>11 chu kỳ</b>.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 5.</b> Xác định loại xung đột: <code>add $4,$5,$6</code>; <code>beq $1,$2,label</code>; <code>lw $3,300($s0)</code>.</p>
+<details><summary>Xem lời giải</summary>
+<p>Xung đột <b>điều khiển</b>: khi beq ở ID (chu kỳ 3) thì lw đã được nạp. Nếu điều kiện bằng đúng, lệnh cần chạy là lệnh ở label chứ không phải lw. Predict‑not‑taken: đoán đúng không mất chu kỳ, đoán sai flush lw và mất 1 chu kỳ.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 6.</b> Có một bộ nhớ duy nhất cho lệnh và dữ liệu. Đoạn 4 lệnh lw liên tiếp xảy ra xung đột gì, ở chu kỳ nào?</p>
+<details><summary>Xem lời giải</summary>
+<p>Xung đột <b>cấu trúc</b> ở chu kỳ 4: lệnh 1 ở MEM (đọc dữ liệu) trong khi lệnh 4 ở IF (đọc lệnh) cùng dùng một bộ nhớ.</p>
+</details></div>
+</div>
+</section>
+
+<!-- ============ CHƯƠNG 6: BỘ NHỚ ============ -->
+<section class="view chap" id="c6" data-exam="ck">
+<header class="chap-head">
+  <p class="chap-no">Chương 6</p>
+  <h2>Hệ thống bộ nhớ phân cấp và cache</h2>
+  <p class="chap-src">Nguồn: Chuong6_BoNho_CNv1.pdf</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="lt">Lý thuyết</button><button class="tab" data-t="bt">Bài tập mẫu</button></div>
+
+<div class="pane on" data-p="lt">
+<h3>Phân loại bộ nhớ</h3>
+<ul>
+<li><b>Bộ nhớ trong / chính</b> (main, primary): cung cấp chương trình và dữ liệu trực tiếp cho CPU khi thực thi.</li>
+<li><b>Bộ nhớ ngoài / phụ</b>: lưu trữ cả khi máy không hoạt động (HDD, FDD, CD, DVD, băng từ, flash disk, SSD).</li>
+<li>Bộ nhớ 64K = 64 × 1024 = 65.536 byte ⇒ địa chỉ 0 … 65.535 = 0x0000 … 0xFFFF (16 bit).</li>
+</ul>
+
+<h3>Phân cấp bộ nhớ</h3>
+<table class="hier">
+<tr><th>Cấp</th><th>Thời gian truy cập</th></tr>
+<tr><td>Thanh ghi</td><td>&lt; 1 ns</td></tr>
+<tr><td>Cache (SRAM)</td><td>0,5 – 2,5 ns</td></tr>
+<tr><td>Bộ nhớ chính (DRAM)</td><td>50 – 70 ns</td></tr>
+<tr><td>Bộ nhớ thứ cấp (SSD, HDD)</td><td>5.000 ns – 20 ms</td></tr>
+</table>
+<p>Càng lên cao: càng nhanh, càng nhỏ, càng đắt mỗi bit. <b>Thanh ghi</b>: dung lượng thấp nhất, nhanh nhất, nằm trong CPU, số lượng phụ thuộc ISA.</p>
+<p><b>Cache</b> vận hành trong suốt với bộ xử lý, lưu lệnh/dữ liệu dùng gần nhất. L1: riêng mỗi nhân; L2: cho một tổ hợp nhân; L3: chung cho tất cả các nhân.</p>
+
+<h3>RAM và ROM</h3>
+<table>
+<tr><th></th><th>SRAM</th><th>DRAM</th></tr>
+<tr><td>Tốc độ</td><td>Nhanh hơn</td><td>Chậm hơn</td></tr>
+<tr><td>Giá</td><td>Đắt hơn</td><td>Rẻ hơn</td></tr>
+<tr><td>Dùng cho</td><td>Cache, thiết bị công nghiệp (mạng, điều khiển)</td><td>RAM máy tính (SDRAM, DDR SDRAM, Rambus DRAM)</td></tr>
+</table>
+<p>ROM: ROM → PROM (lập trình được) → EPROM (xóa được) → EEPROM (xóa bằng điện) → Flash (một dạng EEPROM) → SSD.</p>
+
+<h3>Nguyên lý cục bộ (locality)</h3>
+<dl class="defs">
+<dt>Cục bộ thời gian (temporal)</dt><dd>Vị trí vừa truy xuất sẽ sớm được truy xuất lại. Ví dụ: biến đếm vòng lặp, lệnh trong vòng lặp.</dd>
+<dt>Cục bộ không gian (spatial)</dt><dd>Vị trí lân cận vị trí vừa truy xuất sẽ sớm được truy xuất. Ví dụ: duyệt mảng tuần tự, lệnh tuần tự.</dd>
+</dl>
+
+<h3>Cơ chế cache</h3>
+<ul>
+<li>CPU làm việc với word; cache lưu theo <b>block</b> (dòng cache) gồm nhiều word. Đơn vị di chuyển giữa cache và bộ nhớ chính là block.</li>
+<li><b>Hit</b>: tìm thấy trong cache. <b>Miss</b>: không thấy, phải chép block từ bộ nhớ lên, tốn <b>miss penalty</b>.</li>
+<li>Hit rate = số hit / tổng truy xuất. Miss rate = 1 − hit rate.</li>
+</ul>
+<div class="formula">AMAT (mở rộng, sách) = Hit time + Miss rate × Miss penalty</div>
+
+<h3>Ba kiểu ánh xạ</h3>
+<div class="formula big">
+Block address = ⌊Địa chỉ byte / Kích thước block⌋<br>
+Ánh xạ trực tiếp: dòng = Block address mod (số dòng)<br>
+Liên kết tập hợp N‑đường: tập = Block address mod (số tập), số tập = số dòng / N<br>
+Liên kết toàn phần: đặt ở bất kỳ dòng nào
+</div>
+<table>
+<tr><th>Kiểu</th><th>Ưu</th><th>Nhược</th></tr>
+<tr><td>Direct‑mapped</td><td>Cài đặt đơn giản, dùng cho cache lớn</td><td>Nhiều miss nếu địa chỉ phân bố không đều (xung đột)</td></tr>
+<tr><td>N‑way set associative</td><td>Cân bằng</td><td>Cần so sánh N tag trong tập</td></tr>
+<tr><td>Fully associative</td><td>Ít miss nhất</td><td>Phải so sánh tag với tất cả dòng cùng lúc ⇒ chỉ hợp cache nhỏ</td></tr>
+</table>
+<p>Direct‑mapped = 1‑way; fully associative = N‑way với N = số dòng.</p>
+
+<h3>Chia trường địa chỉ</h3>
+<div class="fmt"><div class="bits"><span class="f rs" style="--w:16">Tag<small>còn lại</small></span><span class="f rt" style="--w:9">Index<small>n = log₂(số tập)</small></span><span class="f fn" style="--w:7">Offset<small>m = log₂(byte/block)</small></span></div></div>
+<p>Block 2<sup>m</sup> byte, 2<sup>n</sup> tập ⇒ offset m bit thấp, index n bit kế, tag = phần còn lại. Fully associative không có index.</p>
+
+<h3>Chính sách thay thế</h3>
+<p><b>LRU</b> (thay dòng ít dùng gần đây nhất), LFU (ít dùng nhất), FIFO (vào trước ra trước), ngẫu nhiên.</p>
+<div class="tip"><b>Hay ra thi:</b> cho chuỗi địa chỉ ⇒ lập bảng hit/miss, trạng thái cache, tính hit rate; tách địa chỉ tag/index/offset; bài locality với vòng lặp mảng.</div>
+</div>
+
+<div class="pane" data-p="bt">
+<div class="ex">
+<p class="ex-q"><b>Bài 1.</b> Cache ánh xạ trực tiếp 64 dòng, mỗi dòng 16 byte, địa chỉ 32 bit. Địa chỉ 1200 vào dòng nào?</p>
+<details><summary>Xem lời giải</summary>
+<p>Offset = log₂16 = 4 bit; index = log₂64 = 6 bit; tag = 32 − 10 = 22 bit.</p>
+<p>1200 = 100 1011 0000₂ ⇒ offset 0000, index 001011 = <b>11</b>, tag = 1.</p>
+<p>Kiểm tra: block = ⌊1200/16⌋ = 75; 75 mod 64 = 11 ✓.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 2.</b> Cache liên kết tập hợp 2 đường, 4 dòng, 16 byte/dòng, LRU, ban đầu trống. Chuỗi: 0, 64, 32, 96, 0, 64, 32, 96. Tính hit/miss và trạng thái cuối.</p>
+<details><summary>Xem lời giải</summary>
+<p>4 dòng / 2 đường = 2 tập. Block = địa chỉ/16: 0, 4, 2, 6 ⇒ đều chẵn ⇒ tất cả vào <b>tập 0</b>. Tập 0 chỉ chứa được 2 block mà phải xoay vòng 4 block ⇒ LRU luôn đuổi đúng block sắp dùng.</p>
+<div class="cachesim" data-lines="4" data-block="16" data-ways="2" data-seq="0,64,32,96,0,64,32,96"></div>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 3.</b> Cùng chuỗi trên với cache ánh xạ trực tiếp 4 dòng và liên kết toàn phần 4 dòng (LRU). So sánh.</p>
+<details><summary>Xem lời giải</summary>
+<p>Ánh xạ trực tiếp: block 0, 4 → dòng 0; block 2, 6 → dòng 2 ⇒ đè nhau liên tục.</p>
+<div class="cachesim" data-lines="4" data-block="16" data-ways="1" data-seq="0,64,32,96,0,64,32,96"></div>
+<p>Liên kết toàn phần: 4 block vừa đủ 4 dòng ⇒ 4 miss bắt buộc rồi 4 hit.</p>
+<div class="cachesim" data-lines="4" data-block="16" data-ways="4" data-seq="0,64,32,96,0,64,32,96"></div>
+<p>Kết luận: tăng độ liên kết giảm miss do xung đột.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 4.</b> Ma trận lưu theo dòng, mỗi word là số nguyên 32 bit.</p>
+<pre>for (I = 0; I &lt; 8; I++)
+  for (J = 0; J &lt; 8000; J++)
+    A[I][J] = B[I][0] + A[J][I];</pre>
+<p>(a) Dòng cache 16 byte chứa bao nhiêu số nguyên? (b) Biến nào có cục bộ thời gian? (c) Cục bộ không gian?</p>
+<details><summary>Xem lời giải</summary>
+<p>(a) 16 / 4 = <b>4</b> số nguyên.</p>
+<p>(b) Cục bộ thời gian: <b>I, J</b> (dùng mỗi vòng lặp) và <b>B[I][0]</b> (cùng phần tử được đọc lại suốt 8000 lần lặp J).</p>
+<p>(c) Cục bộ không gian: <b>A[I][J]</b> (J tăng dần, các phần tử liền kề trong một dòng). A[J][I] nhảy cách 8000 phần tử mỗi lần nên không có cục bộ không gian.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 5.</b> Cache 4‑way set associative, 256 dòng, block 32 byte, địa chỉ 32 bit. Số bit tag, index, offset?</p>
+<details><summary>Xem lời giải</summary>
+<p>Số tập = 256 / 4 = 64 ⇒ index 6 bit. Offset = log₂32 = 5 bit. Tag = 32 − 6 − 5 = <b>21</b> bit.</p>
+</details></div>
+<div class="ex">
+<p class="ex-q"><b>Bài 6.</b> Hit time 1 ns, miss rate 5%, miss penalty 60 ns. AMAT?</p>
+<details><summary>Xem lời giải</summary>
+<p>AMAT = 1 + 0,05 × 60 = <b>4 ns</b>.</p>
+</details></div>
+</div>
+</section>
+
+<!-- ============ ĐỀ THI CUỐI KÌ ============ -->
+<section class="view" id="v-exam">
+<header class="chap-head">
+  <p class="chap-no">Luyện đề</p>
+  <h2>Đề thi cuối kì CT173</h2>
+  <p class="chap-src">Theo đề ngày 15/8/2025 (HK III 2024–2025): 9 câu, 75 phút, được dùng tài liệu giấy, không dùng máy tính bỏ túi.</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="cau-truc">Cấu trúc đề</button><button class="tab" data-t="de">Đề 15/8/2025 có giải</button><button class="tab" data-t="luyen">Luyện theo dạng</button></div>
+
+<div class="pane on" data-p="cau-truc">
+<p>Đề cuối kì giữ nguyên khung 9 câu, chỉ đổi số và đổi đoạn code. Ôn theo từng dạng dưới đây là đủ phủ đề.</p>
+<table>
+<tr><th>Câu</th><th>Điểm</th><th>Dạng bài</th><th>Ôn ở</th></tr>
+<tr><td>1</td><td>1</td><td>Định nghĩa cục bộ thời gian / không gian; chỉ ra tham chiếu trong vòng lặp mảng</td><td><a href="#c6">Bộ nhớ</a></td></tr>
+<tr><td>2</td><td>1,5</td><td>Lập bảng giải thuật nhân (hoặc chia) theo cấu trúc phần cứng, 4 bit không dấu</td><td><a href="#c3b">Nhân – chia</a></td></tr>
+<tr><td>3</td><td>1</td><td>Đổi số thực sang Hex IEEE 754 độ chính xác đơn</td><td><a href="#c3">Số chấm động</a></td></tr>
+<tr><td>4</td><td>1,5</td><td>Hiệu suất: tìm Clock cycle / CPU time / CPI, giải thích ký hiệu</td><td><a href="#c1b">Hiệu suất</a></td></tr>
+<tr><td>5</td><td>1</td><td>C sang assembly MIPS: if, if‑else, while, for với &lt;, &gt;, &lt;=, &gt;=</td><td><a href="#c2">MIPS</a></td></tr>
+<tr><td>6</td><td>1</td><td>Lệnh MIPS sang mã máy Hex</td><td><a href="#c2">MIPS</a></td></tr>
+<tr><td>7</td><td>1</td><td>Cộng / trừ hai số 8 bit có dấu, xét tràn và nhớ</td><td><a href="#cnum">Biểu diễn số</a></td></tr>
+<tr><td>8</td><td>1</td><td>Chỉ ra xung đột pipeline, cách giải quyết khi có và không có forwarding</td><td><a href="#c5">Pipeline</a></td></tr>
+<tr><td>9</td><td>1</td><td>Datapath đơn chu kỳ: giải mã mã máy, đầu vào/ra khối Registers, tín hiệu điều khiển, đầu ra các khối Add</td><td><a href="#c4">Bộ xử lý</a></td></tr>
+</table>
+
+<h3>Câu 5: bảng dịch điều kiện (phải thuộc)</h3>
+<p>Quy tắc vàng: <b>viết lệnh nhảy khi điều kiện SAI</b> để bỏ qua thân lệnh. MIPS chỉ có <code>slt/slti</code> (nhỏ hơn) và <code>beq/bne</code>, nên mọi phép so sánh đều quy về "&lt;".</p>
+<div class="tblwrap"><table>
+<tr><th>Điều kiện C</th><th>Nhảy tới L khi SAI (b là thanh ghi)</th><th>Nhảy tới L khi SAI (k là hằng số)</th></tr>
+<tr><td class="m">a &lt; b</td><td class="m">slt $t0, a, b<br>beq $t0, $zero, L</td><td class="m">slti $t0, a, k<br>beq $t0, $zero, L</td></tr>
+<tr><td class="m">a &gt;= b</td><td class="m">slt $t0, a, b<br>bne $t0, $zero, L</td><td class="m">slti $t0, a, k<br>bne $t0, $zero, L</td></tr>
+<tr><td class="m">a &gt; b</td><td class="m">slt $t0, b, a<br>beq $t0, $zero, L</td><td class="m">slti $t0, a, k+1<br>bne $t0, $zero, L</td></tr>
+<tr><td class="m">a &lt;= b</td><td class="m">slt $t0, b, a<br>bne $t0, $zero, L</td><td class="m">slti $t0, a, k+1<br>beq $t0, $zero, L</td></tr>
+<tr><td class="m">a == b</td><td class="m">bne a, b, L</td><td class="m">addi $t2, $zero, k<br>bne a, $t2, L</td></tr>
+<tr><td class="m">a != b</td><td class="m">beq a, b, L</td><td class="m">addi $t2, $zero, k<br>beq a, $t2, L</td></tr>
+</table></div>
+<p class="note">Mẹo nhớ: <code>a &gt; b</code> ⇔ <code>b &lt; a</code> (đảo toán hạng trong slt). Với hằng số, <code>a &gt; k</code> ⇔ không phải <code>a &lt; k+1</code>. Nếu ngại slti, có thể nạp hằng vào thanh ghi trước (<code>addi $t1, $zero, k</code>) rồi dùng cột giữa.</p>
+
+<h3>Câu 5: khung 4 cấu trúc</h3>
+<div class="tblwrap"><table>
+<tr><th>if</th><th>if‑else</th><th>while</th><th>for (init; cond; inc)</th></tr>
+<tr><td><pre>  [nhảy Exit nếu sai]
+  thân
+Exit:</pre></td><td><pre>  [nhảy Else nếu sai]
+  thân then
+  j Exit
+Else:
+  thân else
+Exit:</pre></td><td><pre>Loop:
+  [nhảy Exit nếu sai]
+  thân
+  j Loop
+Exit:</pre></td><td><pre>  init
+Loop:
+  [nhảy Exit nếu sai]
+  thân
+  inc
+  j Loop
+Exit:</pre></td></tr>
+</table></div>
+<div class="tip"><b>Mẹo làm bài:</b> câu 2, 8, 9 nhiều bước nên dễ mất điểm vì sai một dòng. Câu 2 ghi đủ cột thanh ghi ở mọi bước. Câu 8 làm cả hai trường hợp có và không có forwarding. Câu 9 phải ghi cả tín hiệu điều khiển, kể cả giá trị X.</div>
+</div>
+
+<div class="pane" data-p="de" id="examSolved"></div>
+
+<div class="pane" data-p="luyen">
+<p>Mỗi câu có nút <b>Bài mới</b> để sinh bài cùng dạng với số/code khác. Tự làm ra giấy trước, rồi mở lời giải để so.</p>
+<div class="gen" data-g="1"><div class="gen-head"><h3>Câu 1 · Cục bộ</h3><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+<div class="gen" data-g="2"><div class="gen-head"><h3>Câu 2 · Nhân / chia phần cứng</h3><select aria-label="Giải thuật"><option value="">Ngẫu nhiên</option><option value="mul2">Nhân cải tiến</option><option value="mul1">Nhân 3 thanh ghi</option><option value="div1">Chia 3 thanh ghi</option><option value="div2">Chia cải tiến</option></select><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+<div class="gen" data-g="3"><div class="gen-head"><h3>Câu 3 · IEEE 754</h3><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+<div class="gen" data-g="4"><div class="gen-head"><h3>Câu 4 · Hiệu suất</h3><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+<div class="gen" data-g="5"><div class="gen-head"><h3>Câu 5 · C sang MIPS</h3><select aria-label="Cấu trúc"><option value="">Ngẫu nhiên</option><option value="if">if</option><option value="ifelse">if‑else</option><option value="while">while</option><option value="for">for</option></select><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+<div class="gen" data-g="6"><div class="gen-head"><h3>Câu 6 · Mã máy</h3><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+<div class="gen" data-g="7"><div class="gen-head"><h3>Câu 7 · Cộng/trừ 8 bit có dấu</h3><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+<div class="gen" data-g="8"><div class="gen-head"><h3>Câu 8 · Xung đột pipeline</h3><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+<div class="gen" data-g="9"><div class="gen-head"><h3>Câu 9 · Datapath đơn chu kỳ</h3><button class="btn ghost">Bài mới</button></div><div class="gen-q"></div><details><summary>Xem lời giải</summary><div class="gen-a"></div></details></div>
+</div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section class="view" id="v-quiz">
+  <header class="chap-head"><p class="chap-no">Luyện tập</p><h2>Trắc nghiệm</h2><p class="chap-src" id="qScopeTxt"></p></header>
+  <div class="qbar">
+    <label>Số câu
+      <select id="qCount"><option value="10">10</option><option value="20" selected>20</option><option value="40">40</option><option value="0">Tất cả</option></select>
+    </label>
+    <label><input type="checkbox" id="qShuffle" checked> Trộn câu và đáp án</label>
+    <button class="btn" id="qStart">Tạo đề mới</button>
+    <div class="chips" id="qChips" aria-label="Chọn chương"></div>
+  </div>
+  <div class="score" id="qScore" hidden><span id="qScoreTxt">0/0</span><span class="bar"><i id="qBar"></i></span><button class="btn ghost" id="qRetry" style="background:#E9F2E6">Làm lại đề này</button></div>
+  <div id="qList"></div>
+</section>
+
+<!-- ============ CÔNG CỤ ============ -->
+<section class="view" id="v-tools">
+  <header class="chap-head"><p class="chap-no">Luyện tập</p><h2>Công cụ tự kiểm tra</h2><p class="chap-src">Tự giải trên giấy trước, rồi nhập số vào đây để so đáp án.</p></header>
+
+  <div class="tool" id="t-muldiv">
+    <h3>Mô phỏng nhân / chia theo phần cứng</h3>
+    <p>Sinh bảng từng bước đúng quy ước slide. Số không dấu.</p>
+    <div class="row">
+      <label>Giải thuật
+        <select id="mdAlg">
+          <option value="mul1">Nhân 3 thanh ghi</option>
+          <option value="mul2">Nhân cải tiến 2 thanh ghi</option>
+          <option value="div1">Chia 3 thanh ghi (n+1 lần lặp)</option>
+          <option value="div2">Chia cải tiến 2 thanh ghi</option>
+        </select></label>
+      <label>Số thứ nhất (bị nhân / bị chia)<input type="text" id="mdA" value="4" class="m" size="10"></label>
+      <label>Số thứ hai (nhân / chia)<input type="text" id="mdB" value="3" class="m" size="10"></label>
+      <label>Số bit n<input type="number" id="mdN" value="4" min="2" max="16" style="width:80px"></label>
+      <button class="btn" id="mdRun">Lập bảng</button>
+    </div>
+    <p class="note">Nhập số thập phân, hoặc thêm tiền tố 0b (nhị phân), 0o (bát phân), 0x (thập lục phân). Ví dụ 50₈ nhập 0o50.</p>
+    <div class="out" id="mdOut"></div>
+  </div>
+
+  <div class="tool" id="t-cache">
+    <h3>Mô phỏng cache</h3>
+    <p>Nhập cấu hình và chuỗi địa chỉ byte, nhận bảng hit/miss và trạng thái từng tập.</p>
+    <div class="row">
+      <label>Số dòng cache<input type="number" id="cLines" value="4" min="1" max="64" style="width:90px"></label>
+      <label>Byte mỗi dòng<input type="number" id="cBlock" value="16" min="1" style="width:90px"></label>
+      <label>Kiểu
+        <select id="cWays"><option value="1">Ánh xạ trực tiếp</option><option value="2" selected>Liên kết 2 đường</option><option value="4">Liên kết 4 đường</option><option value="0">Liên kết toàn phần</option></select></label>
+      <label>Thay thế<select id="cPol"><option>LRU</option><option>FIFO</option></select></label>
+    </div>
+    <div class="row">
+      <label style="flex:1">Chuỗi địa chỉ (cách nhau bởi dấu phẩy)<input type="text" id="cSeq" class="m" value="0, 64, 32, 96, 0, 64, 32, 96" style="width:100%"></label>
+      <button class="btn" id="cRun">Chạy</button>
+    </div>
+    <div class="out" id="cOut"></div>
+  </div>
+
+  <div class="tool" id="t-mips">
+    <h3>Mã hóa / giải mã lệnh MIPS</h3>
+    <p>Hỗ trợ R (add, sub, and, or, nor, slt, sll, srl, jr, mult, div, mfhi, mflo…), I (addi, andi, ori, slti, lui, lw, sw, beq, bne) và J (j, jal).</p>
+    <div class="row">
+      <label style="flex:1">Assembly → mã máy<input type="text" id="mAsm" class="m" value="lw $t0, 1200($t1)" style="width:100%"></label>
+      <button class="btn" id="mEnc">Mã hóa</button>
+    </div>
+    <div class="out" id="mEncOut"></div>
+    <div class="row" style="margin-top:14px">
+      <label style="flex:1">Mã máy (hex) → assembly<input type="text" id="mHex" class="m" value="0x8E510014" style="width:100%"></label>
+      <button class="btn" id="mDec">Giải mã</button>
+    </div>
+    <div class="out" id="mDecOut"></div>
+  </div>
+
+  <div class="tool" id="t-ieee">
+    <h3>IEEE 754 độ chính xác đơn</h3>
+    <p>Nhập số thực (dùng dấu chấm, ví dụ −0.75) hoặc mã hex 32 bit.</p>
+    <div class="row">
+      <label>Số thực<input type="text" id="iDec" class="m" value="-0.75" size="14"></label>
+      <button class="btn" id="iFromDec">Đổi sang IEEE</button>
+      <label>Hex<input type="text" id="iHex" class="m" value="0xC0A00000" size="14"></label>
+      <button class="btn" id="iFromHex">Đổi sang số thực</button>
+    </div>
+    <div class="out" id="iOut"></div>
+  </div>
+
+  <div class="tool" id="t-base">
+    <h3>Đổi cơ số và bù 2</h3>
+    <p>Nhập số (thập phân, có thể âm; hoặc 0b…, 0o…, 0x…) và số bit.</p>
+    <div class="row">
+      <label>Số<input type="text" id="bVal" class="m" value="-73" size="16"></label>
+      <label>Số bit<input type="number" id="bN" value="8" min="2" max="32" style="width:80px"></label>
+      <button class="btn" id="bRun">Đổi</button>
+    </div>
+    <div class="out" id="bOut"></div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+/* ===== Mô phỏng nhân / chia theo phần cứng (theo quy ước bài giảng) ===== */
+var SIM = (function () {
+  var G = 4;
+  function setG(n) { G = (n % 4 === 0) ? 4 : (n % 3 === 0 ? 3 : 4); }
+  function bin(v, n, g) {
+    v = BigInt(v);
+    var m = (1n << BigInt(n)) - 1n;
+    v = v & m;
+    var s = v.toString(2).padStart(n, '0');
+    return grp(s, g || G);
+  }
+  function grp(s, g) {
+    var out = '';
+    for (var i = 0; i < s.length; i++) {
+      if (i && (s.length - i) % g === 0) out += ' ';
+      out += s[i];
+    }
+    return out;
+  }
+  // Nhân 3 thanh ghi: Mcand 2n bit, Mplier n bit, Product 2n bit
+  function mul1(a, b, n) {
+    setG(n);
+    var N = BigInt(n), M2 = (1n << (2n * N)) - 1n;
+    var mc = BigInt(a), mp = BigInt(b), p = 0n, rows = [];
+    var cols = ['Lần lặp', 'Bước', 'Số nhân (Multiplier)', 'Số bị nhân (Multiplicand)', 'Tích (Product)'];
+    rows.push([0, 'Khởi tạo', bin(mp, n), bin(mc, 2 * n), bin(p, 2 * n)]);
+    for (var i = 1; i <= n; i++) {
+      if (mp & 1n) { p = (p + mc) & M2; rows.push([i, '1a: bit0 = 1 ⇒ Tích = Tích + Số bị nhân', bin(mp, n), bin(mc, 2 * n), bin(p, 2 * n)]); }
+      else rows.push([i, '1: bit0 = 0 ⇒ giữ nguyên', bin(mp, n), bin(mc, 2 * n), bin(p, 2 * n)]);
+      mc = (mc << 1n) & M2; rows.push(['', '2: dịch trái Số bị nhân 1 bit', bin(mp, n), bin(mc, 2 * n), bin(p, 2 * n)]);
+      mp = mp >> 1n; rows.push(['', '3: dịch phải Số nhân 1 bit', bin(mp, n), bin(mc, 2 * n), bin(p, 2 * n)]);
+    }
+    return { cols: cols, rows: rows, result: 'Tích = ' + bin(p, 2 * n) + ' = ' + p.toString() };
+  }
+  // Nhân cải tiến 2 thanh ghi: Mcand n bit, Product 2n bit (multiplier ở nửa thấp)
+  function mul2(a, b, n) {
+    setG(n);
+    var N = BigInt(n), MN = (1n << N) - 1n;
+    var mc = BigInt(a), p = BigInt(b) & MN, carry = 0n, rows = [];
+    var cols = ['Lần lặp', 'Bước', 'Số bị nhân (Multiplicand)', 'Tích / Số nhân (Product)'];
+    rows.push([0, 'Khởi tạo', bin(mc, n), bin(p, 2 * n)]);
+    for (var i = 1; i <= n; i++) {
+      if (p & 1n) {
+        var hi = (p >> N) + mc; carry = hi >> N; hi = hi & MN;
+        p = (hi << N) | (p & MN);
+        rows.push([i, 'bit0 = 1 ⇒ nửa cao Tích = nửa cao + Số bị nhân' + (carry ? ' (nhớ 1)' : ''), bin(mc, n), (carry ? '<u>1</u> ' : '') + bin(p, 2 * n)]);
+      } else { carry = 0n; rows.push([i, 'bit0 = 0 ⇒ không làm gì', bin(mc, n), bin(p, 2 * n)]); }
+      p = (p >> 1n) | (carry << (2n * N - 1n)); carry = 0n;
+      rows.push(['', 'Dịch phải Tích 1 bit', bin(mc, n), bin(p, 2 * n)]);
+    }
+    return { cols: cols, rows: rows, result: 'Tích = ' + bin(p, 2 * n) + ' = ' + p.toString() };
+  }
+  // Chia 3 thanh ghi: Divisor 2n bit (nửa cao), Quotient n bit, Remainder 2n bit; n+1 lần lặp
+  function div1(a, b, n) {
+    setG(n);
+    var N = BigInt(n), M2 = (1n << (2n * N)) - 1n, MN = (1n << N) - 1n;
+    var d = BigInt(b) << N, q = 0n, r = BigInt(a), rows = [];
+    var cols = ['Lần lặp', 'Bước', 'Thương (Q)', 'Số chia (D)', 'Số dư (R)'];
+    rows.push([0, 'Khởi tạo', bin(q, n), bin(d, 2 * n), bin(r, 2 * n)]);
+    for (var i = 1; i <= n + 1; i++) {
+      r = r - d;
+      rows.push([i, 'R = R − D', bin(q, n), bin(d, 2 * n), bin(r, 2 * n)]);
+      if (r < 0n) { r = r + d; q = (q << 1n) & MN; rows.push(['', 'R &lt; 0 ⇒ R = R + D, dịch trái Q, Q0 = 0', bin(q, n), bin(d, 2 * n), bin(r, 2 * n)]); }
+      else { q = ((q << 1n) | 1n) & MN; rows.push(['', 'R ≥ 0 ⇒ dịch trái Q, Q0 = 1', bin(q, n), bin(d, 2 * n), bin(r, 2 * n)]); }
+      d = d >> 1n; rows.push(['', 'Dịch phải D 1 bit', bin(q, n), bin(d, 2 * n), bin(r, 2 * n)]);
+    }
+    return { cols: cols, rows: rows, result: 'Thương = ' + bin(q, n) + ' = ' + q + ', Số dư = ' + bin(r, 2 * n) + ' = ' + r };
+  }
+  // Chia cải tiến (theo slide): Divisor n bit, [R/Q] 2n bit; n lần lặp
+  function div2(a, b, n) {
+    setG(n);
+    var N = BigInt(n), M2 = (1n << (2n * N)) - 1n, MN = (1n << N) - 1n;
+    var d = BigInt(b), rq = BigInt(a) & MN, rows = [];
+    var cols = ['Lần lặp', 'Bước', 'Số chia (D)', 'Số dư / Thương (R/Q)'];
+    rows.push([0, 'Khởi tạo', bin(d, n), bin(rq, 2 * n)]);
+    for (var i = 1; i <= n; i++) {
+      rq = (rq << 1n) & M2;
+      rows.push([i, 'Dịch trái R/Q 1 bit', bin(d, n), bin(rq, 2 * n)]);
+      var hi = (rq >> N), lo = rq & MN, diff = hi - d;
+      if (diff < 0n) {
+        rows.push(['', 'R = R − D = ' + bin(hi, n) + ' − ' + bin(d, n) + ' &lt; 0 ⇒ khôi phục R = R + D', bin(d, n), bin(rq, 2 * n)]);
+        rows.push(['', 'Gán 0 cho bit thấp nhất', bin(d, n), bin(rq, 2 * n)]);
+      } else {
+        rq = (diff << N) | lo;
+        rows.push(['', 'R = R − D = ' + bin(hi, n) + ' − ' + bin(d, n) + ' ≥ 0', bin(d, n), bin(rq, 2 * n)]);
+        rq = rq | 1n;
+        rows.push(['', 'Gán 1 cho bit thấp nhất', bin(d, n), bin(rq, 2 * n)]);
+      }
+    }
+    var R = rq >> N, Q = rq & MN;
+    return { cols: cols, rows: rows, result: 'Nửa cao = số dư = ' + bin(R, n) + ' = ' + R + ', nửa thấp = thương = ' + bin(Q, n) + ' = ' + Q };
+  }
+  function render(res) {
+    var h = '<div class="tblwrap"><table class="sim"><tr>' + res.cols.map(function (c) { return '<th>' + c + '</th>'; }).join('') + '</tr>';
+    res.rows.forEach(function (r) {
+      h += '<tr' + (r[0] !== '' ? ' class="it"' : '') + '>' + r.map(function (c, j) { return '<td' + (j >= 2 ? ' class="m"' : '') + '>' + c + '</td>'; }).join('') + '</tr>';
+    });
+    return h + '</table></div><p class="simres">' + res.result + '</p>';
+  }
+  return { mul1: mul1, mul2: mul2, div1: div1, div2: div2, render: render, bin: bin };
+})();
+
+/* ===== Mô phỏng cache ===== */
+var CACHE = (function () {
+  function run(lines, block, ways, seq, policy) {
+    policy = policy || 'LRU';
+    var sets = Math.max(1, Math.floor(lines / ways));
+    var S = []; for (var i = 0; i < sets; i++) S.push([]); // mỗi tập: mảng {b, t, used}
+    var rows = [], hits = 0, t = 0;
+    seq.forEach(function (addr) {
+      t++;
+      var b = Math.floor(addr / block), s = b % sets, set = S[s], hit = false, ev = null;
+      for (var k = 0; k < set.length; k++) if (set[k] && set[k].b === b) { hit = true; if (policy === 'LRU') set[k].used = t; }
+      if (hit) hits++;
+      else {
+        var empty = -1;
+        for (var k2 = 0; k2 < ways; k2++) if (!set[k2]) { empty = k2; break; }
+        if (empty >= 0) set[empty] = { b: b, used: t, ins: t };
+        else {
+          var vi = 0;
+          for (var k3 = 1; k3 < ways; k3++) {
+            var key = policy === 'FIFO' ? 'ins' : 'used';
+            if (set[k3][key] < set[vi][key]) vi = k3;
+          }
+          ev = set[vi].b; set[vi] = { b: b, used: t, ins: t };
+        }
+      }
+      rows.push({ addr: addr, b: b, s: s, tag: Math.floor(b / sets), hit: hit, ev: ev, snap: S.map(function (st) { var a = []; for (var w = 0; w < ways; w++) a.push(st[w] ? st[w].b : null); return a; }) });
+    });
+    return { rows: rows, hits: hits, total: seq.length, sets: sets, ways: ways };
+  }
+  function render(r) {
+    var kind = r.ways === 1 ? 'Ánh xạ trực tiếp' : (r.sets === 1 ? 'Liên kết toàn phần' : 'Liên kết tập hợp ' + r.ways + ' đường');
+    var h = '<p class="simcap">' + kind + ', ' + r.sets + ' tập × ' + r.ways + ' đường</p><div class="tblwrap"><table class="sim cache"><tr><th>Địa chỉ</th><th>Block</th><th>' + (r.ways === 1 ? 'Dòng' : 'Tập') + '</th><th>Hit/Miss</th>';
+    for (var s = 0; s < r.sets; s++) h += '<th>' + (r.sets === 1 ? 'Cache' : (r.ways === 1 ? 'Dòng ' : 'Tập ') + s) + '</th>';
+    h += '</tr>';
+    r.rows.forEach(function (x) {
+      h += '<tr><td class="m">' + x.addr + '</td><td class="m">' + x.b + '</td><td class="m">' + (r.sets === 1 ? '—' : x.s) + '</td><td class="' + (x.hit ? 'hit' : 'miss') + '">' + (x.hit ? 'hit' : 'miss') + (x.ev !== null ? ' <small>(đuổi M[' + x.ev + '])</small>' : '') + '</td>';
+      x.snap.forEach(function (st, si) {
+        h += '<td class="m' + (si === x.s ? ' cur' : '') + '">' + st.map(function (v) { return v === null ? '·' : 'M[' + v + ']'; }).join(' | ') + '</td>';
+      });
+      h += '</tr>';
+    });
+    var hr = r.hits / r.total * 100;
+    return h + '</table></div><p class="simres">Hit = ' + r.hits + '/' + r.total + ' (' + (+hr.toFixed(2)) + '%), Miss = ' + (r.total - r.hits) + '/' + r.total + ' (' + (+(100 - hr).toFixed(2)) + '%)</p>';
+  }
+  return { run: run, render: render };
+})();
+
+/* ===== IEEE 754 ===== */
+var IEEE = (function () {
+  function fromFloat(x) {
+    var buf = new DataView(new ArrayBuffer(4)); buf.setFloat32(0, x);
+    var u = buf.getUint32(0), b = u.toString(2).padStart(32, '0');
+    var e = parseInt(b.substr(1, 8), 2);
+    return { s: b[0], e: b.substr(1, 8), f: b.substr(9), hex: '0x' + u.toString(16).toUpperCase().padStart(8, '0'), eDec: e, real: e - 127, stored: buf.getFloat32(0) };
+  }
+  function fromHex(h) {
+    var u = parseInt(h.replace(/^0x/i, ''), 16) >>> 0;
+    var buf = new DataView(new ArrayBuffer(4)); buf.setUint32(0, u);
+    return fromFloat(buf.getFloat32(0));
+  }
+  return { fromFloat: fromFloat, fromHex: fromHex };
+})();
+
+/* ===== MIPS encode / decode ===== */
+var MIPS = (function () {
+  var REG = ['zero', 'at', 'v0', 'v1', 'a0', 'a1', 'a2', 'a3', 't0', 't1', 't2', 't3', 't4', 't5', 't6', 't7', 's0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 't8', 't9', 'k0', 'k1', 'gp', 'sp', 'fp', 'ra'];
+  var R = { add: 32, addu: 33, sub: 34, subu: 35, and: 36, or: 37, nor: 39, slt: 42, sltu: 43, sll: 0, srl: 2, sra: 3, jr: 8, mult: 24, multu: 25, div: 26, divu: 27, mfhi: 16, mflo: 18 };
+  var I = { addi: 8, addiu: 9, slti: 10, sltiu: 11, andi: 12, ori: 13, lui: 15, lw: 35, sw: 43, lb: 32, lbu: 36, sb: 40, beq: 4, bne: 5 };
+  var J = { j: 2, jal: 3 };
+  function reg(s) {
+    s = s.trim().replace(/^\$/, '');
+    if (/^\d+$/.test(s)) { var n = +s; if (n < 32) return n; }
+    var i = REG.indexOf(s); if (i < 0) throw 'Không nhận ra thanh ghi "' + s + '"'; return i;
+  }
+  function num(s) { s = s.trim(); var v = /^-?0x/i.test(s) ? parseInt(s, 16) : parseInt(s, 10); if (isNaN(v)) throw 'Không đọc được số "' + s + '"'; return v; }
+  function encode(line) {
+    line = line.replace(/#.*/, '').trim(); if (!line) throw 'Nhập một lệnh, ví dụ: add $t0, $s1, $s2';
+    var m = line.match(/^(\w+)\s*(.*)$/), op = m[1].toLowerCase(), a = m[2].split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+    var f, word;
+    if (op in R) {
+      var rs = 0, rt = 0, rd = 0, sh = 0;
+      if (op === 'sll' || op === 'srl' || op === 'sra') { rd = reg(a[0]); rt = reg(a[1]); sh = num(a[2]); }
+      else if (op === 'jr') { rs = reg(a[0]); }
+      else if (/^(mult|multu|div|divu)$/.test(op)) { rs = reg(a[0]); rt = reg(a[1]); }
+      else if (op === 'mfhi' || op === 'mflo') { rd = reg(a[0]); }
+      else { rd = reg(a[0]); rs = reg(a[1]); rt = reg(a[2]); }
+      f = [['op', 0, 6], ['rs', rs, 5], ['rt', rt, 5], ['rd', rd, 5], ['shamt', sh, 5], ['funct', R[op], 6]];
+      word = (rs << 21 | rt << 16 | rd << 11 | sh << 6 | R[op]) >>> 0;
+      return { fmt: 'R', fields: f, word: word };
+    }
+    if (op in I) {
+      var rs2, rt2, imm;
+      if (/^(lw|sw|lb|lbu|sb)$/.test(op)) {
+        rt2 = reg(a[0]); var mm = (a[1] || '').match(/^(-?\w*)\s*\(\s*(\$?\w+)\s*\)$/); if (!mm) throw 'Dạng đúng: ' + op + ' $rt, offset($rs)';
+        imm = mm[1] === '' ? 0 : num(mm[1]); rs2 = reg(mm[2]);
+      } else if (op === 'beq' || op === 'bne') { rs2 = reg(a[0]); rt2 = reg(a[1]); imm = num(a[2]); }
+      else if (op === 'lui') { rs2 = 0; rt2 = reg(a[0]); imm = num(a[1]); }
+      else { rt2 = reg(a[0]); rs2 = reg(a[1]); imm = num(a[2]); }
+      f = [['op', I[op], 6], ['rs', rs2, 5], ['rt', rt2, 5], ['imm', imm & 0xffff, 16]];
+      word = ((I[op] << 26) | (rs2 << 21) | (rt2 << 16) | (imm & 0xffff)) >>> 0;
+      return { fmt: 'I', fields: f, word: word, note: (op === 'beq' || op === 'bne') ? 'Với beq/bne, imm là số lệnh tính từ PC+4 (offset word).' : '' };
+    }
+    if (op in J) {
+      var ad = num(a[0]);
+      f = [['op', J[op], 6], ['address', ad & 0x3ffffff, 26]];
+      word = ((J[op] << 26) | (ad & 0x3ffffff)) >>> 0;
+      return { fmt: 'J', fields: f, word: word, note: 'address 26 bit = địa chỉ đích / 4 (bỏ 2 bit 00 và 4 bit cao).' };
+    }
+    throw 'Chưa hỗ trợ lệnh "' + op + '"';
+  }
+  function decode(hex) {
+    var w = parseInt(hex.replace(/^0x/i, '').replace(/\s/g, ''), 16) >>> 0;
+    if (isNaN(w)) throw 'Nhập mã máy dạng hex, ví dụ 0x8E510014';
+    var op = w >>> 26, rs = (w >>> 21) & 31, rt = (w >>> 16) & 31, rd = (w >>> 11) & 31, sh = (w >>> 6) & 31, fn = w & 63, imm = w & 0xffff, simm = imm & 0x8000 ? imm - 0x10000 : imm;
+    var r = function (n) { return '$' + REG[n]; }, name, asm, fields;
+    if (op === 0) {
+      name = Object.keys(R).filter(function (k) { return R[k] === fn; })[0]; if (!name) throw 'funct ' + fn + ' chưa hỗ trợ';
+      fields = [['op', 0, 6], ['rs', rs, 5], ['rt', rt, 5], ['rd', rd, 5], ['shamt', sh, 5], ['funct', fn, 6]];
+      if (/^(sll|srl|sra)$/.test(name)) asm = name + ' ' + r(rd) + ', ' + r(rt) + ', ' + sh;
+      else if (name === 'jr') asm = 'jr ' + r(rs);
+      else if (/^(mult|multu|div|divu)$/.test(name)) asm = name + ' ' + r(rs) + ', ' + r(rt);
+      else if (name === 'mfhi' || name === 'mflo') asm = name + ' ' + r(rd);
+      else asm = name + ' ' + r(rd) + ', ' + r(rs) + ', ' + r(rt);
+      return { fmt: 'R', fields: fields, asm: asm, word: w };
+    }
+    var jn = Object.keys(J).filter(function (k) { return J[k] === op; })[0];
+    if (jn) return { fmt: 'J', fields: [['op', op, 6], ['address', w & 0x3ffffff, 26]], asm: jn + ' 0x' + ((w & 0x3ffffff) * 4).toString(16) + '  (địa chỉ ×4, ghép 4 bit cao của PC+4)', word: w };
+    name = Object.keys(I).filter(function (k) { return I[k] === op; })[0]; if (!name) throw 'opcode ' + op + ' chưa hỗ trợ';
+    fields = [['op', op, 6], ['rs', rs, 5], ['rt', rt, 5], ['imm', imm, 16]];
+    if (/^(lw|sw|lb|lbu|sb)$/.test(name)) asm = name + ' ' + r(rt) + ', ' + simm + '(' + r(rs) + ')';
+    else if (name === 'beq' || name === 'bne') asm = name + ' ' + r(rs) + ', ' + r(rt) + ', ' + simm;
+    else if (name === 'lui') asm = 'lui ' + r(rt) + ', ' + imm;
+    else if (/^(andi|ori)$/.test(name)) asm = name + ' ' + r(rt) + ', ' + r(rs) + ', ' + imm;
+    else asm = name + ' ' + r(rt) + ', ' + r(rs) + ', ' + simm;
+    return { fmt: 'I', fields: fields, asm: asm, word: w };
+  }
+  function render(res) {
+    var cls = { op: 'op', rs: 'rs', rt: 'rt', rd: 'rd', shamt: 'sh', funct: 'fn', imm: 'im', address: 'ad' };
+    var h = '<div class="bits out">';
+    res.fields.forEach(function (f) {
+      h += '<span class="f ' + cls[f[0]] + '" style="--w:' + f[2] + '">' + f[0] + ' = ' + f[1] + '<small class="m">' + (f[1] >>> 0).toString(2).padStart(f[2], '0').slice(-f[2]) + '</small></span>';
+    });
+    h += '</div><p class="simres">' + res.fmt + '‑format · Hex: <b class="m">0x' + res.word.toString(16).toUpperCase().padStart(8, '0') + '</b>' + (res.asm ? ' · Assembly: <b class="m">' + res.asm + '</b>' : '') + '</p>';
+    if (res.note) h += '<p class="note">' + res.note + '</p>';
+    return h;
+  }
+  return { encode: encode, decode: decode, render: render };
+})();
+if (typeof module !== 'undefined') module.exports = { SIM: SIM, CACHE: CACHE, IEEE: IEEE, MIPS: MIPS };
+
+var QUIZ = [
+/* ---------- c1: Khái niệm & công nghệ ---------- */
+{c:'c1',q:'Máy tính thế hệ thứ nhất (1940s) sử dụng linh kiện nào?',o:['Transistor','Bóng đèn chân không','Mạch tích hợp','VLSI'],a:1,e:'Thế hệ 1 dùng bóng đèn chân không (ENIAC, UNIVAC…). Transistor là thế hệ 2.'},
+{c:'c1',q:'Ai đề xuất mô hình máy tính (máy IAS) được dùng đến ngày nay?',o:['Gordon Moore','Charles Babbage','John von Neumann','Alan Turing'],a:2,e:'Máy IAS của John von Neumann đề xuất mô hình lưu trữ chương trình.'},
+{c:'c1',q:'Lớp máy tính phổ biến nhất và trải rộng nhất về ứng dụng là:',o:['Máy tính để bàn','Máy chủ','Siêu máy tính','Máy tính nhúng'],a:3,e:'Máy tính nhúng có trong máy giặt, xe, điện thoại… là lớp phổ biến nhất.'},
+{c:'c1',q:'Yêu cầu quan trọng nhất của ứng dụng nhúng là:',o:['Hiệu năng cao nhất','Đạt hiệu năng tối thiểu cần thiết với chi phí và năng lượng thấp nhất','Nhiều người dùng đồng thời','Chạy phần mềm shrink‑wrap'],a:1,e:'Slide: đạt hiệu năng cần thiết tối thiểu với chi phí và năng lượng tiêu thụ thấp nhất.'},
+{c:'c1',q:'Chương trình dịch hợp ngữ sang mã máy nhị phân là:',o:['Compiler','Assembler','Linker','Loader'],a:1,e:'Compiler: cấp cao → assembly. Assembler: assembly → nhị phân.'},
+{c:'c1',q:'Thành phần nào của CPU được ví như "bộ não"?',o:['Datapath','Control','Cache','ALU'],a:1,e:'Datapath như cơ bắp, Control như bộ não.'},
+{c:'c1',q:'Bộ nhớ cache thường được xây dựng bằng công nghệ:',o:['DRAM','SRAM','Flash','Đĩa từ'],a:1,e:'Cache dùng SRAM: nhanh hơn, kém dày đặc hơn và đắt hơn DRAM.'},
+{c:'c1',q:'Bộ nhớ nào là khả biến (volatile)?',o:['Flash','Đĩa từ','DRAM','DVD'],a:2,e:'DRAM mất dữ liệu khi mất điện.'},
+{c:'c1',q:'So với DRAM và đĩa từ, bộ nhớ Flash:',o:['Nhanh hơn DRAM, rẻ hơn đĩa','Rẻ và chậm hơn DRAM, đắt và nhanh hơn đĩa từ','Đắt hơn DRAM','Chậm hơn đĩa từ'],a:1,e:'Đúng theo slide chương 1.'},
+{c:'c1',q:'Định luật Moore phát biểu:',o:['Tốc độ CPU tăng gấp đôi mỗi năm','Số transistor trên IC tăng gấp đôi mỗi 18–24 tháng','Giá bộ nhớ giảm một nửa mỗi năm','Điện năng giảm một nửa mỗi 2 năm'],a:1,e:'Gordon Moore: số transistor tăng gấp đôi mỗi 18–24 tháng.'},
+{c:'c1',q:'Màn hình 640×480, mỗi màu R, G, B dùng 8 bit. Frame buffer tối thiểu là:',o:['307.200 bit','921.600 bit','7.372.800 bit','2.457.600 bit'],a:2,e:'640 × 480 × 24 = 7.372.800 bit.'},
+{c:'c1',q:'DIMM khác SIMM ở điểm:',o:['DIMM chứa SRAM','DIMM có chip DRAM trên cả hai mặt','DIMM là bộ nhớ ngoài','DIMM là bộ nhớ không bay hơi'],a:1,e:'DIMM: dual inline, DRAM trên hai mặt; SIMM chỉ một mặt.'},
+{c:'c1',q:'Mạng Ethernet thuộc loại mạng nào?',o:['WAN','LAN','Wireless 802.11','Mạng cáp quang xuyên lục địa'],a:1,e:'Ethernet ~1 km, tới 10 Gbit/s: ví dụ điển hình của LAN.'},
+/* ---------- c1b: Hiệu suất ---------- */
+{c:'c1b',q:'CPU time bằng:',o:['IC × CPI × Clock rate','IC × CPI / Clock rate','IC / (CPI × Clock rate)','CPI / (IC × Clock rate)'],a:1,e:'CPU time = IC × CPI × Clock cycle = IC × CPI / Clock rate.'},
+{c:'c1b',q:'CPU 2,5 GHz có chu kỳ xung là:',o:['0,25 ns','0,4 ns','2,5 ns','4 ns'],a:1,e:'1 / 2,5×10⁹ = 0,4×10⁻⁹ s.'},
+{c:'c1b',q:'Chương trình 1000 lệnh, CPI 3,5, CPU 4 GHz. CPU time =',o:['875 ns','3500 ns','250 ns','14.000 ns'],a:0,e:'3500 chu kỳ × 0,25 ns = 875 ns.'},
+{c:'c1b',q:'Máy A: cycle 250 ps, CPI 2,0. Máy B: cycle 500 ps, CPI 1,2 (cùng ISA). Kết luận:',o:['B nhanh hơn 1,2 lần','A nhanh hơn 1,2 lần','A nhanh hơn 2 lần','Bằng nhau'],a:1,e:'A: 500·I ps, B: 600·I ps ⇒ A nhanh hơn 600/500 = 1,2 lần.'},
+{c:'c1b',q:'Máy A chạy 10 s ở 2 GHz. Máy B cần gấp 1,2 lần số chu kỳ và muốn chạy 6 s. Tần số B:',o:['2,4 GHz','3,3 GHz','4 GHz','6 GHz'],a:2,e:'Cycles A = 20×10⁹; B = 24×10⁹; 24×10⁹/6 = 4 GHz.'},
+{c:'c1b',q:'Tỉ lệ ALU 40% (CPI 1), MEM 40% (CPI 3), JUMP 20% (CPI 2). CPI trung bình:',o:['1,8','2,0','2,2','2,4'],a:1,e:'0,4 + 1,2 + 0,4 = 2,0.'},
+{c:'c1b',q:'Yếu tố nào KHÔNG ảnh hưởng tới số lệnh IC?',o:['Thuật toán','Trình biên dịch','ISA','Hiện thực phần cứng (tổ chức)'],a:3,e:'Tổ chức phần cứng ảnh hưởng CPI và clock rate, không ảnh hưởng IC.'},
+{c:'c1b',q:'"Máy X nhanh hơn máy Y n lần" nghĩa là:',o:['n = Time_X / Time_Y','n = Time_Y / Time_X','n = CPI_X / CPI_Y','n = Clock_Y / Clock_X'],a:1,e:'n = P_X / P_Y = Time_Y / Time_X.'},
+{c:'c1b',q:'Đoạn code có CPI thấp hơn thì:',o:['Luôn nhanh hơn','Luôn ít lệnh hơn','Chưa chắc nhanh hơn, phải so CPU time','Luôn chậm hơn'],a:2,e:'CPU time phụ thuộc cả IC và clock, nên CPI thấp chưa chắc nhanh.'},
+{c:'c1b',q:'Máy 2 GHz, CPI 2. Tốc độ MIPS là:',o:['500','1000','2000','4000'],a:1,e:'MIPS = Clock rate / (CPI × 10⁶) = 2×10⁹/(2×10⁶) = 1000.'},
+{c:'c1b',q:'Throughput (thông năng) là:',o:['Thời gian hoàn thành một tác vụ','Số tác vụ hoàn thành trong một đơn vị thời gian','Số chu kỳ mỗi lệnh','Tần số xung'],a:1,e:'Throughput / bandwidth: số tác vụ trên đơn vị thời gian.'},
+/* ---------- cnum: Biểu diễn số ---------- */
+{c:'cnum',q:'172₁₀ đổi sang hệ 16 là:',o:['AC','CA','B4','9C'],a:0,e:'172 = 10·16 + 12 ⇒ AC.'},
+{c:'cnum',q:'10101100₂ đổi sang hệ 8 là:',o:['254','524','2541','154'],a:0,e:'Nhóm 3 bit: 010 101 100 = 2 5 4.'},
+{c:'cnum',q:'Biểu diễn −6 bằng bù 2, 4 bit:',o:['1110','1001','1010','0110'],a:2,e:'0110 → đảo 1001 → +1 = 1010. 1110 là dấu–độ lớn, 1001 là bù 1.'},
+{c:'cnum',q:'Số có dấu 8 bit 10110011 có giá trị:',o:['179','−77','−51','−76'],a:1,e:'−128 + 32 + 16 + 2 + 1 = −77.'},
+{c:'cnum',q:'Miền giá trị số có dấu bù 2 8 bit:',o:['0 … 255','−127 … 127','−128 … 127','−128 … 128'],a:2,e:'−2⁷ … 2⁷ − 1.'},
+{c:'cnum',q:'Phép nào chắc chắn KHÔNG tràn (số có dấu)?',o:['Cộng hai số dương','Cộng hai số trái dấu','Trừ hai số trái dấu','Cộng hai số âm'],a:1,e:'Cộng hai số trái dấu hoặc trừ hai số cùng dấu không bao giờ tràn.'},
+{c:'cnum',q:'60 + 88 với 8 bit bù 2 cho kết quả:',o:['148, đúng','−108, tràn số','−116, tràn số','20, đúng'],a:1,e:'10010100 = −108, hai số dương ra âm ⇒ tràn.'},
+{c:'cnum',q:'Ưu điểm của bù 2 so với bù 1:',o:['Có hai số 0','Chỉ có một số 0, cộng trừ đơn giản','Biểu diễn được số thực','Không cần bit dấu'],a:1,e:'Bù 2 chỉ có một số 0, cộng/trừ dùng chung mạch.'},
+{c:'cnum',q:'Dịch phải số học −4 (11111100) 1 bit được:',o:['01111110','11111110','11111000','00000010'],a:1,e:'Dịch phải số học chèn bit dấu ⇒ 11111110 = −2.'},
+{c:'cnum',q:'0,625₁₀ đổi sang nhị phân:',o:['0,011','0,101','0,110','0,1011'],a:1,e:'0,625·2 = 1,25 (1); 0,25·2 = 0,5 (0); 0,5·2 = 1 (1) ⇒ 0,101.'},
+{c:'cnum',q:'Mở rộng có dấu số 16 bit 0xFFFE lên 32 bit:',o:['0x0000FFFE','0xFFFFFFFE','0xFFFE0000','0x8000FFFE'],a:1,e:'Bit dấu = 1 ⇒ chép 1 sang 16 bit cao.'},
+{c:'cnum',q:'Khi có tràn số, MIPS lưu địa chỉ lệnh gây tràn vào:',o:['$ra','PC','EPC','$at'],a:2,e:'Exception PC (EPC), rồi nhảy tới trình xử lý ngoại lệ.'},
+{c:'cnum',q:'−7 : 3 (chia có dấu) cho thương và dư:',o:['−2 và −1','−3 và 2','−2 và 1','−3 và −2'],a:0,e:'Thương âm (trái dấu) = −2; dư = −7 − (−2)(3) = −1.'},
+/* ---------- c2: ISA ---------- */
+{c:'c2',q:'MIPS‑32 có bao nhiêu thanh ghi đa dụng?',o:['8','16','32','64'],a:2,e:'32 thanh ghi 32 bit.'},
+{c:'c2',q:'Thanh ghi $s0 có chỉ số:',o:['8','16','4','24'],a:1,e:'$s0–$s7 là 16–23; $t0–$t7 là 8–15.'},
+{c:'c2',q:'Thanh ghi $t3 có chỉ số:',o:['3','11','19','27'],a:1,e:'$t0 = 8 ⇒ $t3 = 11.'},
+{c:'c2',q:'Trường opcode trong mọi định dạng lệnh MIPS dài:',o:['5 bit','6 bit','8 bit','16 bit'],a:1,e:'op luôn 6 bit [31:26].'},
+{c:'c2',q:'Các lệnh R‑format có opcode bằng:',o:['0','1','35','Tùy lệnh'],a:0,e:'R‑format op = 0, phân biệt bằng funct.'},
+{c:'c2',q:'Lệnh add và sub được phân biệt bằng trường:',o:['op','shamt','funct','rs'],a:2,e:'funct = 32 (add), 34 (sub).'},
+{c:'c2',q:'Trường shamt dùng cho:',o:['Lệnh nhảy','Lệnh dịch bit','Lệnh nạp/lưu','Số tức thời'],a:1,e:'shamt = số bit dịch trong sll/srl/sra; lệnh khác = 0.'},
+{c:'c2',q:'Lệnh lw, sw, addi, beq thuộc định dạng:',o:['R','I','J','Không có'],a:1,e:'I‑format: op, rs, rt, immediate 16 bit.'},
+{c:'c2',q:'Lệnh j có trường address dài:',o:['16 bit','26 bit','32 bit','28 bit'],a:1,e:'J‑format: op 6 + address 26.'},
+{c:'c2',q:'A là mảng word, nền ở $s3. Lệnh nạp A[8] vào $t0:',o:['lw $t0, 8($s3)','lw $t0, 32($s3)','lw $s3, 32($t0)','sw $t0, 32($s3)'],a:1,e:'Đánh địa chỉ theo byte ⇒ offset = 8 × 4 = 32.'},
+{c:'c2',q:'Trong MIPS, địa chỉ một word phải:',o:['Là số lẻ','Là bội của 4','Là bội của 8','Bất kỳ'],a:1,e:'Alignment restriction: word bắt đầu ở địa chỉ chia hết cho 4.'},
+{c:'c2',q:'MIPS lưu trữ theo kiểu:',o:['Little Endian','Big Endian','Middle Endian','Tùy hệ điều hành'],a:1,e:'MIPS là Big Endian.'},
+{c:'c2',q:'Mã máy của add $t0, $s1, $s2 là:',o:['0x02324020','0x02328020','0x01124020','0x8E324020'],a:0,e:'000000 10001 10010 01000 00000 100000 = 0x02324020.'},
+{c:'c2',q:'0x8E510014 là lệnh:',o:['sw $s1, 20($s2)','lw $s2, 20($s1)','lw $s1, 20($s2)','addi $s1, $s2, 20'],a:2,e:'op = 35 (lw), rs = 18 ($s2), rt = 17 ($s1), imm = 20.'},
+{c:'c2',q:'Opcode của lw là:',o:['35 (0x23)','43 (0x2B)','4','8'],a:0,e:'lw 35, sw 43, beq 4, addi 8.'},
+{c:'c2',q:'Lệnh beq tính địa chỉ đích như thế nào?',o:['PC + offset','PC + 4 + offset × 4','offset × 4','{PC[31:28], offset, 00}'],a:1,e:'Định địa chỉ tương đối PC: PC + 4 + offset × 4.'},
+{c:'c2',q:'Lệnh jal label thực hiện:',o:['PC = $ra','$ra = PC + 4; PC = label','$sp = $sp − 4','PC = label, không lưu gì'],a:1,e:'jump‑and‑link lưu địa chỉ trả về vào $ra.'},
+{c:'c2',q:'Thanh ghi dùng truyền 4 tham số đầu cho thủ tục:',o:['$v0–$v1','$a0–$a3','$t0–$t3','$s0–$s3'],a:1,e:'$a0–$a3 tham số; $v0–$v1 giá trị trả về.'},
+{c:'c2',q:'Theo quy ước, thủ tục dùng thanh ghi nào thì PHẢI lưu lên stack và khôi phục?',o:['$t0–$t9','$s0–$s7','$a0–$a3','$v0–$v1'],a:1,e:'$s là thanh ghi bền vững; $t là tạm không cần lưu.'},
+{c:'c2',q:'PUSH một thanh ghi lên stack trong MIPS:',o:['sw rồi addi $sp,$sp,4','addi $sp,$sp,-4 rồi sw','lw rồi addi $sp,$sp,4','Dùng lệnh push'],a:1,e:'Stack lớn dần xuống: trừ $sp 4 rồi sw. MIPS không có lệnh push/pop.'},
+{c:'c2',q:'Lệnh nào là lệnh giả (pseudo instruction)?',o:['slt','beq','blt','bne'],a:2,e:'blt, bgt, ble, bge là lệnh giả, dịch thành slt + beq/bne.'},
+{c:'c2',q:'Cặp slt $t0,$s0,$s1 + bne $t0,$zero,L nhảy tới L khi:',o:['$s0 ≥ $s1','$s0 < $s1','$s0 == $s1','$s0 > $s1'],a:1,e:'$t0 = 1 khi $s0 < $s1; bne nhảy khi $t0 ≠ 0.'},
+{c:'c2',q:'Thủ tục không gọi thủ tục nào khác gọi là:',o:['Nested procedure','Leaf procedure','Caller','Root procedure'],a:1,e:'Leaf procedure.'},
+{c:'c2',q:'Thanh ghi $sp có chỉ số:',o:['28','29','30','31'],a:1,e:'$gp 28, $sp 29, $fp 30, $ra 31.'},
+{c:'c2',q:'Lệnh nào có xét tràn số?',o:['addu','addiu','add','subu'],a:2,e:'add, addi, sub xét tràn; bản u thì không.'},
+/* ---------- c3: Số học, FP ---------- */
+{c:'c3',q:'Sau lệnh div trong MIPS, thanh ghi Hi chứa:',o:['Thương','Số dư','32 bit cao của tích','Số chia'],a:1,e:'Hi = dư, Lo = thương.'},
+{c:'c3',q:'Nhân hai số 32 bit, MIPS lưu tích 64 bit vào:',o:['$v0:$v1','Hi:Lo','$t0:$t1','EPC'],a:1,e:'Hi và Lo; lấy ra bằng mfhi/mflo.'},
+{c:'c3',q:'IEEE 754 độ chính xác đơn có bao nhiêu bit exponent và fraction?',o:['8 và 23','11 và 52','8 và 24','7 và 24'],a:0,e:'1 dấu + 8 mũ + 23 lẻ = 32.'},
+{c:'c3',q:'Bias của IEEE 754 độ chính xác kép là:',o:['127','255','1023','2047'],a:2,e:'Đơn 127, kép 1023.'},
+{c:'c3',q:'−0,75 biểu diễn theo IEEE 754 đơn (hex):',o:['0x3F400000','0xBF400000','0xBF000000','0xC0400000'],a:1,e:'1 01111110 100… = 0xBF400000.'},
+{c:'c3',q:'Biểu diễn 1 10000001 0100…0 có giá trị:',o:['−2,5','−5,0','5,0','−10,0'],a:1,e:'−1,25 × 2^(129−127) = −5.'},
+{c:'c3',q:'Số nào là normalized (dạng chuẩn)?',o:['0,1 × 10⁻⁸','10,0 × 10⁻¹⁰','1,0 × 10⁻⁹','0,01 × 10²'],a:2,e:'Đúng 1 chữ số khác 0 bên trái dấu chấm.'},
+{c:'c3',q:'Phần mũ lưu của hai số IEEE đơn là 137 và 122. Phần mũ lưu của tích:',o:['259','132','15','137'],a:1,e:'137 + 122 − 127 = 132.'},
+{c:'c3',q:'Bước đầu tiên khi cộng hai số chấm động:',o:['Cộng số mũ','Nhân phần trị','Dịch phần trị số có mũ nhỏ hơn cho bằng mũ lớn hơn','Làm tròn'],a:2,e:'Canh bằng số mũ trước khi cộng significand.'},
+{c:'c3',q:'Exponent = 255 và Fraction = 0 (IEEE đơn) biểu diễn:',o:['0','NaN','±∞','Số không chuẩn'],a:2,e:'E = 255, F = 0 ⇒ vô cực; F ≠ 0 ⇒ NaN.'},
+{c:'c3',q:'Tăng số bit của phần fraction sẽ:',o:['Tăng tầm trị','Tăng độ chính xác','Giảm độ chính xác','Không ảnh hưởng'],a:1,e:'Fraction ↔ độ chính xác; exponent ↔ tầm trị.'},
+{c:'c3',q:'Vì sao IEEE 754 dùng bias cho exponent thay vì bù 2?',o:['Tiết kiệm bit','Để so sánh số mũ như số không dấu, dễ sắp xếp','Để biểu diễn được NaN','Để tăng độ chính xác'],a:1,e:'Với bù 2, số mũ âm trông như số lớn; bias giúp so sánh trực tiếp.'},
+{c:'c3',q:'5,75 theo IEEE 754 đơn có phần exponent lưu là:',o:['127','128','129','130'],a:2,e:'5,75 = 1,0111 × 2² ⇒ 2 + 127 = 129.'},
+{c:'c3',q:'Lệnh nhân số thực độ chính xác kép trong MIPS:',o:['mult','multu','mul.s','mul.d'],a:3,e:'.s = single, .d = double.'},
+/* ---------- c3b: Nhân chia phần cứng ---------- */
+{c:'c3b',q:'Nhân 3 thanh ghi cho hai số n bit: thanh ghi Multiplicand rộng:',o:['n bit','2n bit','n + 1 bit','4n bit'],a:1,e:'Multiplicand 2n bit (dịch trái dần), Multiplier n bit, Product 2n bit.'},
+{c:'c3b',q:'Mỗi vòng lặp nhân 3 thanh ghi gồm:',o:['Kiểm tra bit 0, cộng; dịch phải Multiplicand; dịch trái Multiplier','Kiểm tra bit 0 Multiplier, cộng nếu = 1; dịch trái Multiplicand; dịch phải Multiplier','Trừ; kiểm tra dấu; dịch','Chỉ cộng'],a:1,e:'3 bước: 1a cộng nếu bit0 = 1; dịch trái Multiplicand; dịch phải Multiplier.'},
+{c:'c3b',q:'Nhân cải tiến 2 thanh ghi: số nhân được đặt ở đâu khi khởi tạo?',o:['Nửa cao của Product','Nửa thấp của Product','Thanh ghi Multiplicand','Thanh ghi Hi'],a:1,e:'Product 2n bit: nửa cao 0, nửa thấp = multiplier.'},
+{c:'c3b',q:'Nhân cải tiến: khi bit 0 của Product = 1 thì:',o:['Cả Product cộng Multiplicand','Nửa cao Product cộng Multiplicand','Nửa thấp cộng Multiplicand','Dịch trái Product'],a:1,e:'Cộng vào nửa cao rồi dịch phải cả Product.'},
+{c:'c3b',q:'Số vòng lặp của giải thuật chia 3 thanh ghi với số n bit:',o:['n − 1','n','n + 1','2n'],a:2,e:'Chia bản đầu lặp n + 1 lần; nhân lặp n lần.'},
+{c:'c3b',q:'Chia 3 thanh ghi: khi khởi tạo, số chia đặt ở:',o:['Nửa thấp Divisor','Nửa cao Divisor','Remainder','Quotient'],a:1,e:'Divisor 2n bit: số chia ở nửa cao; số bị chia ở nửa thấp Remainder.'},
+{c:'c3b',q:'Chia 3 thanh ghi: sau R = R − D, nếu R < 0 thì:',o:['Dịch trái Q, Q0 = 1','R = R + D, dịch trái Q, Q0 = 0','Dừng thuật toán','Dịch trái D'],a:1,e:'Khôi phục R rồi dịch trái Q với bit 0 = 0. Sau đó dịch phải D.'},
+{c:'c3b',q:'Nhân 3 thanh ghi 4 bit: 4 × 3. Sau vòng lặp 1, Product bằng:',o:['0000 0000','0000 0100','0000 1000','0000 1100'],a:1,e:'Multiplier 0011 có bit0 = 1 ⇒ Product = 0 + 0000 0100.'},
+{c:'c3b',q:'Chia cải tiến 7 : 3 (4 bit). Kết quả thanh ghi R/Q cuối cùng:',o:['0001 0010','0010 0001','0000 0111','0011 0010'],a:0,e:'Nửa cao = dư 0001, nửa thấp = thương 0010.'},
+{c:'c3b',q:'Chia cải tiến: mỗi vòng lặp bắt đầu bằng:',o:['Dịch phải Divisor','Dịch trái thanh ghi R/Q 1 bit','Cộng Divisor','Kiểm tra bit 0'],a:1,e:'Dịch trái R/Q, trừ nửa cao cho D, rồi gán bit thấp nhất 0 hoặc 1.'},
+{c:'c3b',q:'Nhân 32 bit bằng giải thuật 3 thanh ghi, mỗi bước 1 chu kỳ, cần khoảng:',o:['32 chu kỳ','64 chu kỳ','~100 chu kỳ','1 chu kỳ'],a:2,e:'3 bước × 32 lần ≈ 100 chu kỳ.'},
+/* ---------- c4: Bộ xử lý ---------- */
+{c:'c4',q:'Datapath trong chương bộ xử lý hỗ trợ bao nhiêu lệnh?',o:['5','8','10','32'],a:1,e:'lw, sw, add, sub, and, or, slt, beq.'},
+{c:'c4',q:'Khối nào là mạch tổ hợp?',o:['Register file','Data memory','ALU','PC'],a:2,e:'ALU là tổ hợp; bộ nhớ, thanh ghi, PC là phần tử trạng thái.'},
+{c:'c4',q:'Chu kỳ clock và CPI được quyết định bởi:',o:['Trình biên dịch','Kiến trúc tập lệnh','Hiện thực bộ xử lý','Thuật toán'],a:2,e:'IC do compiler & ISA; CPI và clock do hiện thực bộ xử lý.'},
+{c:'c4',q:'Register file trong mỗi lệnh cho phép:',o:['Đọc 1, ghi 2','Đọc tối đa 2, ghi tối đa 1','Đọc 3, ghi 1','Đọc 2, ghi 2'],a:1,e:'2 cổng đọc, 1 cổng ghi (RegWrite).'},
+{c:'c4',q:'Tín hiệu RegDst = 1 nghĩa là:',o:['Ghi vào rt','Ghi vào rd','Không ghi','Ghi vào $ra'],a:1,e:'RegDst = 1 chọn rd [15:11] (R‑type); 0 chọn rt (lw).'},
+{c:'c4',q:'ALUSrc = 1 khi:',o:['Lệnh R‑type','Lệnh beq','Lệnh lw/sw','Không bao giờ'],a:2,e:'lw/sw cần immediate sign‑extend làm input 2 của ALU.'},
+{c:'c4',q:'MemtoReg = 1 khi:',o:['add','lw','sw','beq'],a:1,e:'Dữ liệu ghi vào thanh ghi lấy từ Data memory chỉ với lw.'},
+{c:'c4',q:'Bộ tín hiệu của lệnh sw là:',o:['RegWrite=1, MemWrite=1','RegWrite=0, MemWrite=1, ALUSrc=1','RegWrite=1, MemRead=1','Branch=1, ALUSrc=0'],a:1,e:'sw: RegDst X, ALUSrc 1, MemtoReg X, RegWrite 0, MemRead 0, MemWrite 1, Branch 0, ALUOp 00.'},
+{c:'c4',q:'ALUOp của lệnh beq là:',o:['00','01','10','11'],a:1,e:'lw/sw 00, beq 01, R‑type 10.'},
+{c:'c4',q:'Mã ALU control của phép subtract là:',o:['0010','0110','0111','0000'],a:1,e:'AND 0000, OR 0001, add 0010, sub 0110, slt 0111, NOR 1100.'},
+{c:'c4',q:'Với lệnh beq, ALU thực hiện phép:',o:['add','subtract','AND','slt'],a:1,e:'Trừ hai thanh ghi để kiểm tra Zero.'},
+{c:'c4',q:'PCSrc (chọn địa chỉ đích nhánh) được tạo bởi:',o:['Branch OR Zero','Branch AND Zero','RegWrite AND Zero','ALUOp'],a:1,e:'Chỉ nhảy khi là beq và kết quả so sánh bằng 0.'},
+{c:'c4',q:'Trong hiện thực đơn chu kỳ, chu kỳ clock được chọn theo:',o:['Lệnh ngắn nhất','Thời gian trung bình','Lệnh dài nhất (lw)','Lệnh beq'],a:2,e:'Mọi lệnh 1 chu kỳ ⇒ phải đủ dài cho lw.'},
+{c:'c4',q:'Bộ nhớ 200 ps, ALU 200 ps, thanh ghi 100 ps. Thời gian lệnh R‑type đơn chu kỳ là:',o:['500 ps','600 ps','700 ps','800 ps'],a:1,e:'200 + 100 + 200 + 100 = 600 (không truy xuất D‑Mem).'},
+{c:'c4',q:'Lệnh nào KHÔNG dùng công đoạn ghi kết quả vào thanh ghi?',o:['add','lw','slt','sw'],a:3,e:'sw, beq không ghi thanh ghi.'},
+{c:'c4',q:'Khối Shift left 2 trong datapath dùng để:',o:['Tính PC + 4','Nhân offset nhánh với 4','Sign‑extend','Dịch kết quả ALU'],a:1,e:'Offset tính theo word, đổi sang byte trước khi cộng PC + 4.'},
+{c:'c4',q:'MUX có 8 input cần bao nhiêu bit điều khiển?',o:['2','3','4','8'],a:1,e:'n = 2^m ⇒ m = 3.'},
+{c:'c4',q:'Nhược điểm chính của hiện thực đơn chu kỳ:',o:['CPI lớn','Chu kỳ clock quá dài, lệnh ngắn phải chờ như lệnh dài','Cần nhiều bộ nhớ','Không chạy được lw'],a:1,e:'CPI = 1 nhưng chu kỳ dài ⇒ hiệu suất kém.'},
+{c:'c4',q:'Opcode nào đi vào khối Control cho lệnh lw?',o:['000000','100011','101011','000100'],a:1,e:'lw 100011 (35), sw 101011 (43), beq 000100.'},
+/* ---------- c5: Pipeline ---------- */
+{c:'c5',q:'Pipeline giúp:',o:['Giảm thời gian thực thi của từng lệnh','Tăng throughput, giảm tổng thời gian chương trình','Giảm số lệnh','Giảm CPI của từng lệnh xuống 0'],a:1,e:'Pipeline không giảm latency của một lệnh.'},
+{c:'c5',q:'Thứ tự 5 tầng pipeline MIPS:',o:['IF, EX, ID, MEM, WB','IF, ID, EX, MEM, WB','ID, IF, EX, WB, MEM','IF, ID, MEM, EX, WB'],a:1,e:'Fetch, Decode, Execute, Memory, Write back.'},
+{c:'c5',q:'Đơn chu kỳ 800 ps, pipeline 5 tầng với tầng dài nhất 200 ps. Tăng tốc thực tế khoảng:',o:['5 lần','4 lần','8 lần','2 lần'],a:1,e:'800 / 200 = 4 < 5 (số tầng).'},
+{c:'c5',q:'Thời gian chạy n lệnh trên pipeline k tầng, chu kỳ T (không stall):',o:['n × k × T','(k + n − 1) × T','(n − 1) × T','k × T'],a:1,e:'Lệnh đầu mất k chu kỳ, mỗi lệnh sau thêm 1 chu kỳ.'},
+{c:'c5',q:'Hai lệnh cùng truy xuất một bộ nhớ duy nhất cùng lúc gây xung đột:',o:['Dữ liệu','Cấu trúc','Điều khiển','Không có'],a:1,e:'Structural hazard: tranh chấp tài nguyên phần cứng.'},
+{c:'c5',q:'add $s0,$t0,$t1 rồi sub $t2,$s0,$t3 gây xung đột:',o:['Cấu trúc','Dữ liệu','Điều khiển','Không có'],a:1,e:'sub cần $s0 chưa được ghi ⇒ data hazard.'},
+{c:'c5',q:'Kỹ thuật forwarding (bypassing) giải quyết:',o:['Xung đột cấu trúc','Xung đột dữ liệu','Xung đột điều khiển','Cache miss'],a:1,e:'Đưa kết quả ALU trực tiếp cho lệnh sau qua bộ đệm.'},
+{c:'c5',q:'lw $s0,20($t1) rồi sub $t2,$s0,$t3 có forwarding vẫn cần:',o:['0 stall','1 stall','2 stall','3 stall'],a:1,e:'Load‑use: dữ liệu có sau MEM ⇒ 1 chu kỳ rỗi.'},
+{c:'c5',q:'Không forwarding, add $s0… rồi ngay sau là sub dùng $s0 cần:',o:['0 stall','1 stall','2 stall','3 stall'],a:2,e:'sub ID phải trùng WB của add (ghi nửa đầu, đọc nửa sau) ⇒ 2 stall.'},
+{c:'c5',q:'Xung đột điều khiển phát sinh từ:',o:['Lệnh lw','Lệnh nhảy/rẽ nhánh','Lệnh add','Bộ nhớ chung'],a:1,e:'Lệnh nạp vào có thể không phải lệnh cần chạy.'},
+{c:'c5',q:'Predict not taken khi dự đoán sai thì:',o:['Không mất chu kỳ','Flush lệnh đã nạp, mất 1 chu kỳ','Dừng chương trình','Mất 5 chu kỳ'],a:1,e:'Đoán đúng 0 chu kỳ; đoán sai nạp lại lệnh đúng, mất 1 chu kỳ.'},
+{c:'c5',q:'Trong hình vẽ pipeline, nửa phải khối thanh ghi tô đậm nghĩa là:',o:['Ghi','Đọc','Không dùng','Stall'],a:1,e:'Nửa phải tô = đọc, nửa trái tô = ghi.'},
+{c:'c5',q:'Forwarding kiểu EX‑EX còn gọi là:',o:['MEM‑ALU','ALU‑ALU','WB‑ID','IF‑ID'],a:1,e:'ALU‑ALU forwarding; còn MEM‑EX là MEM‑ALU forwarding.'},
+{c:'c5',q:'1000 lệnh, pipeline 5 tầng 200 ps, không stall. Tổng thời gian:',o:['200.000 ps','200.800 ps','1.000.000 ps','800.000 ps'],a:1,e:'(5 + 999) × 200 = 200.800 ps.'},
+{c:'c5',q:'Cách nào giảm stall load‑use mà không cần phần cứng mới?',o:['Tăng tần số','Sắp xếp lại thứ tự lệnh','Bỏ forwarding','Dùng bộ nhớ chung'],a:1,e:'Compiler chèn lệnh độc lập giữa lw và lệnh dùng kết quả.'},
+/* ---------- c6: Bộ nhớ ---------- */
+{c:'c6',q:'Thứ tự tốc độ từ nhanh đến chậm:',o:['Cache, thanh ghi, RAM, đĩa','Thanh ghi, cache, bộ nhớ chính, bộ nhớ thứ cấp','RAM, cache, thanh ghi, SSD','Thanh ghi, RAM, cache, HDD'],a:1,e:'Thanh ghi < 1 ns, cache 0,5–2,5 ns, DRAM 50–70 ns, đĩa 5000 ns–20 ms.'},
+{c:'c6',q:'So với DRAM, SRAM:',o:['Chậm hơn, rẻ hơn','Nhanh hơn, đắt hơn','Nhanh hơn, rẻ hơn','Chậm hơn, đắt hơn'],a:1,e:'SRAM dùng cho cache vì nhanh, nhưng đắt.'},
+{c:'c6',q:'Cache L3 dành cho:',o:['Một nhân','Một tổ hợp nhân','Tất cả các nhân của CPU','Bộ nhớ ngoài'],a:2,e:'L1 riêng một nhân, L2 một tổ hợp nhân, L3 chung tất cả.'},
+{c:'c6',q:'Biến đếm vòng lặp được truy xuất lặp lại thể hiện:',o:['Cục bộ không gian','Cục bộ thời gian','Cache miss','Ánh xạ trực tiếp'],a:1,e:'Cùng vị trí được truy xuất lại trong thời gian gần.'},
+{c:'c6',q:'Duyệt mảng tuần tự thể hiện:',o:['Cục bộ thời gian','Cục bộ không gian','Không có cục bộ','Fully associative'],a:1,e:'Truy xuất các địa chỉ lân cận.'},
+{c:'c6',q:'Miss penalty là:',o:['Tỉ lệ miss','Thời gian chép block từ bộ nhớ chính lên cache','Thời gian truy cập cache khi hit','Số dòng cache'],a:1,e:'Chi phí thời gian khi miss.'},
+{c:'c6',q:'Kiểu cache nào ít miss nhất nhưng phải so sánh tag với tất cả dòng?',o:['Ánh xạ trực tiếp','Liên kết tập hợp 2 đường','Liên kết toàn phần','Không có'],a:2,e:'Fully associative: đặt bất kỳ đâu, phù hợp cache nhỏ.'},
+{c:'c6',q:'Cache ánh xạ trực tiếp 8 dòng. Block 12 vào dòng:',o:['0','3','4','12'],a:2,e:'12 mod 8 = 4.'},
+{c:'c6',q:'Cache liên kết tập hợp 2 đường, 8 dòng. Block 12 vào tập:',o:['0','2','4','6'],a:0,e:'Số tập = 4; 12 mod 4 = 0.'},
+{c:'c6',q:'Cache ánh xạ trực tiếp 64 dòng × 16 byte. Địa chỉ 1200 vào dòng:',o:['11','75','12','4'],a:0,e:'Block 75; 75 mod 64 = 11.'},
+{c:'c6',q:'Block 16 byte, 64 tập, địa chỉ 32 bit. Số bit offset / index / tag:',o:['4 / 6 / 22','6 / 4 / 22','4 / 8 / 20','2 / 6 / 24'],a:0,e:'log₂16 = 4, log₂64 = 6, 32 − 10 = 22.'},
+{c:'c6',q:'Chính sách LRU thay thế dòng:',o:['Vào trước nhất','Ít được dùng gần đây nhất','Ít được dùng nhất','Ngẫu nhiên'],a:1,e:'Least Recently Used.'},
+{c:'c6',q:'2‑way, 4 dòng, 16 B, LRU, chuỗi 0, 64, 32, 96, 0, 64, 32, 96. Hit rate:',o:['0%','25%','50%','100%'],a:0,e:'Mọi block (0, 4, 2, 6) vào tập 0 chỉ có 2 chỗ ⇒ 8 miss.'},
+{c:'c6',q:'Liên kết toàn phần 4 dòng, LRU, cùng chuỗi 0, 64, 32, 96, 0, 64, 32, 96. Hit rate:',o:['0%','25%','50%','75%'],a:2,e:'4 miss bắt buộc, 4 hit.'},
+{c:'c6',q:'Dòng cache 16 byte chứa bao nhiêu số nguyên 32 bit?',o:['2','4','8','16'],a:1,e:'16 / 4 = 4.'},
+{c:'c6',q:'Bộ nhớ 64K byte cần bao nhiêu bit địa chỉ?',o:['8','16','32','64'],a:1,e:'64K = 2¹⁶ ⇒ 0x0000 … 0xFFFF.'},
+{c:'c6',q:'EEPROM là:',o:['ROM chỉ ghi một lần','ROM xóa được bằng tia UV','ROM xóa và ghi lại được bằng điện','RAM động'],a:2,e:'Electrically Erasable PROM; Flash là một dạng EEPROM.'},
+{c:'c6',q:'Hit time 1 ns, miss rate 5%, miss penalty 60 ns. AMAT =',o:['3 ns','4 ns','61 ns','1,05 ns'],a:1,e:'1 + 0,05 × 60 = 4 ns.'}
+];
+
+/* ===== Bộ sinh bài theo cấu trúc đề cuối kì ===== */
+var EXAM = (function () {
+  function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function vn(x, sig) {
+    if (Number.isInteger(x)) return x.toLocaleString('vi-VN');
+    return (+x.toPrecision(sig || 5)).toLocaleString('vi-VN', { maximumFractionDigits: 10 });
+  }
+  var SUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+  function sci(x, sig) {
+    if (x === 0) return '0';
+    var e = Math.floor(Math.log10(Math.abs(x))), m = x / Math.pow(10, e);
+    if (Math.abs(m) >= 9.99995) { m /= 10; e++; }
+    return vn(m, sig || 5) + '×10' + String(e).split('').map(function (c) { return SUP[c]; }).join('');
+  }
+  function g4(s) { return s.replace(/(.{4})(?=.)/g, '$1 '); }
+  function b8(v) { return g4((v & 255).toString(2).padStart(8, '0')); }
+  function s8(v) { v &= 255; return v > 127 ? v - 256 : v; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function pre(lines) { return '<pre>' + esc(Array.isArray(lines) ? lines.join('\n') : lines) + '</pre>'; }
+
+  /* ---------- Câu 1: cục bộ ---------- */
+  var LOC = [
+    { code: 'for (i = 0; i < 9; i++)\n  for (j = 0; j < 100; j++)\n    B[0][j] = A[i+1][0] + A[2][j+1];',
+      t: '<b>i, j</b> (dùng ở mọi lần lặp) và <b>A[i+1][0]</b> (cùng một phần tử được đọc lại suốt 100 lần lặp j).',
+      s: '<b>B[0][j]</b> và <b>A[2][j+1]</b>: j tăng dần nên truy xuất các phần tử liền kề trong cùng một dòng.',
+      n: 'Thêm: B[0][j] và A[2][j+1] cũng được dùng lại ở mỗi vòng i (9 lần) nên có cục bộ thời gian ở vòng ngoài, nếu cache đủ chứa cả dòng.' },
+    { code: 'for (I = 0; I < 8; I++)\n  for (J = 0; J < 8000; J++)\n    A[I][J] = B[I][0] + A[J][I];',
+      t: '<b>I, J</b> và <b>B[I][0]</b> (cùng phần tử suốt 8000 lần lặp J).',
+      s: '<b>A[I][J]</b> (J tăng, phần tử liền kề). A[J][I] nhảy cách nguyên một dòng mỗi lần nên không có cục bộ không gian.', n: '' },
+    { code: 'for (j = 0; j < 50; j++)\n  for (i = 0; i < 50; i++)\n    X[i][j] = Y[j][i] + Z[0][0];',
+      t: '<b>i, j</b> và <b>Z[0][0]</b> (luôn là một phần tử).',
+      s: '<b>Y[j][i]</b>: vòng trong tăng i, chạy dọc một dòng của Y. X[i][j] đi theo cột (nhảy 50 phần tử) nên không có cục bộ không gian.', n: '' },
+    { code: 'for (i = 0; i < 100; i++)\n  for (j = 0; j < 10; j++)\n    sum = sum + C[i][j] * D[0][j];',
+      t: '<b>sum, i, j</b> và <b>D[0][j]</b> (10 phần tử đó được dùng lại ở mỗi vòng i).',
+      s: '<b>C[i][j]</b> và <b>D[0][j]</b>: j tăng, phần tử liền kề trong dòng.', n: '' },
+    { code: 'for (k = 0; k < 4; k++)\n  for (n = 0; n < 1000; n++)\n    P[k][n] = Q[n][k] + R[k][0] + P[k][n-1];',
+      t: '<b>k, n</b>, <b>R[k][0]</b> (cố định trong vòng n) và <b>P[k][n]</b> (vừa ghi xong được đọc lại ngay ở lần lặp sau dưới tên P[k][n-1]).',
+      s: '<b>P[k][n]</b>, <b>P[k][n-1]</b>: n tăng, liền kề. Q[n][k] nhảy theo cột nên không có cục bộ không gian.', n: '' }
+  ];
+  function locality(idx) {
+    var v = LOC[idx];
+    return {
+      q: '<p><b>A)</b> Tính cục bộ về không gian và tính cục bộ về thời gian là gì?</p><p><b>B)</b> Các phần tử mảng trong cùng một dòng được lưu liền kề nhau. Xét đoạn mã:</p>' + pre(v.code) + '<p>Các tham chiếu nào biểu diễn tính cục bộ về không gian, tính cục bộ về thời gian?</p>',
+      a: '<p><b>A)</b> <i>Cục bộ thời gian</i>: một vị trí bộ nhớ vừa được truy xuất thì nhiều khả năng sẽ được truy xuất lại trong thời gian gần (ví dụ biến trong vòng lặp). <i>Cục bộ không gian</i>: một vị trí được truy xuất thì các vị trí lân cận nhiều khả năng sẽ được truy xuất tiếp theo (ví dụ duyệt mảng tuần tự).</p>' +
+        '<p><b>B)</b> Cục bộ thời gian: ' + v.t + '</p><p>Cục bộ không gian: ' + v.s + '</p>' + (v.n ? '<p class="note">' + v.n + '</p>' : '')
+    };
+  }
+
+  /* ---------- Câu 2: nhân/chia phần cứng ---------- */
+  var ALG = { mul2: 'nhân theo cấu trúc phần cứng cải tiến', mul1: 'nhân theo cấu trúc phần cứng (3 thanh ghi)', div1: 'chia theo cấu trúc phần cứng (3 thanh ghi)', div2: 'chia theo cấu trúc phần cứng cải tiến' };
+  function muldiv(alg, a, b, n) {
+    var init = {
+      mul1: 'Multiplicand 2n = ' + 2 * n + ' bit (số bị nhân ở nửa thấp), Multiplier ' + n + ' bit, Product ' + 2 * n + ' bit = 0. Lặp ' + n + ' lần, mỗi lần 3 bước.',
+      mul2: 'Multiplicand ' + n + ' bit; Product ' + 2 * n + ' bit với nửa thấp = số nhân, nửa cao = 0. Lặp ' + n + ' lần, mỗi lần 2 bước.',
+      div1: 'Divisor ' + 2 * n + ' bit (số chia ở nửa cao), Quotient ' + n + ' bit = 0, Remainder ' + 2 * n + ' bit (số bị chia ở nửa thấp). Lặp n + 1 = ' + (n + 1) + ' lần.',
+      div2: 'Divisor ' + n + ' bit; thanh ghi Remainder/Quotient ' + 2 * n + ' bit (số bị chia ở nửa thấp). Lặp ' + n + ' lần.'
+    }[alg];
+    var sym = alg.indexOf('mul') === 0 ? '×' : ':';
+    return {
+      q: '<p>Thực hiện giải thuật ' + ALG[alg] + ' cho hai số ' + n + ' bit <b>không dấu</b>: ' + a + '<sub>(10)</sub> ' + sym + ' ' + b + '<sub>(10)</sub>.</p>',
+      a: '<p>' + a + ' = ' + SIM.bin(a, n, 4) + ', ' + b + ' = ' + SIM.bin(b, n, 4) + '. ' + init + '</p>' + SIM.render(SIM[alg](a, b, n))
+    };
+  }
+  function genMuldiv(alg) {
+    alg = alg || pick(['mul2', 'mul2', 'mul1', 'div1', 'div2']);
+    if (alg.indexOf('mul') === 0) return muldiv(alg, rnd(2, 15), rnd(2, 15), 4);
+    var b = rnd(2, 7); return muldiv(alg, rnd(b, 15), b, 4);
+  }
+
+  /* ---------- Câu 3: IEEE 754 ---------- */
+  function fracSteps(fr) {
+    var bits = '', steps = [], x = fr, k = 0;
+    while (x > 0 && k < 12) { var y = x * 2, bit = y >= 1 ? 1 : 0; steps.push(vn(x) + ' × 2 = ' + vn(y) + ' → ' + bit); bits += bit; x = y - bit; k++; }
+    return { bits: bits, steps: steps };
+  }
+  function ieeeEnc(v) {
+    var neg = v < 0, x = Math.abs(v), ip = Math.floor(x), fr = +(x - ip).toFixed(6);
+    var ib = ip ? ip.toString(2) : '0', fs = fracSteps(fr), fb = fs.bits;
+    var e, mant;
+    if (ip > 0) { e = ib.length - 1; mant = ib.slice(1) + fb; }
+    else { var k = fb.indexOf('1'); e = -(k + 1); mant = fb.slice(k + 1); }
+    var E = e + 127, F = (mant + '0'.repeat(23)).slice(0, 23), S = neg ? '1' : '0';
+    var all = S + E.toString(2).padStart(8, '0') + F, hex = '0x' + parseInt(all, 2).toString(16).toUpperCase().padStart(8, '0');
+    var h = '<p>Phần nguyên: ' + ip + ' = ' + ib + '₂.</p>';
+    if (fb) h += '<p>Phần lẻ (nhân 2 lấy phần nguyên): ' + fs.steps.join('; ') + ' ⇒ 0,' + fb + '₂.</p>';
+    h += '<p>' + vn(x) + ' = ' + ib + (fb ? ',' + fb : '') + '₂ = <b>1,' + (mant.replace(/0+$/, '') || '0') + ' × 2<sup>' + e + '</sup></b>.</p>';
+    h += '<p>S = ' + S + ' (' + (neg ? 'âm' : 'dương') + '); E = ' + e + ' + 127 = ' + E + ' = ' + E.toString(2).padStart(8, '0') + '; F = ' + (mant.replace(/0+$/, '') || '0') + ' thêm 0 cho đủ 23 bit.</p>';
+    h += pre([S + ' | ' + E.toString(2).padStart(8, '0') + ' | ' + F, g4(all), all.match(/.{4}/g).map(function (q) { return parseInt(q, 2).toString(16).toUpperCase().padStart(4, ' '); }).join(' ')]);
+    h += '<p>Kết quả: <b>' + hex + '</b></p>';
+    return { q: '<p>Đổi ' + vn(v) + ' sang số Hex dạng chuẩn IEEE 754 độ chính xác đơn.</p>', a: h, hex: hex };
+  }
+  function ieeeDec(v) {
+    var r = IEEE.fromFloat(v), mant = r.f.replace(/0+$/, '');
+    var h = pre([r.hex + ' = ' + g4(r.s + r.e + r.f)]) +
+      '<p>S = ' + r.s + ', E = ' + r.e + '₂ = ' + r.eDec + ' ⇒ mũ thật = ' + r.eDec + ' − 127 = ' + r.real + ', F = ' + (mant || '0') + '.</p>' +
+      '<p>Giá trị = ' + (r.s === '1' ? '−' : '+') + '1,' + (mant || '0') + '₂ × 2<sup>' + r.real + '</sup> = <b>' + vn(r.stored) + '</b>.</p>';
+    return { q: '<p>Số thực dấu chấm động IEEE 754 độ chính xác đơn có mã Hex <b>' + r.hex + '</b>. Đổi sang số thập phân.</p>', a: h };
+  }
+  function genIEEE() {
+    var fr = pick([0, 0.5, 0.25, 0.75, 0.125, 0.375, 0.625, 0.875, 0.0625, 0.3125, 0.1875]);
+    var ip = Math.random() < 0.15 ? 0 : rnd(1, 130); if (!ip && !fr) fr = 0.375;
+    var v = (Math.random() < 0.35 ? -1 : 1) * (ip + fr);
+    return Math.random() < 0.25 ? ieeeDec(v) : ieeeEnc(v);
+  }
+
+  /* ---------- Câu 4: hiệu suất ---------- */
+  var SYM = '<p class="note">Ký hiệu: <b>CPU time</b> = thời gian thực thi chương trình; <b>IC</b> (Instructions) = tổng số lệnh của chương trình; <b>Clock cycle</b> = chu kỳ xung clock (thời gian một chu kỳ); <b>Clock rate</b> = tần số xung = 1 / Clock cycle; <b>Clock cycles</b> = tổng số chu kỳ = IC × CPI.</p>';
+  function nice(x) { return Math.abs(x * 100 - Math.round(x * 100)) < 1e-6; }
+  function perf(kind, p) {
+    var q, a;
+    if (kind === 1) { // tìm clock cycle
+      var cyc = p.IC * p.CPI, cc = p.T / cyc;
+      q = 'Một bộ xử lý cần thực thi một chương trình trong ' + vn(p.T) + ' ns, tổng số lệnh là ' + p.IC + ', CPI trung bình là ' + vn(p.CPI) + '. Chu kỳ xung clock của bộ xử lý là bao nhiêu giây? Giải thích các ký hiệu dùng trong công thức, ngoại trừ CPI.';
+      a = '<p>CPU time = IC × CPI × Clock cycle ⇒ Clock cycle = CPU time / (IC × CPI).</p><p>IC × CPI = ' + p.IC + ' × ' + vn(p.CPI) + ' = ' + vn(cyc) + ' chu kỳ.</p>' +
+        '<p>Clock cycle = ' + vn(p.T) + ' ns / ' + vn(cyc) + ' = ' + vn(cc) + ' ns = <b>' + sci(cc * 1e-9) + ' s</b> (tần số ≈ ' + vn(1 / cc) + ' GHz).</p>';
+    } else if (kind === 2) { // tìm CPU time
+      var cyc2 = p.IC * p.CPI, t = cyc2 / (p.f * 1e9);
+      q = 'Chương trình có ' + vn(p.IC) + ' lệnh, CPI trung bình ' + vn(p.CPI) + ', chạy trên CPU ' + vn(p.f) + ' GHz. Tính thời gian thực thi và hiệu suất.';
+      a = '<p>Clock cycles = IC × CPI = ' + vn(p.IC) + ' × ' + vn(p.CPI) + ' = ' + vn(cyc2) + '.</p><p>Clock cycle = 1 / ' + vn(p.f) + ' GHz = ' + vn(1 / p.f) + ' ns.</p>' +
+        '<p>CPU time = Clock cycles / Clock rate = ' + vn(cyc2) + ' / ' + sci(p.f * 1e9) + ' = <b>' + sci(t) + ' s</b>.</p><p>Hiệu suất P = 1 / CPU time = ' + sci(1 / t) + '.</p>';
+    } else if (kind === 3) { // tìm CPI
+      var cpi = p.T * 1e-9 * p.f * 1e9 / p.IC;
+      q = 'Chương trình có ' + vn(p.IC) + ' lệnh chạy hết ' + vn(p.T) + ' ns trên CPU ' + vn(p.f) + ' GHz. Tính CPI trung bình.';
+      a = '<p>CPI = CPU time × Clock rate / IC = ' + vn(p.T) + '×10⁻⁹ × ' + vn(p.f) + '×10⁹ / ' + vn(p.IC) + ' = ' + vn(p.T * p.f) + ' / ' + vn(p.IC) + ' = <b>' + vn(cpi) + '</b>.</p>';
+    } else if (kind === 4) { // nhiều nhóm lệnh
+      var cpiA = (p.pct[0] * p.c[0] + p.pct[1] * p.c[1] + p.pct[2] * p.c[2]) / 100, cyc4 = p.IC * cpiA, t4 = cyc4 / (p.f * 1e9);
+      q = 'CPU ' + vn(p.f) + ' GHz chạy chương trình ' + vn(p.IC) + ' lệnh gồm: ALU ' + p.pct[0] + '% (CPI ' + p.c[0] + '), MEM ' + p.pct[1] + '% (CPI ' + p.c[1] + '), JUMP ' + p.pct[2] + '% (CPI ' + p.c[2] + '). Tính CPI trung bình, thời gian thực thi và hiệu suất.';
+      a = '<p>CPI = ' + (p.pct[0] / 100).toString().replace('.', ',') + '·' + p.c[0] + ' + ' + (p.pct[1] / 100).toString().replace('.', ',') + '·' + p.c[1] + ' + ' + (p.pct[2] / 100).toString().replace('.', ',') + '·' + p.c[2] + ' = <b>' + vn(cpiA) + '</b>.</p>' +
+        '<p>Clock cycles = ' + vn(p.IC) + ' × ' + vn(cpiA) + ' = ' + vn(cyc4) + '.</p><p>CPU time = ' + vn(cyc4) + ' / ' + sci(p.f * 1e9) + ' = <b>' + sci(t4) + ' s</b>; P = 1 / CPU time = ' + sci(1 / t4) + '.</p>';
+    } else { // so sánh 2 máy
+      var tA = p.cA * p.pA, tB = p.cB * p.pB, faster = tA < tB ? 'A' : 'B', ratio = Math.max(tA, tB) / Math.min(tA, tB);
+      q = 'Cùng kiến trúc tập lệnh. Máy A có chu kỳ xung ' + p.pA + ' ps, CPI ' + vn(p.cA) + '; máy B có chu kỳ xung ' + p.pB + ' ps, CPI ' + vn(p.cB) + '. Máy nào nhanh hơn và nhanh hơn bao nhiêu lần?';
+      a = '<p>Cùng ISA ⇒ cùng số lệnh I.</p><p>CPU time A = I × ' + vn(p.cA) + ' × ' + p.pA + ' = ' + vn(tA) + '·I ps; CPU time B = I × ' + vn(p.cB) + ' × ' + p.pB + ' = ' + vn(tB) + '·I ps.</p>' +
+        (tA === tB ? '<p><b>Hai máy nhanh như nhau.</b></p>' : '<p>Máy <b>' + faster + '</b> nhanh hơn ' + vn(Math.max(tA, tB)) + ' / ' + vn(Math.min(tA, tB)) + ' ≈ <b>' + vn(ratio, 4) + ' lần</b>.</p>');
+    }
+    return { q: '<p>' + q + '</p>', a: a + SYM };
+  }
+  function genPerf() {
+    var k = pick([1, 1, 2, 3, 4, 5]), p = {};
+    var CPIs = [1.2, 1.4, 1.5, 1.6, 1.8, 1.9, 2, 2.2, 2.4, 2.5, 3, 3.5];
+    if (k === 1) { do { p.IC = rnd(4, 40) * 5; p.CPI = pick(CPIs); p.f = pick([2, 2.5, 4, 5, 7, 8]); p.T = p.IC * p.CPI / p.f; } while (!nice(p.T)); }
+    else if (k === 2) { p.IC = pick([1000, 2000, 5000, 20000, 100000, 1000000]); p.CPI = pick(CPIs); p.f = pick([1, 2, 2.5, 3, 4, 5]); }
+    else if (k === 3) { do { p.IC = rnd(2, 40) * 50; p.f = pick([2, 2.5, 4, 5]); var cpi = pick(CPIs); p.T = p.IC * cpi / p.f; } while (!nice(p.T)); }
+    else if (k === 4) { var x = rnd(2, 6) * 10, y = rnd(1, 9 - x / 10) * 10; p.pct = [x, y, 100 - x - y]; p.c = [1, rnd(2, 4), rnd(2, 3)]; p.IC = pick([10000, 50000, 100000, 200000]); p.f = pick([2, 2.5, 4, 5]); }
+    else { p.pA = pick([200, 250, 300, 400]); p.pB = pick([250, 400, 500, 600]); p.cA = pick(CPIs); p.cB = pick(CPIs); }
+    return perf(k, p);
+  }
+
+  /* ---------- Câu 5: C → MIPS ---------- */
+  var VR = { f: '$s0', g: '$s1', h: '$s2', i: '$s3', j: '$s4' };
+  function cExpr(terms) {
+    return terms.map(function (t, k) { var s = t.v !== undefined ? t.v : String(t.k); return k === 0 ? (t.s < 0 ? '-' : '') + s : (t.s < 0 ? ' - ' : ' + ') + s; }).join('');
+  }
+  function cStmt(st) {
+    if (st.style === '++') return st.x + '++;';
+    if (st.style === '--') return st.x + '--;';
+    if (st.style === '+=') return st.x + ' += ' + st.terms[1].k + ';';
+    return st.x + ' = ' + cExpr(st.terms) + ';';
+  }
+  function cCond(c) { return c.a + ' ' + c.op + ' ' + (c.b.v !== undefined ? c.b.v : c.b.k); }
+  function asmAssign(st, out) {
+    var x = VR[st.x], T = st.terms, cm = '# ' + cStmt(st).replace(/;$/, '');
+    if (T.length === 1) { out.push(T[0].v !== undefined ? '    add  ' + x + ', ' + VR[T[0].v] + ', $zero   ' + cm : '    addi ' + x + ', $zero, ' + T[0].k + '    ' + cm); return; }
+    var cur = VR[T[0].v];
+    for (var k = 1; k < T.length; k++) {
+      var d = k === T.length - 1 ? x : '$t1', t = T[k];
+      if (t.v !== undefined) out.push('    ' + (t.s > 0 ? 'add ' : 'sub ') + ' ' + d + ', ' + cur + ', ' + VR[t.v] + (d === x ? '    ' + cm : ''));
+      else out.push('    addi ' + d + ', ' + cur + ', ' + (t.s * t.k) + (d === x ? '    ' + cm : ''));
+      cur = d;
+    }
+  }
+  // nhảy tới L khi điều kiện SAI
+  function asmFalse(c, L, out) {
+    var a = VR[c.a], isK = c.b.k !== undefined, b = isK ? c.b.k : VR[c.b.v], txt = cCond(c);
+    var cm = '# ' + txt + ' sai thì nhảy ' + L;
+    switch (c.op) {
+      case '<':
+        out.push(isK ? '    slti $t0, ' + a + ', ' + b + '      # $t0 = (' + c.a + ' < ' + b + ')' : '    slt  $t0, ' + a + ', ' + b + '    # $t0 = (' + c.a + ' < ' + c.b.v + ')');
+        out.push('    beq  $t0, $zero, ' + L + '   ' + cm); break;
+      case '>=':
+        out.push(isK ? '    slti $t0, ' + a + ', ' + b + '      # $t0 = (' + c.a + ' < ' + b + ')' : '    slt  $t0, ' + a + ', ' + b + '    # $t0 = (' + c.a + ' < ' + c.b.v + ')');
+        out.push('    bne  $t0, $zero, ' + L + '   ' + cm); break;
+      case '>':
+        out.push(isK ? '    slti $t0, ' + a + ', ' + (b + 1) + '      # $t0 = (' + c.a + ' < ' + (b + 1) + ') = (' + c.a + ' <= ' + b + ')' : '    slt  $t0, ' + b + ', ' + a + '    # $t0 = (' + c.b.v + ' < ' + c.a + ') = (' + c.a + ' > ' + c.b.v + ')');
+        out.push('    ' + (isK ? 'bne ' : 'beq ') + ' $t0, $zero, ' + L + '   ' + cm); break;
+      case '<=':
+        out.push(isK ? '    slti $t0, ' + a + ', ' + (b + 1) + '      # $t0 = (' + c.a + ' < ' + (b + 1) + ') = (' + c.a + ' <= ' + b + ')' : '    slt  $t0, ' + b + ', ' + a + '    # $t0 = (' + c.b.v + ' < ' + c.a + ') = (' + c.a + ' > ' + c.b.v + ')');
+        out.push('    ' + (isK ? 'beq ' : 'bne ') + ' $t0, $zero, ' + L + '   ' + cm); break;
+      case '==':
+        if (isK) { out.push('    addi $t2, $zero, ' + b + '    # $t2 = ' + b); b = '$t2'; }
+        out.push('    bne  ' + a + ', ' + b + ', ' + L + '   ' + cm); break;
+      case '!=':
+        if (isK) { out.push('    addi $t2, $zero, ' + b + '    # $t2 = ' + b); b = '$t2'; }
+        out.push('    beq  ' + a + ', ' + b + ', ' + L + '   ' + cm); break;
+    }
+  }
+  function asmBlock(stmts, out, ind) { stmts.forEach(function (s) { asmStmt(s, out); }); }
+  function asmStmt(st, out) {
+    if (st.t === 'assign') return asmAssign(st, out);
+    if (st.t === 'if' && !st.els) { asmFalse(st.cond, 'Exit', out); asmBlock(st.then, out); out.push('Exit:'); return; }
+    if (st.t === 'if') { asmFalse(st.cond, 'Else', out); asmBlock(st.then, out); out.push('    j    Exit'); out.push('Else:'); asmBlock(st.els, out); out.push('Exit:'); return; }
+    if (st.t === 'while') { out.push('Loop:'); asmFalse(st.cond, 'Exit', out); asmBlock(st.body, out); out.push('    j    Loop'); out.push('Exit:'); return; }
+    if (st.t === 'for') { asmAssign(st.init, out); out.push('Loop:'); asmFalse(st.cond, 'Exit', out); asmBlock(st.body, out); asmAssign(st.inc, out); out.push('    j    Loop'); out.push('Exit:'); }
+  }
+  function cLines(st, ind, out) {
+    var p = '    '.repeat(ind);
+    if (st.t === 'assign') { out.push(p + cStmt(st)); return; }
+    if (st.t === 'if') {
+      out.push(p + 'if (' + cCond(st.cond) + ') {'); st.then.forEach(function (s) { cLines(s, ind + 1, out); });
+      if (st.els) { out.push(p + '} else {'); st.els.forEach(function (s) { cLines(s, ind + 1, out); }); }
+      out.push(p + '}'); return;
+    }
+    if (st.t === 'while') { out.push(p + 'while (' + cCond(st.cond) + ') {'); st.body.forEach(function (s) { cLines(s, ind + 1, out); }); out.push(p + '}'); return; }
+    if (st.t === 'for') {
+      out.push(p + 'for (' + cStmt(st.init).replace(/;$/, '') + '; ' + cCond(st.cond) + '; ' + cStmt(st.inc).replace(/;$/, '') + ') {');
+      st.body.forEach(function (s) { cLines(s, ind + 1, out); }); out.push(p + '}');
+    }
+  }
+  // AST helpers
+  function A(x, terms, style) { return { t: 'assign', x: x, terms: terms, style: style }; }
+  function inc(x, d) { return A(x, [{ s: 1, v: x }, { s: d > 0 ? 1 : -1, k: 1 }], d > 0 ? '++' : '--'); }
+  function V(v, s) { return { s: s || 1, v: v }; }
+  function K(k, s) { return { s: s || 1, k: k }; }
+  var OPS = ['<', '>', '<=', '>='];
+  function randomBody(avoid, n) {
+    var vars = ['f', 'g', 'h', 'i', 'j'].filter(function (v) { return avoid.indexOf(v) < 0; }), out = [];
+    for (var k = 0; k < n; k++) {
+      var x = pick(vars), y = pick(['f', 'g', 'h', 'i', 'j'].filter(function (v) { return v !== x; })), r = Math.random();
+      if (r < 0.3) out.push(A(x, [V(x), V(y)]));
+      else if (r < 0.5) out.push(A(x, [V(x), V(y, -1)]));
+      else if (r < 0.7) out.push(inc(x, pick([1, -1])));
+      else if (r < 0.85) out.push(A(x, [V(y), K(rnd(1, 9))]));
+      else out.push(A(x, [V(x), K(rnd(2, 5))], '+='));
+    }
+    return out;
+  }
+  function randomPre() {
+    var vs = ['g', 'h', 'i', 'j'].sort(function () { return Math.random() - 0.5; }), r = Math.random();
+    if (r < 0.5) return A('f', [V(vs[0]), V(vs[1], pick([1, -1])), V(vs[2], pick([1, -1]))]);
+    if (r < 0.8) return A('f', [V(vs[0]), V(vs[1], pick([1, -1]))]);
+    return A('f', [V(vs[0]), V(vs[1], pick([1, -1])), K(rnd(1, 9), pick([1, -1]))]);
+  }
+  function genC(forceType) {
+    var type = forceType || pick(['if', 'if', 'ifelse', 'while', 'while', 'for', 'for']);
+    var prog = [];
+    if (Math.random() < 0.6) prog.push(randomPre());
+    var lv = pick(['i', 'j', 'g', 'h']), op, rhs, st;
+    if (type === 'if' || type === 'ifelse') {
+      op = Math.random() < 0.85 ? pick(OPS) : pick(['==', '!=']);
+      rhs = Math.random() < 0.55 ? K(rnd(0, 20)) : V(pick(['f', 'g', 'h', 'i', 'j'].filter(function (v) { return v !== lv; })));
+      st = { t: 'if', cond: { a: lv, op: op, b: rhs }, then: Math.random() < 0.5 ? [inc(lv, pick([1, -1]))] : randomBody([], rnd(1, 2)), els: type === 'ifelse' ? randomBody([], rnd(1, 2)) : null };
+    } else if (type === 'while') {
+      op = pick(OPS);
+      var other = pick(['f', 'g', 'h', 'i', 'j'].filter(function (v) { return v !== lv; }));
+      rhs = Math.random() < 0.55 ? K(rnd(0, 20)) : V(other);
+      var dir = (op === '<' || op === '<=') ? 1 : -1, body = randomBody([lv, rhs.v || ''], rnd(0, 1));
+      body.push(Math.random() < 0.3 ? A(lv, [V(lv), K(rnd(2, 3), dir)]) : inc(lv, dir));
+      st = { t: 'while', cond: { a: lv, op: op, b: rhs }, body: body };
+    } else {
+      lv = pick(['i', 'j']); op = pick(OPS);
+      var up = op === '<' || op === '<=';
+      var bound = Math.random() < 0.5 ? K(up ? rnd(5, 20) : rnd(0, 3)) : V(pick(['g', 'h']));
+      var init = up ? A(lv, [K(rnd(0, 2))]) : A(lv, [K(rnd(8, 15))]);
+      st = { t: 'for', init: init, cond: { a: lv, op: op, b: bound }, inc: inc(lv, up ? 1 : -1), body: randomBody([lv, bound.v || ''], rnd(1, 2)) };
+    }
+    prog.push(st);
+    return prog;
+  }
+  function cToMips(prog) {
+    var cl = [], al = [];
+    prog.forEach(function (s) { cLines(s, 0, cl); asmStmt(s, al); });
+    var tip = '';
+    var ctl = prog[prog.length - 1];
+    if (ctl.cond) {
+      var c = ctl.cond, neg = { '<': '>=', '>': '<=', '<=': '>', '>=': '<', '==': '!=', '!=': '==' }[c.op];
+      tip = '<p class="note">Cách nghĩ: viết lệnh nhảy khi điều kiện <b>sai</b>, tức khi ' + c.a + ' ' + neg + ' ' + (c.b.v !== undefined ? c.b.v : c.b.k) + '. ' +
+        (c.b.k !== undefined && (c.op === '>' || c.op === '<=') ? 'Với hằng số: ' + c.a + ' ' + c.op + ' ' + c.b.k + ' ⇔ ' + (c.op === '>' ? 'không phải ' : '') + c.a + ' < ' + (c.b.k + 1) + ' nên dùng slti với ' + (c.b.k + 1) + '. ' : '') +
+        (c.b.v !== undefined && (c.op === '>' || c.op === '<=') ? 'a > b ⇔ b < a nên đảo thứ tự toán hạng trong slt. ' : '') + '</p>';
+    }
+    return {
+      q: '<p>Chuyển từ ngôn ngữ C sang assembly MIPS, biết f, g, h, i, j lần lượt được kết hợp với $s0, $s1, $s2, $s3, $s4:</p>' + pre(cl),
+      a: pre(al) + tip, asm: al, prog: prog
+    };
+  }
+
+  /* ---------- Câu 6: mã máy ---------- */
+  var RN = ['$t0', '$t1', '$t2', '$t3', '$t4', '$s0', '$s1', '$s2', '$s3', '$a0', '$a1', '$v0', '$zero', '$sp', '$ra', '$t8'];
+  function encSolve(line) {
+    var r = MIPS.encode(line), bitsAll = r.word.toString(2).padStart(32, '0');
+    var rows = r.fields.map(function (f) { return '<tr><td>' + f[0] + '</td><td>' + (f[0] === 'imm' && (f[1] & 0x8000) ? (f[1] - 65536) + ' (bù 2)' : f[1]) + '</td><td class="m">' + (f[1] >>> 0).toString(2).padStart(f[2], '0').slice(-f[2]) + '</td></tr>'; }).join('');
+    return {
+      q: '<p>Hãy chuyển lệnh sau sang mã máy và ghi dạng số Hex:</p>' + pre(line),
+      a: '<p>' + r.fmt + '‑format.</p><table><tr><th>Trường</th><th>Giá trị</th><th>Nhị phân</th></tr>' + rows + '</table>' + pre([g4(bitsAll)]) + '<p>Hex: <b>0x' + r.word.toString(16).toUpperCase().padStart(8, '0') + '</b></p>' + (r.note ? '<p class="note">' + r.note + '</p>' : ''),
+      word: r.word
+    };
+  }
+  function decSolve(hex) {
+    var r = MIPS.decode(hex), bitsAll = r.word.toString(2).padStart(32, '0');
+    var rows = r.fields.map(function (f) { return '<tr><td>' + f[0] + '</td><td class="m">' + (f[1] >>> 0).toString(2).padStart(f[2], '0') + '</td><td>' + f[1] + '</td></tr>'; }).join('');
+    return {
+      q: '<p>Mã máy <b>0x' + r.word.toString(16).toUpperCase().padStart(8, '0') + '</b> là lệnh MIPS nào?</p>',
+      a: pre([g4(bitsAll)]) + '<p>op = ' + r.fields[0][1] + (r.fmt === 'R' ? ' ⇒ R‑format, xem funct.' : '.') + '</p><table><tr><th>Trường</th><th>Nhị phân</th><th>Thập phân</th></tr>' + rows + '</table><p>Lệnh: <b class="m">' + r.asm + '</b></p>'
+    };
+  }
+  function genEnc() {
+    var rr = function () { return pick(RN.slice(0, 12)); }, t = rnd(1, 6), line;
+    if (t === 1) line = pick(['add', 'sub', 'and', 'or', 'slt', 'nor']) + ' ' + rr() + ', ' + rr() + ', ' + rr();
+    else if (t === 2) line = pick(['addi', 'addi', 'slti', 'andi', 'ori']) + ' ' + rr() + ', ' + pick(RN) + ', ' + rnd(-20, 100);
+    else if (t === 3) line = pick(['lw', 'sw']) + ' ' + rr() + ', ' + rnd(-4, 50) * 4 + '(' + pick(['$s0', '$s1', '$t1', '$sp', '$a0']) + ')';
+    else if (t === 4) line = pick(['sll', 'srl']) + ' ' + rr() + ', ' + rr() + ', ' + rnd(1, 8);
+    else if (t === 5) line = pick(['beq', 'bne']) + ' ' + rr() + ', ' + rr() + ', ' + rnd(-6, 10);
+    else line = 'addi ' + rr() + ', $zero, ' + rnd(1, 40);
+    line = line.replace(/(andi|ori) (\S+), (\S+), -\d+/, '$1 $2, $3, ' + rnd(1, 255));
+    if (Math.random() < 0.3) { var w = MIPS.encode(line).word; return decSolve('0x' + w.toString(16).padStart(8, '0')); }
+    return encSolve(line);
+  }
+
+  /* ---------- Câu 7: cộng/trừ 8 bit có dấu ---------- */
+  function ovf(a, op, b) {
+    a = s8(a); b = s8(b);
+    var bb = op === '+' ? b : s8(-b), raw = (a & 255) + (bb & 255), carry = raw > 255 ? 1 : 0, res = s8(raw), real = op === '+' ? a + b : a - b;
+    var V = real > 127 || real < -128;
+    var h = '<p>Số có dấu bù 2: ' + b8(a) + ' = ' + a + '; ' + b8(b) + ' = ' + b + '.</p>';
+    if (op === '−' || op === '-') h += '<p>Trừ = cộng bù 2 của số trừ: ' + b8(b) + ' → đảo bit ' + b8(~b) + ' → +1 = ' + b8(bb) + ' (= ' + s8(bb) + ').</p>';
+    h += pre(['  ' + b8(a), '+ ' + b8(bb), '  ---------', (carry ? '1 ' : '  ') + b8(raw) + (carry ? '   (bit nhớ thứ 9 = 1, bỏ)' : '   (không có nhớ ra)')]);
+    h += '<p>Kết quả 8 bit: <b>' + b8(raw) + ' = ' + res + '</b>. Kết quả đúng (thập phân): ' + a + ' ' + (op === '+' ? '+' : '−') + ' ' + (b < 0 ? '(' + b + ')' : b) + ' = ' + real + '.</p>';
+    var rule = op === '+' ? (((a >= 0) !== (b >= 0)) ? 'Cộng hai số trái dấu ⇒ không thể tràn.' : 'Cộng hai số cùng dấu (' + (a >= 0 ? 'dương' : 'âm') + ') ra kết quả ' + (res >= 0 ? 'dương' : 'âm') + (V ? ' (đổi dấu) ⇒ TRÀN.' : ' (cùng dấu) ⇒ không tràn.'))
+      : (((a >= 0) === (b >= 0)) ? 'Trừ hai số cùng dấu ⇒ không thể tràn.' : 'Trừ hai số trái dấu: ' + (a >= 0 ? 'dương − âm phải ra dương' : 'âm − dương phải ra âm') + ', kết quả ' + (res >= 0 ? 'dương' : 'âm') + (V ? ' ⇒ TRÀN.' : ' ⇒ không tràn.'));
+    h += '<p>Xét tràn: ' + rule + (V ? ' (' + real + ' nằm ngoài −128…127.)' : '') + '</p><p>Nhớ (carry out) = ' + carry + '. Với số có dấu, bit nhớ ra bị bỏ và <b>không</b> quyết định tràn; tràn chỉ xét theo dấu.</p>';
+    return { q: '<p>' + b8(a) + ' ' + (op === '+' ? '+' : '−') + ' ' + b8(b) + '</p>', a: h, res: res, V: V, carry: carry };
+  }
+  function genOvf() {
+    var op = pick(['+', '−']), a, b;
+    var wantV = Math.random() < 0.45;
+    for (var k = 0; k < 200; k++) {
+      a = rnd(-128, 127); b = rnd(-127, 127);
+      var real = op === '+' ? a + b : a - b, V = real > 127 || real < -128;
+      if (V === wantV) break;
+    }
+    return ovf(a, op, b);
+  }
+
+  /* ---------- Câu 8: xung đột pipeline ---------- */
+  function parseIns(s) {
+    var m = s.trim().match(/^(\w+)\s+(.*)$/), op = m[1], a = m[2].split(',').map(function (x) { return x.trim(); });
+    var o = { txt: s.trim(), op: op, dst: null, src: [] };
+    if (op === 'lw') { o.dst = a[0]; o.src = [a[1].match(/\((.+)\)/)[1].trim()]; o.load = true; }
+    else if (op === 'sw') { o.src = [a[0], a[1].match(/\((.+)\)/)[1].trim()]; }
+    else if (op === 'beq' || op === 'bne') { o.src = [a[0], a[1]]; }
+    else if (/^(addi|andi|ori|slti|sll|srl)$/.test(op)) { o.dst = a[0]; o.src = [a[1]]; }
+    else { o.dst = a[0]; o.src = [a[1], a[2]]; }
+    o.src = o.src.filter(function (r) { return r !== '$zero' && r !== '$0'; });
+    return o;
+  }
+  function schedule(ins, fwd) {
+    var d = [], f = [], st = [];
+    ins.forEach(function (x, k) {
+      f[k] = k === 0 ? 1 : d[k - 1];
+      var need = f[k] + 1;
+      x.src.forEach(function (r) {
+        for (var p = k - 1; p >= 0; p--) if (ins[p].dst === r) {
+          need = Math.max(need, fwd ? d[p] + (ins[p].load ? 2 : 1) : d[p] + 3);
+          break;
+        }
+      });
+      d[k] = need; st[k] = need - f[k] - 1;
+    });
+    return { f: f, d: d, stalls: st, total: d[ins.length - 1] + 3 };
+  }
+  function pipeTable(ins, s) {
+    var n = s.total, h = '<div class="tblwrap"><table class="pipe"><tr><th>Lệnh</th>';
+    for (var c = 1; c <= n; c++) h += '<th>' + c + '</th>';
+    h += '</tr>';
+    ins.forEach(function (x, k) {
+      h += '<tr><td class="m" style="text-align:left;white-space:nowrap">' + esc(x.txt) + '</td>';
+      for (var c = 1; c <= n; c++) {
+        var cell = '', cls = '';
+        if (c === s.f[k]) cell = 'IF';
+        else if (c > s.f[k] && c < s.d[k]) { cell = 'stall'; cls = 'st'; }
+        else if (c === s.d[k]) cell = 'ID';
+        else if (c === s.d[k] + 1) cell = 'EX';
+        else if (c === s.d[k] + 2) cell = 'MEM';
+        else if (c === s.d[k] + 3) cell = 'WB';
+        h += '<td' + (cls ? ' class="' + cls + '"' : '') + '>' + cell + '</td>';
+      }
+      h += '</tr>';
+    });
+    return h + '</table></div>';
+  }
+  function pipeSolve(lines) {
+    var ins = lines.map(parseIns), deps = [], other = [];
+    ins.forEach(function (x, k) {
+      x.src.forEach(function (r) {
+        for (var p = k - 1; p >= 0; p--) if (ins[p].dst === r) { if (k - p <= 2) deps.push({ p: p, k: k, r: r, load: ins[p].load }); break; }
+      });
+      for (var p = 0; p < k; p++) {
+        if (x.dst && ins[p].dst === x.dst) other.push('WAW: lệnh ' + (p + 1) + ' và lệnh ' + (k + 1) + ' cùng ghi ' + x.dst);
+        if (x.dst && ins[p].src.indexOf(x.dst) >= 0) other.push('WAR: lệnh ' + (p + 1) + ' đọc ' + x.dst + ', lệnh ' + (k + 1) + ' ghi ' + x.dst);
+      }
+    });
+    var s0 = schedule(ins, false), s1 = schedule(ins, true);
+    var h = '<p><b>Phân tích phụ thuộc:</b></p>';
+    if (!deps.length) h += '<p>Không có phụ thuộc dữ liệu RAW gần nhau (cách ≤ 2 lệnh) ⇒ không có xung đột dữ liệu.</p>';
+    else h += '<ul>' + deps.map(function (d) { return '<li>Xung đột <b>dữ liệu (RAW)</b>: lệnh ' + (d.p + 1) + ' (<code>' + esc(ins[d.p].txt) + '</code>) ghi ' + d.r + ', lệnh ' + (d.k + 1) + ' (<code>' + esc(ins[d.k].txt) + '</code>) đọc ' + d.r + (d.k - d.p === 1 ? ' ngay sau' : ' cách 1 lệnh') + (d.load ? ' — dạng <b>load‑use</b>' : '') + '.</li>'; }).join('') + '</ul>';
+    if (other.length) h += '<p class="note">' + other.join('; ') + '. Pipeline MIPS 5 tầng thực thi theo thứ tự và chỉ ghi ở WB nên WAR/WAW <b>không</b> gây xung đột.</p>';
+    h += '<p>Không có xung đột cấu trúc (bộ nhớ lệnh và dữ liệu tách riêng). Không có lệnh nhảy nên không có xung đột điều khiển.</p>';
+    function why(s, fw) {
+      return ins.map(function (x, k) { return s.stalls[k] ? 'lệnh ' + (k + 1) + ' chờ ' + s.stalls[k] + ' chu kỳ' : null; }).filter(Boolean).join(', ') || 'không phải chờ';
+    }
+    var st0 = s0.stalls.reduce(function (a, b) { return a + b; }, 0), st1 = s1.stalls.reduce(function (a, b) { return a + b; }, 0);
+    h += '<p><b>a) Không có forwarding</b>: lệnh sau phải đọc thanh ghi ở ID cùng lúc hoặc sau WB của lệnh trước (ghi nửa đầu, đọc nửa sau chu kỳ). ' + why(s0) + ' ⇒ tổng ' + st0 + ' stall, ' + s0.total + ' chu kỳ.</p>' + pipeTable(ins, s0);
+    h += '<p>Cách giải quyết: chèn ' + st0 + ' chu kỳ rỗi (stall/bubble, hoặc lệnh nop), hoặc sắp xếp lại lệnh độc lập chen vào giữa nếu không làm sai kết quả.</p>';
+    var hasLU = deps.some(function (d) { return d.load && d.k - d.p === 1; });
+    h += '<p><b>b) Có forwarding</b>: ' + (deps.length ? deps.map(function (d) { return 'lệnh ' + (d.p + 1) + ' → ' + (d.k + 1) + ': ' + (d.load ? 'forwarding MEM → EX' : (d.k - d.p === 1 ? 'forwarding EX → EX (ALU‑ALU)' : 'forwarding MEM → EX')); }).join('; ') + '. ' : '') + why(s1) + ' ⇒ tổng ' + st1 + ' stall, ' + s1.total + ' chu kỳ.</p>' + pipeTable(ins, s1);
+    if (hasLU) h += '<p class="note">Load‑use: dữ liệu của lw chỉ có sau MEM nên dù có forwarding vẫn phải chờ 1 chu kỳ.</p>';
+    return {
+      q: '<p>Bộ xử lý MIPS cần thực thi các lệnh sau:</p>' + pre(lines) + '<p>Với thiết kế Pipeline, hãy chỉ ra xung đột (nếu có) và cách giải quyết xung đột trong cả hai trường hợp có kỹ thuật nhìn trước (forwarding) và không có kỹ thuật nhìn trước?</p>',
+      a: h, s0: s0, s1: s1
+    };
+  }
+  function genPipe() {
+    var R = ['$t0', '$t1', '$t2', '$t3', '$s0', '$s1', '$s2'];
+    for (var tries = 0; tries < 300; tries++) {
+      var n = pick([3, 3, 4]), lines = [], prevDst = [];
+      for (var k = 0; k < n; k++) {
+        var kind = pick(['R', 'R', 'I', 'lw', 'lw', 'sw']);
+        var src = function () { return (prevDst.length && Math.random() < 0.6) ? pick(prevDst.slice(-2)) : pick(R); };
+        var d = pick(R), l;
+        if (kind === 'R') l = pick(['add', 'sub', 'and', 'or', 'slt']) + ' ' + d + ', ' + src() + ', ' + src();
+        else if (kind === 'I') l = 'addi ' + d + ', ' + src() + ', ' + rnd(1, 9);
+        else if (kind === 'lw') l = 'lw ' + d + ', ' + rnd(0, 5) * 4 + '(' + src() + ')';
+        else { l = 'sw ' + src() + ', ' + rnd(0, 5) * 4 + '(' + pick(R) + ')'; d = null; }
+        lines.push(l); if (d) prevDst.push(d);
+      }
+      var r = pipeSolve(lines);
+      var st0 = r.s0.stalls.reduce(function (a, b) { return a + b; }, 0);
+      if (st0 > 0 && (Math.random() < 0.5 || r.s1.stalls.some(function (x) { return x > 0; }))) return r;
+    }
+    return pipeSolve(['add $t0, $t1, $t2', 'lw $t3, 0($t0)', 'sub $s0, $t3, $t1']);
+  }
+
+  /* ---------- Câu 9: datapath đơn chu kỳ ---------- */
+  var CTRL = {
+    R: [1, 0, 0, 1, 0, 0, 0, '10'], lw: [0, 1, 1, 1, 1, 0, 0, '00'], sw: ['X', 1, 'X', 0, 0, 1, 0, '00'], beq: ['X', 0, 'X', 0, 0, 0, 1, '01']
+  };
+  var FN = { add: 32, sub: 34, and: 36, or: 37, slt: 42 };
+  var ALUC = { add: '0010', sub: '0110', and: '0000', or: '0001', slt: '0111', lw: '0010', sw: '0010', beq: '0110' };
+  function dpSolve(word, regs) {
+    var op = word >>> 26, rs = (word >>> 21) & 31, rt = (word >>> 16) & 31, rd = (word >>> 11) & 31, sh = (word >>> 6) & 31, fn = word & 63, imm = word & 0xffff, simm = imm & 0x8000 ? imm - 65536 : imm;
+    var name = op === 0 ? Object.keys(FN).filter(function (k) { return FN[k] === fn; })[0] : ({ 35: 'lw', 43: 'sw', 4: 'beq' })[op];
+    var kind = op === 0 ? 'R' : name, c = CTRL[kind];
+    var R = function (n) { return regs[n] === undefined ? 'R[' + n + ']' : regs[n]; };
+    var bits = word.toString(2).padStart(32, '0'), asm;
+    if (kind === 'R') asm = name + ' $' + rd + ', $' + rs + ', $' + rt;
+    else if (kind === 'beq') asm = 'beq $' + rs + ', $' + rt + ', ' + simm;
+    else asm = name + ' $' + rt + ', ' + simm + '($' + rs + ')';
+    var h = pre([g4(bits)]);
+    if (kind === 'R') h += '<p>op = 000000 ⇒ R‑format; rs = ' + bits.substr(6, 5) + ' = ' + rs + ', rt = ' + bits.substr(11, 5) + ' = ' + rt + ', rd = ' + bits.substr(16, 5) + ' = ' + rd + ', shamt = ' + sh + ', funct = ' + bits.substr(26) + ' = ' + fn + ' ⇒ <b>' + asm + '</b>.</p>';
+    else h += '<p>op = ' + bits.substr(0, 6) + ' = ' + op + ' ⇒ ' + name + ' (I‑format); rs = ' + bits.substr(6, 5) + ' = ' + rs + ', rt = ' + bits.substr(11, 5) + ' = ' + rt + ', imm = ' + bits.substr(16) + ' = ' + simm + ' ⇒ <b>' + asm + '</b>.</p>';
+    h += '<p><b>Tín hiệu điều khiển</b></p><table class="ctrl"><tr><th>RegDst</th><th>ALUSrc</th><th>MemtoReg</th><th>RegWrite</th><th>MemRead</th><th>MemWrite</th><th>Branch</th><th>ALUOp</th></tr><tr>' + c.map(function (x) { return '<td>' + x + '</td>'; }).join('') + '</tr></table>';
+    var a1 = R(rs), a2 = c[1] === 1 ? simm : R(rt), res, zero, wreg, wdata;
+    var num = typeof a1 === 'number' && typeof a2 === 'number';
+    if (num) {
+      if (kind === 'R') res = name === 'add' ? a1 + a2 : name === 'sub' ? a1 - a2 : name === 'and' ? (a1 & a2) : name === 'or' ? (a1 | a2) : (a1 < a2 ? 1 : 0);
+      else if (kind === 'beq') res = a1 - a2; else res = a1 + a2;
+      zero = res === 0 ? 1 : 0;
+    }
+    if (kind === 'R') { wreg = rd + ' (rd, vì RegDst = 1)'; wdata = res + ' (kết quả ALU, vì MemtoReg = 0)'; }
+    else if (kind === 'lw') { wreg = rt + ' (rt, vì RegDst = 0)'; wdata = 'Mem[' + res + '] (dữ liệu đọc từ bộ nhớ, vì MemtoReg = 1; đề không cho giá trị)'; }
+    else { wreg = 'X (lệnh không ghi thanh ghi)'; wdata = 'X'; }
+    h += '<p><b>Khối Registers</b></p><table><tr><th colspan="2">Đầu vào</th></tr>' +
+      '<tr><td>Read register 1</td><td>' + rs + ' (rs)</td></tr><tr><td>Read register 2</td><td>' + rt + ' (rt)</td></tr>' +
+      '<tr><td>Write register</td><td>' + wreg + '</td></tr><tr><td>Write data</td><td>' + wdata + '</td></tr><tr><td>RegWrite</td><td>' + c[3] + '</td></tr>' +
+      '<tr><th colspan="2">Đầu ra</th></tr><tr><td>Read data 1</td><td>R[' + rs + '] = ' + R(rs) + '</td></tr><tr><td>Read data 2</td><td>R[' + rt + '] = ' + R(rt) + '</td></tr></table>';
+    var opTxt = { add: '+', sub: '−', and: 'AND', or: 'OR', slt: '<' }[name] || (kind === 'beq' ? '−' : '+');
+    h += '<p><b>ALU</b>: ALU control = ' + ALUC[name] + '; ' + a1 + ' ' + opTxt + ' ' + (typeof a2 === 'number' && a2 < 0 ? '(' + a2 + ')' : a2) + (c[1] === 1 ? ' (imm sign‑extend, ALUSrc = 1)' : '') + ' = <b>' + (name === 'slt' ? res + ' (' + a1 + ' < ' + a2 + ' là ' + (res ? 'đúng' : 'sai') + ')' : res) + '</b>; Zero = ' + zero + '.</p>';
+    if (kind === 'sw') h += '<p>Data memory: MemWrite = 1 ⇒ ghi Read data 2 = ' + R(rt) + ' vào Mem[' + res + '].</p>';
+    if (kind === 'lw') h += '<p>Data memory: MemRead = 1 ⇒ đọc Mem[' + res + '] đưa về thanh ghi $' + rt + '.</p>';
+    var off = 4 + 4 * simm, pcs = c[6] === 1 && zero === 1;
+    h += '<p><b>Khối Add</b></p><ul><li>Add (PC + 4): đầu vào pc và 4, đầu ra <b>pc + 4</b>.</li><li>Add (địa chỉ nhánh): đầu vào pc + 4 và SignExt(Inst[15:0]) &lt;&lt; 2 = ' + simm + ' × 4 = ' + 4 * simm + ', đầu ra <b>pc ' + (off >= 0 ? '+ ' + off : '− ' + (-off)) + '</b>' + (kind === 'R' ? ' (vẫn được tính từ 16 bit thấp của lệnh R dù không dùng)' : '') + '.</li></ul>';
+    h += '<p>PCSrc = Branch AND Zero = ' + c[6] + ' AND ' + zero + ' = ' + (pcs ? 1 : 0) + ' ⇒ PC mới = <b>' + (pcs ? 'pc ' + (off >= 0 ? '+ ' + off : '− ' + (-off)) : 'pc + 4') + '</b>.</p>';
+    var tbl = Object.keys(regs).map(Number).sort(function (a, b) { return a - b; });
+    var q = '<p>Datapath hỗ trợ 8 lệnh MIPS cơ bản (lw, sw, add, sub, and, or, slt và beq) của bộ xử lý đơn chu kỳ thực hiện lệnh sau:</p>' + pre([g4(bits)]) +
+      '<p>Giả sử giá trị của thanh ghi PC là pc. Khối Registers chứa các giá trị sau (ký hiệu $n = R[n]):</p><div class="tblwrap"><table><tr>' + tbl.map(function (n) { return '<th>$' + n + '</th>'; }).join('') + '</tr><tr>' + tbl.map(function (n) { return '<td>' + regs[n] + '</td>'; }).join('') + '</tr></table></div>' +
+      '<p>Hãy cho biết các giá trị đầu vào, đầu ra của khối Registers, bao gồm tín hiệu điều khiển? Giá trị đầu ra của các khối Add là bao nhiêu (ghi dạng thập phân)?</p>';
+    return { q: q, a: h };
+  }
+  function genDp() {
+    var nums = [0], pool = []; for (var i = 1; i < 24; i++) pool.push(i);
+    pool.sort(function () { return Math.random() - 0.5; }); nums = nums.concat(pool.slice(0, 7));
+    var regs = {}; nums.forEach(function (n) { regs[n] = n === 0 ? 0 : rnd(-30, 30); });
+    var tr = nums.slice(1), name = pick(['lw', 'sw', 'add', 'sub', 'and', 'or', 'slt', 'beq']), w;
+    var rs = pick(tr), rt = pick(tr);
+    if (name === 'lw' || name === 'sw') w = ((name === 'lw' ? 35 : 43) << 26 | rs << 21 | rt << 16 | ((rnd(-3, 10) * 4) & 0xffff)) >>> 0;
+    else if (name === 'beq') { if (Math.random() < 0.4) rt = rs; w = (4 << 26 | rs << 21 | rt << 16 | (rnd(-5, 12) & 0xffff)) >>> 0; }
+    else w = (rs << 21 | rt << 16 | pick(tr) << 11 | FN[name]) >>> 0;
+    return dpSolve(w, regs);
+  }
+
+  return {
+    locality: locality, LOC: LOC, muldiv: muldiv, genMuldiv: genMuldiv, ieeeEnc: ieeeEnc, genIEEE: genIEEE, perf: perf, genPerf: genPerf,
+    genC: genC, cToMips: cToMips, A: A, V: V, K: K, inc: inc, encSolve: encSolve, genEnc: genEnc, ovf: ovf, genOvf: genOvf,
+    pipeSolve: pipeSolve, genPipe: genPipe, dpSolve: dpSolve, genDp: genDp, rnd: rnd
+  };
+})();
+
+
+(function(){
+  var $ = function(s, r){ return (r||document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+  var mode = 'ck';
+  try { mode = localStorage.getItem('ktmt-mode') || 'ck'; } catch(e){}
+  var CH = {c1:'Khái niệm và công nghệ',c1b:'Hiệu suất',cnum:'Biểu diễn số',c2:'Kiến trúc bộ lệnh',c3:'Số học, chấm động',c3b:'Nhân – chia phần cứng',c4:'Bộ xử lý',c5:'Pipeline',c6:'Bộ nhớ, cache'};
+  var GK = ['c1','c1b','cnum','c2','c3','c3b','c4'];
+
+  /* ---- render bảng tự động trong bài tập ---- */
+  $$('.simtable').forEach(function(el){
+    var a = +el.dataset.a, b = +el.dataset.b, n = +el.dataset.n;
+    el.innerHTML = SIM.render(SIM[el.dataset.alg](a, b, n));
+  });
+  $$('.cachesim').forEach(function(el){
+    var seq = el.dataset.seq.split(',').map(Number);
+    el.innerHTML = CACHE.render(CACHE.run(+el.dataset.lines, +el.dataset.block, +el.dataset.ways, seq, 'LRU'));
+  });
+
+  /* ---- badge cho chương ---- */
+  $$('.chap').forEach(function(s){
+    var h = $('h2', s), b = document.createElement('span');
+    b.className = 'badge ' + s.dataset.exam;
+    b.textContent = s.dataset.exam === 'gk' ? 'Giữa kì + cuối kì' : 'Chỉ cuối kì';
+    h.appendChild(b);
+  });
+
+  /* ---- tabs ---- */
+  $$('.tabs').forEach(function(t){
+    t.addEventListener('click', function(e){
+      var btn = e.target.closest('.tab'); if (!btn) return;
+      var sec = t.parentNode;
+      $$('.tab', t).forEach(function(x){ x.classList.toggle('on', x === btn); });
+      $$('.pane', sec).forEach(function(p){ p.classList.toggle('on', p.dataset.p === btn.dataset.t); });
+    });
+  });
+
+  /* ---- router ---- */
+  function show(){
+    var h = (location.hash || '#home').slice(1);
+    var id = ({home:'v-home', quiz:'v-quiz', tools:'v-tools', exam:'v-exam'})[h] || h;
+    var v = document.getElementById(id);
+    if (!v || !v.classList.contains('view')) { v = $('#v-home'); h = 'home'; }
+    $$('.view').forEach(function(x){ x.classList.toggle('on', x === v); });
+    $$('.side a').forEach(function(a){ a.classList.toggle('on', a.dataset.v === h); });
+    window.scrollTo(0, 0);
+    $('#side').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded','false');
+    if (h === 'quiz' && !$('#qList').children.length) build();
+  }
+  window.addEventListener('hashchange', show);
+
+  /* ---- mode ---- */
+  function setMode(m){
+    mode = m;
+    try { localStorage.setItem('ktmt-mode', m); } catch(e){}
+    $$('.mode button').forEach(function(b){ b.classList.toggle('on', b.dataset.mode === m); });
+    $$('.side a[data-exam]').forEach(function(a){ a.classList.toggle('out', m === 'gk' && a.dataset.exam === 'ck'); });
+    chips();
+  }
+  $$('.mode button').forEach(function(b){ b.addEventListener('click', function(){ setMode(b.dataset.mode); if (location.hash === '#quiz') build(); }); });
+  $('#menuBtn').addEventListener('click', function(){ var o = $('#side').classList.toggle('open'); this.setAttribute('aria-expanded', o); });
+
+  /* ---- quiz ---- */
+  function chips(){
+    var list = mode === 'gk' ? GK : Object.keys(CH);
+    $('#qChips').innerHTML = list.map(function(c){
+      var n = QUIZ.filter(function(q){ return q.c === c; }).length;
+      return '<label><input type="checkbox" value="' + c + '" checked> ' + CH[c] + ' (' + n + ')</label>';
+    }).join('');
+    $('#qScopeTxt').textContent = mode === 'gk' ? 'Phạm vi giữa kì: từ chương 1 đến hết Bộ xử lý.' : 'Phạm vi cuối kì: toàn bộ các chương.';
+  }
+  function shuffle(a){ for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  var cur = [], answered = 0, correct = 0;
+  function build(reuse){
+    if (!reuse){
+      var sel = $$('#qChips input:checked').map(function(i){ return i.value; });
+      var pool = QUIZ.filter(function(q){ return sel.indexOf(q.c) >= 0; });
+      var mix = $('#qShuffle').checked;
+      if (mix) pool = shuffle(pool.slice());
+      var n = +$('#qCount').value; if (n) pool = pool.slice(0, n);
+      cur = pool.map(function(q){
+        var idx = q.o.map(function(_, i){ return i; });
+        if (mix) shuffle(idx);
+        return { q: q, idx: idx };
+      });
+    }
+    answered = 0; correct = 0;
+    var L = 'ABCD';
+    $('#qList').innerHTML = cur.length ? cur.map(function(it, k){
+      return '<div class="q" data-k="' + k + '"><p class="q-meta">Câu ' + (k + 1) + ' · ' + CH[it.q.c] + '</p><p class="q-text">' + it.q.q + '</p><div class="opts">' +
+        it.idx.map(function(oi, j){ return '<button class="opt" data-oi="' + oi + '"><b>' + L[j] + '.</b><span>' + it.q.o[oi] + '</span></button>'; }).join('') +
+        '</div><p class="q-exp">' + it.q.e + '</p></div>';
+    }).join('') : '<p class="empty">Chưa chọn chương nào. Tích ít nhất một chương ở trên rồi bấm "Tạo đề mới".</p>';
+    $('#qScore').hidden = !cur.length;
+    score();
+  }
+  function score(){
+    $('#qScoreTxt').textContent = 'Đúng ' + correct + '/' + answered + ' · đã làm ' + answered + '/' + cur.length;
+    $('#qBar').style.width = (cur.length ? answered / cur.length * 100 : 0) + '%';
+    if (cur.length && answered === cur.length) $('#qScoreTxt').textContent = 'Xong: ' + correct + '/' + cur.length + ' câu đúng (' + Math.round(correct / cur.length * 100) + '%)';
+  }
+  $('#qList').addEventListener('click', function(e){
+    var b = e.target.closest('.opt'); if (!b || b.disabled) return;
+    var box = b.closest('.q'), it = cur[+box.dataset.k], oi = +b.dataset.oi;
+    $$('.opt', box).forEach(function(x){ x.disabled = true; if (+x.dataset.oi === it.q.a) x.classList.add('right'); });
+    if (oi !== it.q.a) b.classList.add('wrong'); else correct++;
+    answered++; box.classList.add('done'); score();
+  });
+  $('#qStart').addEventListener('click', function(){ build(); });
+  $('#qRetry').addEventListener('click', function(){ build(true); window.scrollTo(0, $('#v-quiz').offsetTop); });
+
+  /* ---- công cụ ---- */
+  function parseNum(s){
+    s = String(s).trim().replace(/\s/g, ''); var neg = s[0] === '-'; if (neg) s = s.slice(1);
+    var v;
+    if (/^0b[01]+$/i.test(s)) v = parseInt(s.slice(2), 2);
+    else if (/^0o[0-7]+$/i.test(s)) v = parseInt(s.slice(2), 8);
+    else if (/^0x[0-9a-f]+$/i.test(s)) v = parseInt(s.slice(2), 16);
+    else if (/^\d+$/.test(s)) v = parseInt(s, 10);
+    else throw 'Không đọc được số "' + s + '"';
+    return neg ? -v : v;
+  }
+  function safe(fn, out){ try { fn(); } catch(err){ out.innerHTML = '<p class="err">' + err + '</p>'; } }
+  $('#mdRun').addEventListener('click', function(){ var o = $('#mdOut'); safe(function(){
+    var a = parseNum($('#mdA').value), b = parseNum($('#mdB').value), n = +$('#mdN').value, alg = $('#mdAlg').value;
+    if (n < 2 || n > 16) throw 'Số bit n từ 2 đến 16.';
+    if (a < 0 || b < 0) throw 'Giải thuật dùng số không dấu, hãy nhập số ≥ 0.';
+    if (a >= Math.pow(2, n) || b >= Math.pow(2, n)) throw 'Số vượt quá ' + n + ' bit (tối đa ' + (Math.pow(2, n) - 1) + ').';
+    if (alg.indexOf('div') === 0 && b === 0) throw 'Không chia cho 0.';
+    o.innerHTML = SIM.render(SIM[alg](a, b, n));
+  }, o); });
+  $('#cRun').addEventListener('click', function(){ var o = $('#cOut'); safe(function(){
+    var lines = +$('#cLines').value, block = +$('#cBlock').value, w = +$('#cWays').value;
+    if (!w) w = lines;
+    if (lines % w) throw 'Số dòng phải chia hết cho số đường.';
+    var seq = $('#cSeq').value.split(/[,\s]+/).filter(Boolean).map(parseNum);
+    if (!seq.length) throw 'Nhập ít nhất một địa chỉ.';
+    o.innerHTML = CACHE.render(CACHE.run(lines, block, w, seq, $('#cPol').value));
+  }, o); });
+  $('#mEnc').addEventListener('click', function(){ var o = $('#mEncOut'); safe(function(){ o.innerHTML = MIPS.render(MIPS.encode($('#mAsm').value)); }, o); });
+  $('#mDec').addEventListener('click', function(){ var o = $('#mDecOut'); safe(function(){ o.innerHTML = MIPS.render(MIPS.decode($('#mHex').value)); }, o); });
+  function ieeeOut(r){
+    var kind = r.eDec === 255 ? (/1/.test(r.f) ? 'NaN' : 'Vô cực') : (r.eDec === 0 ? (/1/.test(r.f) ? 'Số không chuẩn' : 'Số 0') : 'Số chuẩn');
+    return '<div class="bits out"><span class="f op" style="--w:3">S<small>' + r.s + '</small></span><span class="f rs" style="--w:9">E = ' + r.eDec + '<small>' + r.e + '</small></span><span class="f im" style="--w:23">Fraction<small>' + r.f + '</small></span></div>' +
+      '<dl class="kv"><dt>Hex</dt><dd>' + r.hex + '</dd><dt>Loại</dt><dd>' + kind + '</dd>' + (r.eDec > 0 && r.eDec < 255 ? '<dt>Mũ thật</dt><dd>' + r.eDec + ' − 127 = ' + r.real + '</dd><dt>Dạng chuẩn</dt><dd>' + (r.s === '1' ? '−' : '') + '1.' + r.f.replace(/0+$/, '') + (r.f.replace(/0+$/, '') ? '' : '0') + ' × 2^' + r.real + '</dd>' : '') + '<dt>Giá trị lưu được</dt><dd>' + r.stored + '</dd></dl>';
+  }
+  $('#iFromDec').addEventListener('click', function(){ var o = $('#iOut'); safe(function(){
+    var v = parseFloat($('#iDec').value.replace(',', '.').replace('−', '-')); if (isNaN(v)) throw 'Nhập số thực, ví dụ -0.75';
+    o.innerHTML = ieeeOut(IEEE.fromFloat(v));
+  }, o); });
+  $('#iFromHex').addEventListener('click', function(){ var o = $('#iOut'); safe(function(){
+    var h = $('#iHex').value.trim(); if (!/^(0x)?[0-9a-f]{1,8}$/i.test(h)) throw 'Nhập tối đa 8 chữ số hex, ví dụ 0xC0A00000';
+    o.innerHTML = ieeeOut(IEEE.fromHex(h));
+  }, o); });
+  $('#bRun').addEventListener('click', function(){ var o = $('#bOut'); safe(function(){
+    var v = parseNum($('#bVal').value.replace('−', '-')), n = +$('#bN').value, N = BigInt(n);
+    var min = -(2 ** (n - 1)), maxU = 2 ** n - 1;
+    if (v < min || v > maxU) throw 'Giá trị không vừa ' + n + ' bit (miền ' + min + ' … ' + maxU + ').';
+    var u = BigInt(v) & ((1n << N) - 1n), s = u >= (1n << (N - 1n)) ? u - (1n << N) : u;
+    o.innerHTML = '<dl class="kv"><dt>Nhị phân ' + n + ' bit</dt><dd>' + SIM.bin(u, n, 4) + '</dd><dt>Hex</dt><dd>0x' + u.toString(16).toUpperCase() + '</dd><dt>Bát phân</dt><dd>' + u.toString(8) + '</dd><dt>Không dấu</dt><dd>' + u + '</dd><dt>Có dấu (bù 2)</dt><dd>' + s + '</dd>' +
+      (v < 0 ? '<dt>Cách làm</dt><dd>' + SIM.bin(BigInt(-v), n, 4) + ' → đảo bit ' + SIM.bin(~BigInt(-v), n, 4) + ' → +1 = ' + SIM.bin(u, n, 4) + '</dd>' : '') + '</dl>';
+  }, o); });
+
+
+  /* ---- đề thi ---- */
+  (function(){
+    var E = EXAM, box = $('#examSolved');
+    function block(title, r){ return '<div class="ex"><p class="ex-q"><b>' + title + '</b></p>' + r.q + '<details><summary>Xem lời giải</summary>' + r.a + '</details></div>'; }
+    var c7a = E.ovf(232, '+', 218), c7b = E.ovf(209, '−', 141);
+    box.innerHTML =
+      block('Câu 1 (1đ)', E.locality(0)) +
+      block('Câu 2 (1,5đ)', E.muldiv('mul2', 4, 3, 4)) +
+      block('Câu 3 (1đ)', E.ieeeEnc(19.25)) +
+      block('Câu 4 (1,5đ)', E.perf(1, {T:19, IC:70, CPI:1.9})) +
+      block('Câu 5 (1đ)', E.cToMips([E.A('f', [E.V('g'), E.V('h', -1), E.V('i')]), {t:'if', cond:{a:'i', op:'>=', b:E.K(7)}, then:[E.inc('i', 1)], els:null}])) +
+      block('Câu 6 (1đ)', E.encSolve('addi $a0, $zero, 9')) +
+      '<div class="ex"><p class="ex-q"><b>Câu 7 (1đ)</b></p><p>Thực hiện phép tính và xét tràn nhớ cho hai số nhị phân có dấu 8 bit (kết quả là số 8 bit):</p><p><b>A)</b> 1110 1000 + 1101 1010 &nbsp;&nbsp; <b>B)</b> 1101 0001 − 1000 1101</p><details><summary>Xem lời giải</summary><p><b>A)</b></p>' + c7a.a + '<p><b>B)</b></p>' + c7b.a + '</details></div>' +
+      block('Câu 8 (1đ)', E.pipeSolve(['or $t1, $t2, $s0', 'lw $t1, 0($s1)', 'addi $s0, $t1, 5'])) +
+      block('Câu 9 (1đ)', E.dpSolve(0xAD240008, {0:0, 2:-6, 4:-5, 8:15, 9:20, 16:-11, 17:19, 18:-22}));
+    var GEN = {
+      1: function(){ return E.locality(E.rnd(0, E.LOC.length - 1)); },
+      2: function(sel){ return E.genMuldiv(sel); },
+      3: E.genIEEE, 4: E.genPerf,
+      5: function(sel){ return E.cToMips(E.genC(sel)); },
+      6: E.genEnc, 7: E.genOvf, 8: E.genPipe, 9: E.genDp
+    };
+    $$('.gen').forEach(function(g){
+      var k = g.dataset.g, sel = $('select', g);
+      function make(){ var r = GEN[k](sel ? sel.value : undefined); $('.gen-q', g).innerHTML = r.q; $('.gen-a', g).innerHTML = r.a; $('details', g).open = false; }
+      $('button', g).addEventListener('click', make);
+      if (sel) sel.addEventListener('change', make);
+      make();
+    });
+  })();
+
+  setMode(mode);
+  show();
+})();
+</script>
+</body>
+</html>
