@@ -245,6 +245,7 @@ input.m{font-family:var(--mono)}
   <a href="#c5" data-v="c5" data-exam="ck"><small>Ch.5</small>Pipeline</a>
   <a href="#c6" data-v="c6" data-exam="ck"><small>Ch.6</small>Bộ nhớ và cache</a>
   <h4>Luyện tập</h4>
+  <a href="#hw" data-v="hw"><small>Bài tập</small>Bài tập thầy giao (Ch.1–4)</a>
   <a href="#exam" data-v="exam"><small>Đề thi</small>Đề cuối kì và luyện dạng</a>
   <a href="#quiz" data-v="quiz"><small>Quiz</small>Trắc nghiệm</a>
   <a href="#tools" data-v="tools"><small>Công cụ</small>Tự kiểm tra đáp án</a>
@@ -1541,6 +1542,291 @@ Exit:</pre></td></tr>
 </div>
 </section>
 
+<!-- ============ BÀI TẬP VỀ NHÀ ============ -->
+<section class="view" id="v-hw">
+<header class="chap-head">
+  <p class="chap-no">Luyện tập</p>
+  <h2>Bài tập thầy giao (chương 1–4)</h2>
+  <p class="chap-src">Nguồn: BaiTap_Chuong1, BaiTap_Chuong2_v1, BaiTap_Chuong3, Bai tap Chương 4. Bấm từng bài để xem lời giải.</p>
+</header>
+<div class="tabs" role="tablist"><button class="tab on" data-t="h1">Chương 1</button><button class="tab" data-t="h2">Chương 2</button><button class="tab" data-t="h3">Chương 3</button><button class="tab" data-t="h4">Chương 4</button></div>
+
+<!-- ---------------- CHƯƠNG 1 ---------------- -->
+<div class="pane on" data-p="h1">
+<div class="ex"><p class="ex-q"><b>Bài 1.</b> Mô tả các thành phần cơ bản của kiến trúc máy tính theo mô hình John von Neumann. Giải thích ngắn gọn về vận hành của máy tính.</p>
+<details><summary>Xem lời giải</summary>
+<p>Mô hình von Neumann (1945) gồm:</p>
+<ul>
+<li><b>Bộ xử lý trung tâm (CPU)</b>: gồm <i>khối điều khiển</i> (Control, giải mã lệnh và phát tín hiệu điều khiển), <i>đường dữ liệu</i> (Datapath, có ALU thực hiện phép tính số học/logic) và các <i>thanh ghi</i> (trong đó PC chứa địa chỉ lệnh kế tiếp).</li>
+<li><b>Bộ nhớ (Memory)</b>: chứa <b>cả chương trình lẫn dữ liệu</b> (nguyên lý chương trình lưu trữ), đánh địa chỉ theo từng ô.</li>
+<li><b>Thiết bị nhập (Input)</b> và <b>xuất (Output)</b>: trao đổi thông tin với bên ngoài.</li>
+<li><b>Hệ thống bus</b> (địa chỉ, dữ liệu, điều khiển) nối các khối trên.</li>
+</ul>
+<p>Vận hành: máy tính lặp chu trình <b>nạp – giải mã – thực thi</b>. CPU dùng PC lấy lệnh từ bộ nhớ, tăng PC lên lệnh kế tiếp, giải mã lệnh, lấy toán hạng (từ thanh ghi hoặc bộ nhớ), cho ALU thực hiện, rồi ghi kết quả vào thanh ghi hoặc bộ nhớ. Lệnh nhảy thay đổi PC để đổi luồng thực thi. Dữ liệu vào qua Input, kết quả ra qua Output.</p>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 2.</b> Mô tả, giải thích ngắn gọn các lớp phân cấp từ phần cứng đến phần mềm.</p>
+<details><summary>Xem lời giải</summary>
+<div class="flow"><span>Phần mềm ứng dụng</span><i>dựa trên</i><span>Phần mềm hệ thống</span><i>điều khiển</i><span>Phần cứng</span></div>
+<ul>
+<li><b>Phần cứng</b> (trong cùng): bộ xử lý, bộ nhớ, thiết bị nhập/xuất.</li>
+<li><b>Phần mềm hệ thống</b> (giữa): cầu nối giữa ứng dụng và phần cứng. Gồm <b>hệ điều hành</b> (quản lý tài nguyên, điều khiển nhập/xuất, cấp phát bộ nhớ, chia sẻ tài nguyên khi nhiều chương trình chạy đồng thời) và <b>trình biên dịch</b> (dịch ngôn ngữ cấp cao sang hợp ngữ), cùng assembler, linker, loader.</li>
+<li><b>Phần mềm ứng dụng</b> (ngoài cùng): chương trình người dùng sử dụng trực tiếp (soạn thảo, trình duyệt…).</li>
+</ul>
+<p>Mỗi lớp che giấu chi tiết của lớp bên dưới (trừu tượng hóa), nên người viết ứng dụng không cần biết chi tiết phần cứng.</p>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 3.</b> Máy tính được phân loại như thế nào? Trình bày đặc trưng cơ bản của từng loại.</p>
+<details><summary>Xem lời giải</summary>
+<table>
+<tr><th>Loại</th><th>Đặc trưng</th></tr>
+<tr><td>Máy tính để bàn (PC, đa dụng)</td><td>Một người dùng, có màn hình, chuột, bàn phím; hiệu năng tốt với chi phí thấp; chạy phần mềm bên thứ ba. Phổ biến nhất với người dùng.</td></tr>
+<tr><td>Máy chủ (Server)</td><td>Chạy chương trình lớn hoặc phục vụ nhiều người dùng đồng thời qua mạng; khả năng tính toán, lưu trữ, nhập/xuất lớn, độ tin cậy cao. Từ server cấp thấp đến <b>siêu máy tính</b> (hàng ngàn bộ xử lý, bộ nhớ TB) và <b>trung tâm dữ liệu</b>.</td></tr>
+<tr><td>Máy tính nhúng (Embedded)</td><td>Nằm trong thiết bị khác (xe, điện thoại, máy giặt, TV), chạy một ứng dụng định trước. Nhiều nhất và đa dạng nhất. Yêu cầu chính: đủ hiệu năng với <b>chi phí và năng lượng thấp nhất</b>.</td></tr>
+</table>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 4.</b> Trình bày các mức trừu tượng của máy tính.</p>
+<details><summary>Xem lời giải</summary>
+<p>Theo slide (mã chương trình): <b>Ngôn ngữ cấp cao</b> (C, Java, gần cách nghĩ con người, độc lập máy) → <i>compiler</i> → <b>Hợp ngữ</b> (assembly, ký hiệu dễ đọc của lệnh máy) → <i>assembler</i> → <b>Ngôn ngữ máy</b> (lệnh và dữ liệu dạng nhị phân mà phần cứng thực thi).</p>
+<p>Trình bày đầy đủ theo nhiều mức máy (từ trên xuống):</p>
+<ol>
+<li><b>Mức ứng dụng / ngôn ngữ cấp cao</b>: chương trình người dùng viết.</li>
+<li><b>Mức hợp ngữ</b>: dạng ký hiệu của lệnh máy.</li>
+<li><b>Mức hệ điều hành</b>: bổ sung dịch vụ quản lý bộ nhớ, tiến trình, nhập/xuất.</li>
+<li><b>Mức kiến trúc tập lệnh (ISA)</b>: giao diện giữa phần mềm và phần cứng (lệnh, thanh ghi, định dạng lệnh như MIPS).</li>
+<li><b>Mức vi kiến trúc</b>: tổ chức datapath, khối điều khiển, pipeline, cache hiện thực ISA.</li>
+<li><b>Mức logic số</b>: cổng logic, mạch tổ hợp, mạch tuần tự.</li>
+<li><b>Mức thiết bị</b>: transistor, mạch tích hợp.</li>
+</ol>
+<p class="note">Mỗi mức dùng dịch vụ của mức dưới và che giấu chi tiết của nó. Giáo trình có thể đặt tên các mức hơi khác; ý chính là chuỗi phần mềm → ISA → phần cứng.</p>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 5.</b> Màn hình dùng 8 bit cho mỗi màu cơ bản (R, G, B), độ phân giải 1280 × 800. Dung lượng tối thiểu của bộ đệm màn hình để chứa một khung ảnh?</p>
+<details><summary>Xem lời giải</summary>
+<p>Mỗi pixel = 3 × 8 = 24 bit.</p>
+<p>Frame buffer = 1280 × 800 × 24 = <b>24.576.000 bit</b> = 3.072.000 byte ≈ 2,93 MB (MiB).</p>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 6.</b> Ba bộ xử lý cùng tập lệnh: P1 (2 GHz, CPI 1,5), P2 (1,5 GHz, CPI 2), P3 (3 GHz, CPI 2,5). a) Bộ xử lý nào hiệu suất cao nhất theo IPS và MIPS? b) Chạy một chương trình hết 10 s, tính tổng số chu kỳ và số lệnh. c) Muốn giảm 30% thời gian nhưng CPI tăng 20%, tần số mới phải là bao nhiêu?</p>
+<details><summary>Xem lời giải</summary>
+<p><b>a)</b> IPS = Clock rate / CPI; MIPS = IPS / 10<sup>6</sup>.</p>
+<table>
+<tr><th></th><th>IPS</th><th>MIPS</th></tr>
+<tr><td>P1</td><td>2×10<sup>9</sup> / 1,5 ≈ 1,333×10<sup>9</sup></td><td>≈ 1333</td></tr>
+<tr><td>P2</td><td>1,5×10<sup>9</sup> / 2 = 0,75×10<sup>9</sup></td><td>750</td></tr>
+<tr><td>P3</td><td>3×10<sup>9</sup> / 2,5 = 1,2×10<sup>9</sup></td><td>1200</td></tr>
+</table>
+<p>⇒ <b>P1</b> có hiệu suất cao nhất.</p>
+<p><b>b)</b> Clock cycles = CPU time × Clock rate; IC = Clock cycles / CPI.</p>
+<table>
+<tr><th></th><th>Tổng chu kỳ</th><th>Số lệnh</th></tr>
+<tr><td>P1</td><td>10 × 2×10<sup>9</sup> = 2×10<sup>10</sup></td><td>2×10<sup>10</sup> / 1,5 ≈ 1,333×10<sup>10</sup></td></tr>
+<tr><td>P2</td><td>10 × 1,5×10<sup>9</sup> = 1,5×10<sup>10</sup></td><td>1,5×10<sup>10</sup> / 2 = 7,5×10<sup>9</sup></td></tr>
+<tr><td>P3</td><td>10 × 3×10<sup>9</sup> = 3×10<sup>10</sup></td><td>3×10<sup>10</sup> / 2,5 = 1,2×10<sup>10</sup></td></tr>
+</table>
+<p><b>c)</b> Time mới = 0,7 × 10 = 7 s; CPI mới = 1,2 × CPI; IC không đổi.</p>
+<p>Clock rate mới = IC × CPI mới / Time mới = (Cycles cũ × 1,2) / 7 = Clock rate cũ × 1,2 / 0,7 ≈ 1,714 × Clock rate cũ.</p>
+<table>
+<tr><th></th><th>Tần số mới</th></tr>
+<tr><td>P1</td><td>2×10<sup>10</sup> × 1,2 / 7 ≈ <b>3,43 GHz</b></td></tr>
+<tr><td>P2</td><td>1,5×10<sup>10</sup> × 1,2 / 7 ≈ <b>2,57 GHz</b></td></tr>
+<tr><td>P3</td><td>3×10<sup>10</sup> × 1,2 / 7 ≈ <b>5,14 GHz</b></td></tr>
+</table>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 7.</b> Cùng ISA, 4 lớp lệnh. P1: 1,5 GHz, CPI (A, B, C, D) = (1, 2, 3, 4). P2: 2,0 GHz, CPI = (2, 2, 2, 3). Chương trình 10<sup>6</sup> lệnh: A 10%, B 20%, C 50%, D 20%. a) Thiết kế nào nhanh hơn? b) CPI trung bình? c) Tổng số chu kỳ?</p>
+<details><summary>Xem lời giải</summary>
+<p class="note">Đề in "106 lệnh" là 10<sup>6</sup> bị mất định dạng mũ.</p>
+<p><b>b)</b> CPI<sub>P1</sub> = 0,1·1 + 0,2·2 + 0,5·3 + 0,2·4 = 0,1 + 0,4 + 1,5 + 0,8 = <b>2,8</b>.</p>
+<p>CPI<sub>P2</sub> = 0,1·2 + 0,2·2 + 0,5·2 + 0,2·3 = 0,2 + 0,4 + 1,0 + 0,6 = <b>2,2</b>.</p>
+<p><b>c)</b> Cycles<sub>P1</sub> = 10<sup>6</sup> × 2,8 = <b>2,8×10<sup>6</sup></b>; Cycles<sub>P2</sub> = 10<sup>6</sup> × 2,2 = <b>2,2×10<sup>6</sup></b>.</p>
+<p><b>a)</b> Time<sub>P1</sub> = 2,8×10<sup>6</sup> / 1,5×10<sup>9</sup> ≈ 1,867×10<sup>−3</sup> s; Time<sub>P2</sub> = 2,2×10<sup>6</sup> / 2×10<sup>9</sup> = 1,1×10<sup>−3</sup> s.</p>
+<p>⇒ <b>P2 nhanh hơn</b> 1,867 / 1,1 ≈ 1,7 lần.</p>
+</details></div>
+
+<h3>Bài tập làm thêm</h3>
+<div class="ex"><p class="ex-q"><b>Bài 1.</b> Ứng dụng chạy 15 s. Trình biên dịch mới cần 0,6 lần số lệnh nhưng CPI tăng 1,1 lần. Thời gian mới? (chọn a. 15×0,6/1,1 = 8,2 s; b. 15×0,6×1,1 = 9,9 s; c. 1,5×1,1/0,6 = 27,5 s)</p>
+<details><summary>Xem lời giải</summary>
+<p>CPU time = IC × CPI × Clock cycle; clock không đổi nên CPU time tỉ lệ với IC × CPI.</p>
+<p>CPU time<sub>new</sub> = 15 × 0,6 × 1,1 = <b>9,9 s</b> ⇒ đáp án <b>b</b>.</p>
+</details></div>
+<div class="ex"><p class="ex-q"><b>Bài 2.</b> Máy A: 10 tỉ lệnh, 4 GHz, CPI 1,0. Máy B: 8 tỉ lệnh, 4 GHz, CPI 1,1. a) Máy nào MIPS cao hơn? b) Máy nào nhanh hơn?</p>
+<details><summary>Xem lời giải</summary>
+<p>MIPS = Clock rate / (CPI × 10<sup>6</sup>).</p>
+<p>MIPS(A) = 4×10<sup>9</sup> / (1,0 × 10<sup>6</sup>) = <b>4000</b>; MIPS(B) = 4×10<sup>9</sup> / (1,1 × 10<sup>6</sup>) ≈ <b>3636</b> ⇒ A có MIPS cao hơn.</p>
+<p>CPU time(A) = 10×10<sup>9</sup> × 1,0 / 4×10<sup>9</sup> = <b>2,5 s</b>; CPU time(B) = 8×10<sup>9</sup> × 1,1 / 4×10<sup>9</sup> = <b>2,2 s</b> ⇒ <b>B nhanh hơn</b> (2,5 / 2,2 ≈ 1,14 lần).</p>
+<p class="note">Bài học: MIPS cao hơn chưa chắc chạy nhanh hơn, vì MIPS bỏ qua số lệnh của chương trình.</p>
+</details></div>
+<div class="ex"><p class="ex-q"><b>Bài 3.</b> Bộ xử lý thực thi chương trình trong 20 ns, 100 lệnh, CPI 2. Chu kỳ xung clock cần là bao nhiêu giây? Giải thích ký hiệu (trừ CPI).</p>
+<details><summary>Xem lời giải</summary>
+<p>CPU time = IC × CPI × Clock cycle ⇒ Clock cycle = CPU time / (IC × CPI) = 20 ns / (100 × 2) = 0,1 ns = <b>10<sup>−10</sup> s</b> (tần số 10 GHz).</p>
+<p>Ký hiệu: <b>CPU time</b> là thời gian thực thi chương trình; <b>IC</b> là tổng số lệnh của chương trình; <b>Clock cycle</b> là chu kỳ xung clock (thời gian một chu kỳ, nghịch đảo của tần số).</p>
+</details></div>
+<div class="ex"><p class="ex-q"><b>Bài 4.</b> Chu kỳ xung clock 1 ns, CPI 2. Tốc độ IPS? Giải thích ký hiệu.</p>
+<details><summary>Xem lời giải</summary>
+<p>Clock rate = 1 / Clock cycle = 1 / 10<sup>−9</sup> s = 10<sup>9</sup> Hz (1 GHz).</p>
+<p>IPS = Clock rate / CPI = 10<sup>9</sup> / 2 = <b>5×10<sup>8</sup> lệnh/giây</b> (500 MIPS).</p>
+<p>Ký hiệu: <b>IPS</b> là số lệnh thực thi trong 1 giây; <b>Clock rate</b> là tần số xung (số chu kỳ mỗi giây); <b>Clock cycle</b> là thời gian một chu kỳ; <b>CPI</b> là số chu kỳ trung bình mỗi lệnh.</p>
+</details></div>
+</div>
+
+<!-- ---------------- CHƯƠNG 2 ---------------- -->
+<div class="pane" data-p="h2">
+<div class="ex"><p class="ex-q"><b>Bài 1.</b> x = 5; y = x − 2; a = x*4; b = y*2; z = (x + a) − (y + b). Biến x, y, z, a, b gán vào $t0, $t1, $t2, $t3, $t4.</p>
+<details><summary>Xem lời giải</summary>
+<pre>addi $t0, $zero, 5     # x = 5
+addi $t1, $t0, -2      # y = x - 2
+sll  $t3, $t0, 2       # a = x * 4  (dịch trái 2 bit = nhân 4)
+sll  $t4, $t1, 1       # b = y * 2  (dịch trái 1 bit = nhân 2)
+add  $t5, $t0, $t3     # $t5 = x + a
+add  $t6, $t1, $t4     # $t6 = y + b
+sub  $t2, $t5, $t6     # z = (x + a) - (y + b)</pre>
+<p>Kết quả: x = 5, y = 3, a = 20, b = 6, z = 25 − 9 = 16. $t5, $t6 là thanh ghi tạm (không trùng với biến).</p>
+<p class="note">Cách khác cho a = x*4: <code>addi $t7, $zero, 4</code>; <code>mult $t0, $t7</code>; <code>mflo $t3</code>. Hoặc b = y*2 bằng <code>add $t4, $t1, $t1</code>.</p>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 2.</b> x = y + a[5]; x, y ở $t1, $t2; a là mảng int (4 byte).</p>
+<details><summary>Xem lời giải</summary>
+<p>Đề không nói địa chỉ nền của a nằm ở thanh ghi nào; giả sử ở <b>$s0</b>.</p>
+<pre>lw  $t0, 20($s0)       # $t0 = a[5], offset 5 × 4 = 20
+add $t1, $t2, $t0      # x = y + a[5]</pre>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 3.</b> if (x &lt; 0) h = 0; else h = x; (x ở $s0, h ở $s1)</p>
+<details><summary>Xem lời giải</summary>
+<pre>      slt  $t0, $s0, $zero    # $t0 = (x < 0)
+      beq  $t0, $zero, Else   # x >= 0 thì sang Else
+      add  $s1, $zero, $zero  # h = 0
+      j    Exit
+Else: add  $s1, $s0, $zero    # h = x
+Exit:</pre>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 4.</b> x = y + A[3]; A[10] = x; (x, y ở $s0, $s1; nền A ở $s2; A là mảng int)</p>
+<details><summary>Xem lời giải</summary>
+<pre>lw  $t0, 12($s2)       # $t0 = A[3], offset 3 × 4 = 12
+add $s0, $s1, $t0      # x = y + A[3]
+sw  $s0, 40($s2)       # A[10] = x, offset 10 × 4 = 40</pre>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 5.</b> Biểu diễn nhị phân: a) add $t0, $s1, $s2; b) lw $t0, 32($s1); c) sw $t0, 36($s1).</p>
+<details><summary>Xem lời giải</summary>
+<p><b>a)</b></p><div class="hw-enc" data-l="add $t0, $s1, $s2"></div>
+<p><b>b)</b></p><div class="hw-enc" data-l="lw $t0, 32($s1)"></div>
+<p><b>c)</b></p><div class="hw-enc" data-l="sw $t0, 36($s1)"></div>
+<div class="warn"><b>Lưu ý:</b> đề ghi "ví dụ $s1 = 16" ở câu b, c nhưng $s1 là thanh ghi số <b>17</b> ($s0 mới là 16). Lời giải trên dùng 17. Nếu thầy muốn rs = 16 (tức $s0) thì đáp án là 0x8E080020 (lw) và 0xAE080024 (sw).</div>
+</details></div>
+
+<h3>Bài tập làm thêm</h3>
+<div class="ex"><p class="ex-q"><b>Bài 6.</b> Chuyển sang mã máy Hex: a) addi $s1, $s2, 20; b) sll $s1, $s2, 10; c) andi $s1, $s2, 8.</p>
+<details><summary>Xem lời giải</summary>
+<p><b>a)</b></p><div class="hw-enc" data-l="addi $s1, $s2, 20"></div>
+<p><b>b)</b> sll rd, rt, shamt: rs = 0, rt = $s2, rd = $s1, shamt = 10.</p><div class="hw-enc" data-l="sll $s1, $s2, 10"></div>
+<p><b>c)</b> andi dùng opcode 0x0C, immediate zero‑extend.</p><div class="hw-enc" data-l="andi $s1, $s2, 8"></div>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 7.</b> e = d + c − 6; if (e &gt; 12) { a = e − b; } (a, b, c, d, e ở $t0, $t1, $t2, $t3, $t4)</p>
+<details><summary>Xem lời giải</summary>
+<pre>      add  $t5, $t3, $t2      # $t5 = d + c
+      addi $t4, $t5, -6       # e = d + c - 6
+      slti $t6, $t4, 13       # $t6 = (e < 13) = (e <= 12)
+      bne  $t6, $zero, Exit   # e <= 12 (điều kiện sai) thì bỏ qua
+      sub  $t0, $t4, $t1      # a = e - b
+Exit:</pre>
+<p class="note">e &gt; 12 ⇔ không phải e &lt; 13. Cách khác: <code>addi $t7, $zero, 12</code>; <code>slt $t6, $t7, $t4</code> (12 &lt; e); <code>beq $t6, $zero, Exit</code>. Thanh ghi tạm phải tránh $t0–$t4 vì đã gán cho biến.</p>
+</details></div>
+</div>
+
+<!-- ---------------- CHƯƠNG 3 ---------------- -->
+<div class="pane" data-p="h3">
+<div class="ex"><p class="ex-q"><b>Bài 1.</b> Thực hiện với biểu diễn nhị phân 8 bit (có 1 bit dấu): a) 13 + 8; b) 17 − 7; c) 13 × 9; d) −15 × 5; e) 13 : 5; f) −17 : 6. Phép nhân/chia làm cả giải thuật tuần tự và tuần tự cải tiến.</p>
+<details><summary>Xem lời giải</summary>
+<p><b>a) 13 + 8</b></p><div class="hw-ovf" data-a="13" data-op="+" data-b="8"></div>
+<p><b>b) 17 − 7</b></p><div class="hw-ovf" data-a="17" data-op="−" data-b="7"></div>
+<p><b>c) 13 × 9</b>: cùng dấu dương. 13 = 0000 1101, 9 = 0000 1001. Nhân phần trị 8 bit, tích 16 bit.</p>
+<p>Giải thuật tuần tự (3 thanh ghi):</p><div class="simtable" data-alg="mul1" data-a="13" data-b="9" data-n="8"></div>
+<p>Giải thuật cải tiến (2 thanh ghi):</p><div class="simtable" data-alg="mul2" data-a="13" data-b="9" data-n="8"></div>
+<p>Kết quả 117 = 0111 0101 (vừa 8 bit có dấu, không tràn).</p>
+<p><b>d) −15 × 5</b>: xét dấu riêng: âm × dương ⇒ <b>âm</b>. Nhân trị tuyệt đối 15 × 5:</p>
+<div class="simtable" data-alg="mul1" data-a="15" data-b="5" data-n="8"></div>
+<div class="simtable" data-alg="mul2" data-a="15" data-b="5" data-n="8"></div>
+<p>|tích| = 75 = 0100 1011 ⇒ gắn dấu âm: bù 2 ⇒ 1011 0100 + 1 = <b>1011 0101 = −75</b>.</p>
+<p><b>e) 13 : 5</b>: cùng dấu dương.</p>
+<p>Giải thuật tuần tự (3 thanh ghi, n + 1 = 9 lần lặp):</p><div class="simtable" data-alg="div1" data-a="13" data-b="5" data-n="8"></div>
+<p>Giải thuật cải tiến:</p><div class="simtable" data-alg="div2" data-a="13" data-b="5" data-n="8"></div>
+<p>Thương 2, dư 3.</p>
+<p><b>f) −17 : 6</b>: chia trị tuyệt đối 17 : 6 rồi xét dấu.</p>
+<div class="simtable" data-alg="div1" data-a="17" data-b="6" data-n="8"></div>
+<div class="simtable" data-alg="div2" data-a="17" data-b="6" data-n="8"></div>
+<p>|thương| = 2, |dư| = 5. Hai số trái dấu ⇒ thương âm: <b>−2 = 1111 1110</b>. Dư cùng dấu số bị chia: <b>−5 = 1111 1011</b>. Kiểm tra: −2 × 6 + (−5) = −17 ✓.</p>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 2.</b> Biểu diễn IEEE 754 đơn: a) 1,25; b) −3,125; c) 1,75.</p>
+<details><summary>Xem lời giải</summary>
+<p><b>a)</b></p><div class="hw-ieee" data-v="1.25"></div>
+<p><b>b)</b></p><div class="hw-ieee" data-v="-3.125"></div>
+<p><b>c)</b></p><div class="hw-ieee" data-v="1.75"></div>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 3.</b> Thực hiện phép toán số chấm động: a) 2,125 + 1,25; b) 0,75 − 0,5; c) 1,25 × 2,5; d) 2,5 : 0,25.</p>
+<details><summary>Xem lời giải</summary>
+<p><b>a) 2,125 + 1,25</b></p>
+<p>2,125 = 10,001₂ = 1,0001 × 2<sup>1</sup>; 1,25 = 1,01₂ = 1,01 × 2<sup>0</sup>.</p>
+<p>B1 canh mũ: số mũ nhỏ (0) dịch phải 1 bit: 1,01 × 2<sup>0</sup> = 0,101 × 2<sup>1</sup>.</p>
+<p>B2 cộng phần trị: 1,0001 + 0,1010 = 1,1011 ⇒ 1,1011 × 2<sup>1</sup>.</p>
+<p>B3 đã chuẩn hóa; E = 1 + 127 = 128 trong 1…254 ⇒ không tràn. B4 không cần làm tròn.</p>
+<p>Kết quả 1,1011 × 2<sup>1</sup> = 11,011₂ = <b>3,375</b> (IEEE: 0 10000000 1011000… = 0x40580000).</p>
+
+<p><b>b) 0,75 − 0,5</b></p>
+<p>0,75 = 0,11₂ = 1,1 × 2<sup>−1</sup>; 0,5 = 1,0 × 2<sup>−1</sup>. Cùng mũ, không cần dịch.</p>
+<p>Trừ phần trị: 1,1 − 1,0 = 0,1 ⇒ 0,1 × 2<sup>−1</sup>. Chuẩn hóa: <b>1,0 × 2<sup>−2</sup> = 0,25</b>. E = −2 + 127 = 125, không tràn (0x3E800000).</p>
+
+<p><b>c) 1,25 × 2,5</b></p>
+<p>1,25 = 1,01 × 2<sup>0</sup>; 2,5 = 10,1₂ = 1,01 × 2<sup>1</sup>.</p>
+<p>B1 cộng mũ: 0 + 1 = 1 (dạng bias: 127 + 128 − 127 = 128).</p>
+<p>B2 nhân phần trị: 1,01 × 1,01 = 1,1001.</p>
+<pre>    1,01
+  × 1,01
+  ------
+     101
+    000
+   101
+  ------
+  1,1001</pre>
+<p>B3 đã chuẩn hóa 1,1001 × 2<sup>1</sup>, E = 128 không tràn. B4 không làm tròn. B5 cùng dấu ⇒ dương.</p>
+<p>Kết quả 1,1001 × 2<sup>1</sup> = 11,001₂ = <b>3,125</b> (0x40480000).</p>
+
+<p><b>d) 2,5 : 0,25</b></p>
+<p>2,5 = 1,01 × 2<sup>1</sup>; 0,25 = 1,0 × 2<sup>−2</sup>.</p>
+<p>Trừ mũ: 1 − (−2) = 3 (dạng bias: 128 − 125 + 127 = 130). Chia phần trị: 1,01 / 1,0 = 1,01.</p>
+<p>Kết quả 1,01 × 2<sup>3</sup> = 1010₂ = <b>10</b>; cùng dấu ⇒ dương (0x41200000).</p>
+</details></div>
+
+<div class="ex"><p class="ex-q"><b>Bài 4.</b> Nhân 3 thanh ghi (4 bit không dấu): 4 × 3.</p>
+<details><summary>Xem lời giải</summary><div class="simtable" data-alg="mul1" data-a="4" data-b="3" data-n="4"></div></details></div>
+<div class="ex"><p class="ex-q"><b>Bài 5.</b> Nhân cải tiến 2 thanh ghi (4 bit không dấu): 4 × 3.</p>
+<details><summary>Xem lời giải</summary><div class="simtable" data-alg="mul2" data-a="4" data-b="3" data-n="4"></div></details></div>
+<div class="ex"><p class="ex-q"><b>Bài 6.</b> Chia theo cấu trúc phần cứng 3 thanh ghi (4 bit không dấu): 14 : 5.</p>
+<details><summary>Xem lời giải</summary><p class="note">Đề ghi "giải thuật thực hiện phép nhân" nhưng yêu cầu là chia, nên dùng giải thuật chia 3 thanh ghi.</p><div class="simtable" data-alg="div1" data-a="14" data-b="5" data-n="4"></div></details></div>
+<div class="ex"><p class="ex-q"><b>Bài 7.</b> Chia cải tiến 2 thanh ghi (4 bit không dấu): 14 : 5.</p>
+<details><summary>Xem lời giải</summary><div class="simtable" data-alg="div2" data-a="14" data-b="5" data-n="4"></div></details></div>
+</div>
+
+<!-- ---------------- CHƯƠNG 4 ---------------- -->
+<div class="pane" data-p="h4">
+<p>Bảng thanh ghi dùng chung (quy ước $n = R[n]):</p>
+<table><tr><th>$0</th><th>$2</th><th>$4</th><th>$8</th><th>$9</th><th>$16</th><th>$17</th><th>$18</th></tr><tr><td>0</td><td>8</td><td>12</td><td>25</td><td>40</td><td>−7</td><td>14</td><td>−15</td></tr></table>
+<div class="ex"><p class="ex-q"><b>Câu 1.</b> Mã nhị phân 1000 1100 0100 1000 0000 0000 0000 1100, biết Memory[20] = 33. Xác định lệnh MIPS; đầu vào/ra khối Registers và tín hiệu điều khiển; đầu ra ALU, địa chỉ đọc, giá trị ghi vào thanh ghi đích; đầu ra hai khối Add.</p>
+<details><summary>Xem lời giải</summary><div class="hw-dp" data-w="0x8C48000C" data-mem="20:33"></div></details></div>
+<div class="ex"><p class="ex-q"><b>Câu 2.</b> Mã nhị phân 1010 1101 0010 0100 0000 0000 0001 0000. Xác định lệnh; đầu vào/ra khối Registers và tín hiệu điều khiển; đầu ra ALU, địa chỉ ghi và dữ liệu ghi vào bộ nhớ; đầu ra hai khối Add.</p>
+<details><summary>Xem lời giải</summary><div class="hw-dp" data-w="0xAD240010"></div></details></div>
+<div class="ex"><p class="ex-q"><b>Câu 3.</b> Mã nhị phân 0000 0001 0000 1001 1000 0000 0010 0000. Xác định lệnh; đầu vào/ra khối Registers và tín hiệu điều khiển; đầu ra ALU, thanh ghi đích và giá trị ghi vào; đầu ra hai khối Add.</p>
+<details><summary>Xem lời giải</summary><div class="hw-dp" data-w="0x01098020"></div>
+<p class="note">Với lệnh R‑type, khối Add thứ hai vẫn tính từ 16 bit thấp của lệnh (1000 0000 0010 0000, sign‑extend là số âm −32736) nên ra một giá trị lạ, nhưng MUX PCSrc không chọn nó vì Branch = 0.</p></details></div>
+</div>
+</section>
+
 <!-- ============ QUIZ ============ -->
 <section class="view" id="v-quiz">
   <header class="chap-head"><p class="chap-no">Luyện tập</p><h2>Trắc nghiệm</h2><p class="chap-src" id="qScopeTxt"></p></header>
@@ -2491,7 +2777,8 @@ var EXAM = (function () {
   };
   var FN = { add: 32, sub: 34, and: 36, or: 37, slt: 42 };
   var ALUC = { add: '0010', sub: '0110', and: '0000', or: '0001', slt: '0111', lw: '0010', sw: '0010', beq: '0110' };
-  function dpSolve(word, regs) {
+  function dpSolve(word, regs, mem) {
+    mem = mem || {};
     var op = word >>> 26, rs = (word >>> 21) & 31, rt = (word >>> 16) & 31, rd = (word >>> 11) & 31, sh = (word >>> 6) & 31, fn = word & 63, imm = word & 0xffff, simm = imm & 0x8000 ? imm - 65536 : imm;
     var name = op === 0 ? Object.keys(FN).filter(function (k) { return FN[k] === fn; })[0] : ({ 35: 'lw', 43: 'sw', 4: 'beq' })[op];
     var kind = op === 0 ? 'R' : name, c = CTRL[kind];
@@ -2512,7 +2799,7 @@ var EXAM = (function () {
       zero = res === 0 ? 1 : 0;
     }
     if (kind === 'R') { wreg = rd + ' (rd, vì RegDst = 1)'; wdata = res + ' (kết quả ALU, vì MemtoReg = 0)'; }
-    else if (kind === 'lw') { wreg = rt + ' (rt, vì RegDst = 0)'; wdata = 'Mem[' + res + '] (dữ liệu đọc từ bộ nhớ, vì MemtoReg = 1; đề không cho giá trị)'; }
+    else if (kind === 'lw') { wreg = rt + ' (rt, vì RegDst = 0)'; wdata = mem[res] !== undefined ? 'Mem[' + res + '] = ' + mem[res] + ' (dữ liệu đọc từ bộ nhớ, vì MemtoReg = 1)' : 'Mem[' + res + '] (dữ liệu đọc từ bộ nhớ, vì MemtoReg = 1; đề không cho giá trị)'; }
     else { wreg = 'X (lệnh không ghi thanh ghi)'; wdata = 'X'; }
     h += '<p><b>Khối Registers</b></p><table><tr><th colspan="2">Đầu vào</th></tr>' +
       '<tr><td>Read register 1</td><td>' + rs + ' (rs)</td></tr><tr><td>Read register 2</td><td>' + rt + ' (rt)</td></tr>' +
@@ -2521,7 +2808,8 @@ var EXAM = (function () {
     var opTxt = { add: '+', sub: '−', and: 'AND', or: 'OR', slt: '<' }[name] || (kind === 'beq' ? '−' : '+');
     h += '<p><b>ALU</b>: ALU control = ' + ALUC[name] + '; ' + a1 + ' ' + opTxt + ' ' + (typeof a2 === 'number' && a2 < 0 ? '(' + a2 + ')' : a2) + (c[1] === 1 ? ' (imm sign‑extend, ALUSrc = 1)' : '') + ' = <b>' + (name === 'slt' ? res + ' (' + a1 + ' < ' + a2 + ' là ' + (res ? 'đúng' : 'sai') + ')' : res) + '</b>; Zero = ' + zero + '.</p>';
     if (kind === 'sw') h += '<p>Data memory: MemWrite = 1 ⇒ ghi Read data 2 = ' + R(rt) + ' vào Mem[' + res + '].</p>';
-    if (kind === 'lw') h += '<p>Data memory: MemRead = 1 ⇒ đọc Mem[' + res + '] đưa về thanh ghi $' + rt + '.</p>';
+    if (kind === 'lw') h += '<p>Data memory: MemRead = 1 ⇒ đọc địa chỉ ' + res + (mem[res] !== undefined ? ', Mem[' + res + '] = ' + mem[res] + ' ⇒ ghi <b>' + mem[res] + '</b> vào thanh ghi $' + rt : ' và đưa Mem[' + res + '] về thanh ghi $' + rt) + '.</p>';
+    if (kind === 'R') h += '<p>Thanh ghi đích $' + rd + ' nhận giá trị <b>' + res + '</b>.</p>';
     var off = 4 + 4 * simm, pcs = c[6] === 1 && zero === 1;
     h += '<p><b>Khối Add</b></p><ul><li>Add (PC + 4): đầu vào pc và 4, đầu ra <b>pc + 4</b>.</li><li>Add (địa chỉ nhánh): đầu vào pc + 4 và SignExt(Inst[15:0]) &lt;&lt; 2 = ' + simm + ' × 4 = ' + 4 * simm + ', đầu ra <b>pc ' + (off >= 0 ? '+ ' + off : '− ' + (-off)) + '</b>' + (kind === 'R' ? ' (vẫn được tính từ 16 bit thấp của lệnh R dù không dùng)' : '') + '.</li></ul>';
     h += '<p>PCSrc = Branch AND Zero = ' + c[6] + ' AND ' + zero + ' = ' + (pcs ? 1 : 0) + ' ⇒ PC mới = <b>' + (pcs ? 'pc ' + (off >= 0 ? '+ ' + off : '− ' + (-off)) : 'pc + 4') + '</b>.</p>';
@@ -2590,7 +2878,7 @@ var EXAM = (function () {
   /* ---- router ---- */
   function show(){
     var h = (location.hash || '#home').slice(1);
-    var id = ({home:'v-home', quiz:'v-quiz', tools:'v-tools', exam:'v-exam'})[h] || h;
+    var id = ({home:'v-home', quiz:'v-quiz', tools:'v-tools', exam:'v-exam', hw:'v-hw'})[h] || h;
     var v = document.getElementById(id);
     if (!v || !v.classList.contains('view')) { v = $('#v-home'); h = 'home'; }
     $$('.view').forEach(function(x){ x.classList.toggle('on', x === v); });
@@ -2742,6 +3030,19 @@ var EXAM = (function () {
       $('button', g).addEventListener('click', make);
       if (sel) sel.addEventListener('change', make);
       make();
+    });
+  })();
+
+
+  /* ---- bài tập về nhà ---- */
+  (function(){
+    var E = EXAM, RG = {0:0, 2:8, 4:12, 8:25, 9:40, 16:-7, 17:14, 18:-15};
+    $$('.hw-enc').forEach(function(el){ el.innerHTML = E.encSolve(el.dataset.l).a; });
+    $$('.hw-ovf').forEach(function(el){ el.innerHTML = E.ovf(+el.dataset.a, el.dataset.op, +el.dataset.b).a; });
+    $$('.hw-ieee').forEach(function(el){ el.innerHTML = E.ieeeEnc(+el.dataset.v).a; });
+    $$('.hw-dp').forEach(function(el){
+      var mem = {}; if (el.dataset.mem) { var p = el.dataset.mem.split(':'); mem[+p[0]] = +p[1]; }
+      el.innerHTML = E.dpSolve(parseInt(el.dataset.w, 16) >>> 0, RG, mem).a;
     });
   })();
 
